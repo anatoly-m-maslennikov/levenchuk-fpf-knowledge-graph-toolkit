@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Generate an Obsidian-native knowledge graph from FPF-Spec.md.
+"""Generate an Obsidian-native knowledge graph from an FPF-Spec.md source.
+
+The monolithic source is intentionally not bundled with this repository. Pass
+an explicit path to FPF-Spec.md from an upstream checkout or temporary copy.
 
 Design:
 - H1 sections become hub/index pages.
@@ -10,7 +13,7 @@ Design:
   normativity, terms, and extracted relations.
 
 Run from the FPF repo root:
-    scripts/build_fpf_obsidian_graph.py --source FPF-Spec-original/FPF-Spec.md.breaks.my.obsidian.bak --out FPF-Spec --clean
+    scripts/build_fpf_obsidian_graph.py --source /path/to/FPF-Spec.md --out FPF-Spec --clean
 """
 from __future__ import annotations
 
@@ -761,14 +764,14 @@ def build(source: Path, out_dir: Path, clean: bool) -> dict:
     (index_dir / "FPF - Relation Index.md").write_text(render_relation_index(pages, id_to_page), encoding="utf-8")
     (index_dir / "FPF - Term Index.md").write_text(render_term_index(pages), encoding="utf-8")
     report = validate(out_dir, hubs, pages, id_to_page)
-    report.update({"source": str(source), "out_dir": str(out_dir), "generated_on": date.today().isoformat()})
+    report.update({"source": source.name, "out_dir": out_dir.name, "generated_on": date.today().isoformat()})
     (index_dir / "FPF - Validation Report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     return report
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Generate Obsidian graph from FPF-Spec.md")
-    parser.add_argument("--source", default="FPF-Spec-original/FPF-Spec.md.breaks.my.obsidian.bak")
+    parser.add_argument("--source", required=True, help="Path to the upstream FPF-Spec.md source")
     parser.add_argument("--out", default="FPF-Spec")
     parser.add_argument("--clean", action="store_true")
     args = parser.parse_args()

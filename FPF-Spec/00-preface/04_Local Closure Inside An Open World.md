@@ -8,12 +8,12 @@ title: "Local Closure Inside An Open World"
 part: "[[00_Hubs/FPF - Preface (non-normative)]]"
 parents:
   - "[[00_Hubs/FPF - Preface (non-normative)]]"
-source_file: "FPF-Spec.md.breaks.my.obsidian.bak"
+source_file: "FPF-Spec.md"
 source_lines:
-  - 822
-  - 840
+  - 886
+  - 904
 status: "generated"
-generated_on: "2026-07-14"
+generated_on: "2026-08-02"
 generated: true
 ---
 

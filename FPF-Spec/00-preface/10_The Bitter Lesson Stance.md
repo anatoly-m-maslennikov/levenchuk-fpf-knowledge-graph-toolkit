@@ -8,12 +8,12 @@ title: "The Bitter Lesson Stance"
 part: "[[00_Hubs/FPF - Preface (non-normative)]]"
 parents:
   - "[[00_Hubs/FPF - Preface (non-normative)]]"
-source_file: "FPF-Spec.md.breaks.my.obsidian.bak"
+source_file: "FPF-Spec.md"
 source_lines:
-  - 936
-  - 953
+  - 1000
+  - 1017
 status: "generated"
-generated_on: "2026-07-14"
+generated_on: "2026-08-02"
 generated: true
 ---
 

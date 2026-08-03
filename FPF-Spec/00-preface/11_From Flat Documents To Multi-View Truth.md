@@ -8,12 +8,12 @@ title: "From Flat Documents To Multi-View Truth"
 part: "[[00_Hubs/FPF - Preface (non-normative)]]"
 parents:
   - "[[00_Hubs/FPF - Preface (non-normative)]]"
-source_file: "FPF-Spec.md.breaks.my.obsidian.bak"
+source_file: "FPF-Spec.md"
 source_lines:
-  - 954
-  - 975
+  - 1018
+  - 1039
 status: "generated"
-generated_on: "2026-07-14"
+generated_on: "2026-08-02"
 generated: true
 ---
 

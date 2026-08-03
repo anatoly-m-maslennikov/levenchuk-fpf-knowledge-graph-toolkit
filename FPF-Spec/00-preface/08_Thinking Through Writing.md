@@ -8,12 +8,12 @@ title: "Thinking Through Writing"
 part: "[[00_Hubs/FPF - Preface (non-normative)]]"
 parents:
   - "[[00_Hubs/FPF - Preface (non-normative)]]"
-source_file: "FPF-Spec.md.breaks.my.obsidian.bak"
+source_file: "FPF-Spec.md"
 source_lines:
-  - 898
-  - 917
+  - 962
+  - 981
 status: "generated"
-generated_on: "2026-07-14"
+generated_on: "2026-08-02"
 generated: true
 ---
 
