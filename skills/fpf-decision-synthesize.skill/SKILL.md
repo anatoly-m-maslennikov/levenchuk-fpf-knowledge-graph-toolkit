@@ -49,4 +49,3 @@ Return:
 4. **ADR projection**, only when its source relation is recoverable
 5. **Accepted losses, consequences, and reopen triggers**
 6. **Unresolved authority/evidence and implementation handoff**
-

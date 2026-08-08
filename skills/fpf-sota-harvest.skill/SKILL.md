@@ -54,4 +54,3 @@ Return:
 4. **SoTA_Set, traditions, palette, and bridges**
 5. **Disagreements, exclusions, and insufficient basis**
 6. **Receiving use and refresh/return condition**
-

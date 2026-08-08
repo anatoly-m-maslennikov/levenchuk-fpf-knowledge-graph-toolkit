@@ -56,4 +56,3 @@ Return:
 4. **Parity plan/report**, when applicable
 5. **Retained options, exclusions, and evidence gaps**
 6. **Stop condition and decision handoff**
-

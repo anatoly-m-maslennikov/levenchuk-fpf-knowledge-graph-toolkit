@@ -55,4 +55,3 @@ Return:
 4. **Re-evaluation and declared-coordinate comparison**
 5. **Trade-offs, costs, risks, and uncertainty**
 6. **Outcome and stop/continue/rollback/switch decision**
-
