@@ -2,6 +2,10 @@
 
 This directory contains portable AI-agent skill packages for bounded use of the First Principles Framework.
 
+Routing:
+
+- `fpf-route.skill` turns one question into the smallest useful ordered sequence of copy-ready FPF skill calls without executing them.
+
 Review and applicability:
 
 - `fpf-applicability-scan.skill` identifies the smallest relevant set of FPF patterns for one question.

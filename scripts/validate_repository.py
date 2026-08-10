@@ -22,6 +22,7 @@ EXPECTED_SKILL_PACKAGES = {
     "fpf-design-challenge.skill",
     "fpf-options-explore.skill",
     "fpf-quality-improve.skill",
+    "fpf-route.skill",
     "fpf-sota-harvest.skill",
 }
 

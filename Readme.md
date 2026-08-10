@@ -34,9 +34,14 @@ The skills discover FPF at runtime and assume no repository path, tool, operatin
 
 | Skill | Use case | Result |
 |---|---|---|
+| [`fpf-route`](skills/fpf-route.skill/SKILL.md) | Turn one question into the right FPF workflow. | Minimal ordered skill calls with copy-ready tasks and handoffs. |
 | [`fpf-applicability-scan`](skills/fpf-applicability-scan.skill/SKILL.md) | Decide whether FPF is useful and which patterns apply. | Smallest relevant set, basis, first result, use, and stop boundary. |
 | [`fpf-design-challenge`](skills/fpf-design-challenge.skill/SKILL.md) | Challenge a proposal or not-yet-implemented decision. | Bounded finding with evidence and supported corrections. |
 | [`fpf-alignment-audit`](skills/fpf-alignment-audit.skill/SKILL.md) | Check implemented or accepted work. | Per-claim semantic/mechanical audit with a bounded verdict. |
+| [`fpf-sota-harvest`](skills/fpf-sota-harvest.skill/SKILL.md) | Map a bounded, plural state of the art. | Reconstructible corpus, claims, traditions, and disagreements. |
+| [`fpf-options-explore`](skills/fpf-options-explore.skill/SKILL.md) | Generate and compare diverse candidates. | Candidate set, declared-coordinate evaluation, and decision handoff. |
+| [`fpf-decision-synthesize`](skills/fpf-decision-synthesize.skill/SKILL.md) | Choose among evaluated alternatives. | Recoverable decision, accepted losses, reopen triggers, and optional ADR. |
+| [`fpf-quality-improve`](skills/fpf-quality-improve.skill/SKILL.md) | Improve a versioned target under a declared evaluation frame. | Target change, rerun comparison, trade-offs, and outcome. |
 
 All are read-only by default. Findings do not approve designs, authorize work, provide assurance, or make gate decisions.
 
