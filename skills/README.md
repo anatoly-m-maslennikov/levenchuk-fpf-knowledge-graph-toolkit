@@ -2,6 +2,8 @@
 
 This directory contains portable AI-agent skill packages for bounded use of the First Principles Framework.
 
+These directories are the source of truth. Install them directly under the active Codex skills directory by symlink or copy; do not mirror them into an Obsidian vault.
+
 Routing:
 
 - `fpf-route.skill` turns one question into the smallest useful ordered sequence of copy-ready FPF skill calls without executing them.

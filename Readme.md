@@ -45,6 +45,12 @@ The skills discover FPF at runtime and assume no repository path, tool, operatin
 
 All are read-only by default. Findings do not approve designs, authorize work, provide assurance, or make gate decisions.
 
+## Installing the skills
+
+This repository is the source of truth for every bundled `fpf-*` skill. On the default local setup, entries under `~/.codex/skills/<skill-name>` link directly to `skills/<skill-name>.skill`; do not maintain duplicate packages in an Obsidian vault.
+
+Symlinks are only a local convenience. Other installations may copy each complete `.skill` package into their Codex skills directory without changing its behavior.
+
 ## Updating from upstream
 
 Fetch or check out upstream `FPF-Spec.md` outside the active Obsidian vault, then pass its path explicitly to the generator.
