@@ -5,6 +5,9 @@ context:
 page_type: "relation-index"
 mode: "index-generated"
 title: "FPF - Relation Index"
+source_file: "FPF-Spec.md"
+source_revision: "9a9a42e4d154021ca3f7415e0009a4214832f65f"
+source_sha256: "135b2bd2ac115eddddd0508f7340431e66359ae2faf394065d1f3e4411023171"
 generated_on: "2026-08-02"
 generated: true
 ---

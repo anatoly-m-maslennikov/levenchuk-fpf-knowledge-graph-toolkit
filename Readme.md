@@ -58,10 +58,13 @@ Fetch or check out upstream `FPF-Spec.md` outside the active Obsidian vault, the
 Regenerate from the repository root:
 
 ```bash
-PYTHONDONTWRITEBYTECODE=1 python3 scripts/build_fpf_obsidian_graph.py --source /path/to/FPF-Spec.md --clean
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/build_fpf_obsidian_graph.py \
+  --source /path/to/FPF-Spec.md \
+  --source-revision 9a9a42e4d154021ca3f7415e0009a4214832f65f \
+  --generated-on 2026-08-02 --clean
 ```
 
-Check the [`validation report`](FPF-Spec/00_Index/FPF%20-%20Validation%20Report.json) for zero broken links, then review the diff.
+The report and every generated note record this revision, the SHA-256 of the exact source bytes, and the supplied generation date. Check the [`validation report`](FPF-Spec/00_Index/FPF%20-%20Validation%20Report.json) for zero broken links, then review the diff.
 
 ## Citation
 

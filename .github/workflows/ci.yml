@@ -32,6 +32,8 @@ jobs:
         run: PYTHONDONTWRITEBYTECODE=1 python3 -m py_compile scripts/*.py
       - name: Validate projection and skills
         run: PYTHONDONTWRITEBYTECODE=1 python3 scripts/validate_repository.py
+      - name: Check reproducible generation
+        run: PYTHONDONTWRITEBYTECODE=1 python3 scripts/test_reproducible_generation.py
 
   auto-merge-owner-pr:
     name: auto-merge owner PR
