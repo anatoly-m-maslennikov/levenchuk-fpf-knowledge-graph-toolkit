@@ -24,7 +24,7 @@ The current specification is roughly 12 MB. Loading it for every question consum
 
 ## Repository layout
 
-- [`FPF-Spec/`](FPF-Spec/) — generated graph and validation output.
+- [`FPF-Knowledge-Graph/`](FPF-Knowledge-Graph/) — generated graph and validation output.
 - [`scripts/build_fpf_obsidian_graph.py`](scripts/build_fpf_obsidian_graph.py) — generator.
 - [`skills/`](skills/) — portable agent skills.
 
@@ -64,7 +64,7 @@ PYTHONDONTWRITEBYTECODE=1 python3 scripts/build_fpf_obsidian_graph.py \
   --generated-on 2026-08-02 --clean
 ```
 
-The report and every generated note record this revision, the SHA-256 of the exact source bytes, and the supplied generation date. Check the [`validation report`](FPF-Spec/00_Index/FPF%20-%20Validation%20Report.json) for zero broken links, then review the diff.
+The report and every generated note record this revision, the SHA-256 of the exact source bytes, and the supplied generation date. Check the [`validation report`](FPF-Knowledge-Graph/00_Index/FPF%20-%20Validation%20Report.json) for zero broken links, then review the diff.
 
 ## Citation
 
