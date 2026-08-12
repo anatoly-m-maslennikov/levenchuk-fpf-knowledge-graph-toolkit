@@ -40,6 +40,10 @@ Produce a read-only **FPF Skill Route** for one question. Route work among the a
 - Mark calls as parallel only when neither consumes the other's output. Name the join artifact required by the next step.
 - End at the user's receiving use. Present later steps only as conditional follow-ups.
 
+## Maintainer evaluation
+
+`references/routing-scenarios.json` is the repository's behavioral scenario matrix. It is test evidence for maintainers, not required runtime context. When changing routing rules or the skill catalog, update the matrix and run `python3 scripts/validate_repository.py`.
+
 ## Address each task
 
 For every proposed call, write an imperative task that includes:
