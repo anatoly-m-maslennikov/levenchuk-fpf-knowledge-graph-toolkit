@@ -31,7 +31,7 @@ def main() -> int:
         root = Path(temp)
         source = root / "FPF-Spec.md"
         source.write_text(SOURCE, encoding="utf-8")
-        output = root / "FPF-Spec"
+        output = root / "FPF-Knowledge-Graph"
         build(source, output)
         first_tree = tree_bytes(output)
         build(source, output)

@@ -11,7 +11,7 @@ from pathlib import Path
 from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parents[1]
-GRAPH = ROOT / "FPF-Spec"
+GRAPH = ROOT / "FPF-Knowledge-Graph"
 REPORT_PATH = GRAPH / "00_Index" / "FPF - Validation Report.json"
 README_PATH = ROOT / "Readme.md"
 CI_PATH = ROOT / ".github" / "workflows" / "ci.yml"
@@ -43,6 +43,7 @@ def main() -> int:
             errors.append(message)
 
     require(not (ROOT / "FPF-Spec.md").exists(), "root FPF-Spec.md must remain absent")
+    require(not (ROOT / "FPF-Spec").exists(), "legacy FPF-Spec graph directory must remain absent")
     require(not (ROOT / "FPF-Spec-original").exists(), "the monolithic source must not be bundled")
 
     try:
@@ -53,7 +54,7 @@ def main() -> int:
 
     markdown_files = sorted(GRAPH.rglob("*.md"))
     require(report.get("source") == "FPF-Spec.md", "report source must be portable")
-    require(report.get("out_dir") == "FPF-Spec", "report output path must be portable")
+    require(report.get("out_dir") == "FPF-Knowledge-Graph", "report output path must be portable")
     for key in ("source_revision", "source_sha256", "generated_on"):
         require(isinstance(report.get(key), str) and bool(report[key]), f"report missing {key}")
     require(re.fullmatch(r"[0-9a-f]{64}", report.get("source_sha256", "")) is not None, "report source SHA-256 is invalid")

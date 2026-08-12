@@ -13,7 +13,7 @@ Design:
   normativity, terms, and extracted relations.
 
 Run from the FPF repo root:
-    scripts/build_fpf_obsidian_graph.py --source /path/to/FPF-Spec.md --source-revision REVISION --generated-on YYYY-MM-DD --out FPF-Spec --clean
+    scripts/build_fpf_obsidian_graph.py --source /path/to/FPF-Spec.md --source-revision REVISION --generated-on YYYY-MM-DD --out FPF-Knowledge-Graph --clean
 """
 from __future__ import annotations
 
@@ -784,7 +784,7 @@ def main() -> int:
     parser.add_argument("--source", required=True, help="Path to the upstream FPF-Spec.md source")
     parser.add_argument("--source-revision", required=True, help="Immutable upstream source revision")
     parser.add_argument("--generated-on", required=True, help="Deterministic generation date (YYYY-MM-DD)")
-    parser.add_argument("--out", default="FPF-Spec")
+    parser.add_argument("--out", default="FPF-Knowledge-Graph")
     parser.add_argument("--clean", action="store_true")
     args = parser.parse_args()
     source = Path(args.source).resolve()
