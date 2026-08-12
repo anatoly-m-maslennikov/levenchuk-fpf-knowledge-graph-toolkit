@@ -78,6 +78,8 @@ Never upgrade an unchecked claim through reviewer consensus. Reviewers using one
 
 ## Output
 
+Return the complete listed artifact with every required section and evidence record, including when work was delegated. Do not replace it with a summary, abbreviated surrogate, or pointer to another result.
+
 Return:
 
 1. **Audit contract, resolved FPF source, and inspected scope**

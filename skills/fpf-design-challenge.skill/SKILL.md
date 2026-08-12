@@ -62,6 +62,8 @@ Use stable citations appropriate to the source, such as file-and-line, URI-and-s
 
 ## Output
 
+Return the complete listed artifact with every required section and evidence record, including when work was delegated. Do not replace it with a summary, abbreviated surrogate, or pointer to another result.
+
 Return:
 
 1. **Proposal, resolved FPF source, and decision boundary**

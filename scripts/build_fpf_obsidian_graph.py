@@ -13,11 +13,12 @@ Design:
   normativity, terms, and extracted relations.
 
 Run from the FPF repo root:
-    scripts/build_fpf_obsidian_graph.py --source /path/to/FPF-Spec.md --out FPF-Spec --clean
+    scripts/build_fpf_obsidian_graph.py --source /path/to/FPF-Spec.md --source-revision REVISION --generated-on YYYY-MM-DD --out FPF-Spec --clean
 """
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import shutil
@@ -461,7 +462,16 @@ def assign_names(hubs: list[Page], pages: list[Page]) -> tuple[dict[str, str], d
     return hub_by_title, id_to_page
 
 
-def frontmatter(page: Page, source_name: str, hub_by_title: dict[str, str], id_to_page: dict[str, str]) -> str:
+def provenance_lines(source_name: str, source_revision: str, source_sha256: str, generated_on: str) -> list[str]:
+    return [
+        f"source_file: {yaml_quote(source_name)}",
+        f"source_revision: {yaml_quote(source_revision)}",
+        f"source_sha256: {yaml_quote(source_sha256)}",
+        f"generated_on: {yaml_quote(generated_on)}",
+    ]
+
+
+def frontmatter(page: Page, source_name: str, source_revision: str, source_sha256: str, generated_on: str, hub_by_title: dict[str, str], id_to_page: dict[str, str]) -> str:
     out = ["---"]
     out.append(f"type: {yaml_quote(page.page_type)}")
     out.append("context:")
@@ -476,7 +486,7 @@ def frontmatter(page: Page, source_name: str, hub_by_title: dict[str, str], id_t
         out.append(f"part: {yaml_quote(wiki(parent_page))}")
         out.append("parents:")
         out += yaml_list([wiki(parent_page)])
-    out.append(f"source_file: {yaml_quote(source_name)}")
+    out += provenance_lines(source_name, source_revision, source_sha256, generated_on)
     out.append("source_lines:")
     out.append(f"  - {page.start}")
     out.append(f"  - {page.end}")
@@ -490,7 +500,6 @@ def frontmatter(page: Page, source_name: str, hub_by_title: dict[str, str], id_t
         out.append(f"{rel}:")
         vals = [wiki(id_to_page[r], r) if r in id_to_page else r for r in refs]
         out += yaml_list(vals)
-    out.append(f"generated_on: {yaml_quote(date.today().isoformat())}")
     out.append("generated: true")
     out.append("---")
     return "\n".join(out) + "\n\n"
@@ -657,15 +666,15 @@ def linkify_line(line: str, id_to_page: dict[str, str]) -> str:
     return strip_wikilink_aliases_in_table_line(line)
 
 
-def render_page(page: Page, source_name: str, hub_by_title: dict[str, str], id_to_page: dict[str, str]) -> str:
+def render_page(page: Page, source_name: str, source_revision: str, source_sha256: str, generated_on: str, hub_by_title: dict[str, str], id_to_page: dict[str, str]) -> str:
     body_lines = remove_empty_table_columns(demote_headings(page.body))
     body = [linkify_line(x, id_to_page) for x in body_lines]
-    return frontmatter(page, source_name, hub_by_title, id_to_page) + "\n".join(body).rstrip() + "\n"
+    return frontmatter(page, source_name, source_revision, source_sha256, generated_on, hub_by_title, id_to_page) + "\n".join(body).rstrip() + "\n"
 
 
-def render_hub(hub: Page, pages: list[Page], source_name: str) -> str:
+def render_hub(hub: Page, pages: list[Page], source_name: str, source_revision: str, source_sha256: str, generated_on: str) -> str:
     children = [p for p in pages if p.parent_hub == hub.title]
-    out = [frontmatter(hub, source_name, {}, {})]
+    out = [frontmatter(hub, source_name, source_revision, source_sha256, generated_on, {}, {})]
     out.append(f"# {hub.title}\n")
     out.append(f"Source lines: `{hub.start}-{hub.end}` in `{source_name}`.\n")
     out.append("## Pages\n")
@@ -680,8 +689,8 @@ def render_hub(hub: Page, pages: list[Page], source_name: str) -> str:
     return "\n".join(out).rstrip() + "\n"
 
 
-def render_master_index(hubs: list[Page], pages: list[Page], source_name: str) -> str:
-    out = ["---", 'type: "fpf-index"', "context:", '  - "FPF"', 'page_type: "master-index"', 'mode: "index-generated"', 'title: "FPF - Index"', f"source_file: {yaml_quote(source_name)}", f"generated_on: {yaml_quote(date.today().isoformat())}", "generated: true", "---", "", "# FPF - Index", "", "## Hubs", ""]
+def render_master_index(hubs: list[Page], pages: list[Page], source_name: str, source_revision: str, source_sha256: str, generated_on: str) -> str:
+    out = ["---", 'type: "fpf-index"', "context:", '  - "FPF"', 'page_type: "master-index"', 'mode: "index-generated"', 'title: "FPF - Index"', *provenance_lines(source_name, source_revision, source_sha256, generated_on), "generated: true", "---", "", "# FPF - Index", "", "## Hubs", ""]
     for hub in hubs:
         count = sum(1 for p in pages if p.parent_hub == hub.title)
         out.append(f"- {wiki(hub.page_name)} — {count} pages")
@@ -693,8 +702,8 @@ def render_master_index(hubs: list[Page], pages: list[Page], source_name: str) -
     return "\n".join(out) + "\n"
 
 
-def render_relation_index(pages: list[Page], id_to_page: dict[str, str]) -> str:
-    out = ["---", 'type: "fpf-index"', "context:", '  - "FPF"', 'page_type: "relation-index"', 'mode: "index-generated"', 'title: "FPF - Relation Index"', f"generated_on: {yaml_quote(date.today().isoformat())}", "generated: true", "---", "", "# FPF - Relation Index", "", "| Relation | Source | Target | Resolved |", "|---|---|---|---|"]
+def render_relation_index(pages: list[Page], id_to_page: dict[str, str], source_name: str, source_revision: str, source_sha256: str, generated_on: str) -> str:
+    out = ["---", 'type: "fpf-index"', "context:", '  - "FPF"', 'page_type: "relation-index"', 'mode: "index-generated"', 'title: "FPF - Relation Index"', *provenance_lines(source_name, source_revision, source_sha256, generated_on), "generated: true", "---", "", "# FPF - Relation Index", "", "| Relation | Source | Target | Resolved |", "|---|---|---|---|"]
     for p in pages:
         for rel, refs in sorted(p.relations.items()):
             for ref in refs:
@@ -703,12 +712,12 @@ def render_relation_index(pages: list[Page], id_to_page: dict[str, str]) -> str:
     return "\n".join(out) + "\n"
 
 
-def render_term_index(pages: list[Page]) -> str:
+def render_term_index(pages: list[Page], source_name: str, source_revision: str, source_sha256: str, generated_on: str) -> str:
     term_pages: dict[str, list[Page]] = defaultdict(list)
     for p in pages:
         for term in p.terms:
             term_pages[term].append(p)
-    out = ["---", 'type: "fpf-index"', "context:", '  - "FPF"', 'page_type: "term-index"', 'mode: "index-generated"', 'title: "FPF - Term Index"', f"generated_on: {yaml_quote(date.today().isoformat())}", "generated: true", "---", "", "# FPF - Term Index", ""]
+    out = ["---", 'type: "fpf-index"', "context:", '  - "FPF"', 'page_type: "term-index"', 'mode: "index-generated"', 'title: "FPF - Term Index"', *provenance_lines(source_name, source_revision, source_sha256, generated_on), "generated: true", "---", "", "# FPF - Term Index", ""]
     for term in sorted(term_pages):
         links = ", ".join(wiki(p.page_name, p.fpf_id or p.title) for p in term_pages[term][:25])
         more = f" (+{len(term_pages[term]) - 25} more)" if len(term_pages[term]) > 25 else ""
@@ -743,7 +752,8 @@ def validate(out_dir: Path, hubs: list[Page], pages: list[Page], id_to_page: dic
     }
 
 
-def build(source: Path, out_dir: Path, clean: bool) -> dict:
+def build(source: Path, out_dir: Path, clean: bool, source_revision: str, generated_on: str) -> dict:
+    source_sha256 = hashlib.sha256(source.read_bytes()).hexdigest()
     lines, headings = parse_headings(source)
     hubs, pages = build_pages(lines, headings)
     hub_by_title, id_to_page = assign_names(hubs, pages)
@@ -753,18 +763,18 @@ def build(source: Path, out_dir: Path, clean: bool) -> dict:
     for page in pages:
         path = out_dir / f"{page.page_name}.md"
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(render_page(page, source.name, hub_by_title, id_to_page), encoding="utf-8")
+        path.write_text(render_page(page, source.name, source_revision, source_sha256, generated_on, hub_by_title, id_to_page), encoding="utf-8")
     for hub in hubs:
         path = out_dir / f"{hub.page_name}.md"
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(render_hub(hub, pages, source.name), encoding="utf-8")
+        path.write_text(render_hub(hub, pages, source.name, source_revision, source_sha256, generated_on), encoding="utf-8")
     index_dir = out_dir / INDEX_DIR
     index_dir.mkdir(parents=True, exist_ok=True)
-    (index_dir / "FPF - Index.md").write_text(render_master_index(hubs, pages, source.name), encoding="utf-8")
-    (index_dir / "FPF - Relation Index.md").write_text(render_relation_index(pages, id_to_page), encoding="utf-8")
-    (index_dir / "FPF - Term Index.md").write_text(render_term_index(pages), encoding="utf-8")
+    (index_dir / "FPF - Index.md").write_text(render_master_index(hubs, pages, source.name, source_revision, source_sha256, generated_on), encoding="utf-8")
+    (index_dir / "FPF - Relation Index.md").write_text(render_relation_index(pages, id_to_page, source.name, source_revision, source_sha256, generated_on), encoding="utf-8")
+    (index_dir / "FPF - Term Index.md").write_text(render_term_index(pages, source.name, source_revision, source_sha256, generated_on), encoding="utf-8")
     report = validate(out_dir, hubs, pages, id_to_page)
-    report.update({"source": source.name, "out_dir": out_dir.name, "generated_on": date.today().isoformat()})
+    report.update({"source": source.name, "out_dir": out_dir.name, "source_revision": source_revision, "source_sha256": source_sha256, "generated_on": generated_on})
     (index_dir / "FPF - Validation Report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     return report
 
@@ -772,6 +782,8 @@ def build(source: Path, out_dir: Path, clean: bool) -> dict:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Generate Obsidian graph from FPF-Spec.md")
     parser.add_argument("--source", required=True, help="Path to the upstream FPF-Spec.md source")
+    parser.add_argument("--source-revision", required=True, help="Immutable upstream source revision")
+    parser.add_argument("--generated-on", required=True, help="Deterministic generation date (YYYY-MM-DD)")
     parser.add_argument("--out", default="FPF-Spec")
     parser.add_argument("--clean", action="store_true")
     args = parser.parse_args()
@@ -779,7 +791,13 @@ def main() -> int:
     out_dir = Path(args.out).resolve()
     if not source.exists():
         raise SystemExit(f"source not found: {source}")
-    report = build(source, out_dir, args.clean)
+    try:
+        date.fromisoformat(args.generated_on)
+    except ValueError as exc:
+        raise SystemExit("--generated-on must be a valid YYYY-MM-DD date") from exc
+    if not args.source_revision.strip():
+        raise SystemExit("--source-revision must not be empty")
+    report = build(source, out_dir, args.clean, args.source_revision, args.generated_on)
     print(json.dumps(report, ensure_ascii=False, indent=2))
     return 0
 

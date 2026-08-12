@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - am/dev
+      - dev
       - main
   pull_request:
     branches:
@@ -32,6 +32,8 @@ jobs:
         run: PYTHONDONTWRITEBYTECODE=1 python3 -m py_compile scripts/*.py
       - name: Validate projection and skills
         run: PYTHONDONTWRITEBYTECODE=1 python3 scripts/validate_repository.py
+      - name: Check reproducible generation
+        run: PYTHONDONTWRITEBYTECODE=1 python3 scripts/test_reproducible_generation.py
 
   auto-merge-owner-pr:
     name: auto-merge owner PR
@@ -40,7 +42,7 @@ jobs:
       ${{ github.event_name == 'pull_request' &&
           github.event.pull_request.user.login == 'anatoly-m-maslennikov' &&
           github.event.pull_request.head.repo.full_name == github.repository &&
-          github.event.pull_request.head.ref == 'am/dev' &&
+          github.event.pull_request.head.ref == 'dev' &&
           github.event.pull_request.base.ref == 'main' &&
           !github.event.pull_request.draft }}
     runs-on: ubuntu-latest

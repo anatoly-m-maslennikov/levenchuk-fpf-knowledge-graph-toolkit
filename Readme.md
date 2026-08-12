@@ -34,11 +34,22 @@ The skills discover FPF at runtime and assume no repository path, tool, operatin
 
 | Skill | Use case | Result |
 |---|---|---|
+| [`fpf-route`](skills/fpf-route.skill/SKILL.md) | Turn one question into the right FPF workflow. | Minimal ordered skill calls with copy-ready tasks and handoffs. |
 | [`fpf-applicability-scan`](skills/fpf-applicability-scan.skill/SKILL.md) | Decide whether FPF is useful and which patterns apply. | Smallest relevant set, basis, first result, use, and stop boundary. |
 | [`fpf-design-challenge`](skills/fpf-design-challenge.skill/SKILL.md) | Challenge a proposal or not-yet-implemented decision. | Bounded finding with evidence and supported corrections. |
 | [`fpf-alignment-audit`](skills/fpf-alignment-audit.skill/SKILL.md) | Check implemented or accepted work. | Per-claim semantic/mechanical audit with a bounded verdict. |
+| [`fpf-sota-harvest`](skills/fpf-sota-harvest.skill/SKILL.md) | Map a bounded, plural state of the art. | Reconstructible corpus, claims, traditions, and disagreements. |
+| [`fpf-options-explore`](skills/fpf-options-explore.skill/SKILL.md) | Generate and compare diverse candidates. | Candidate set, declared-coordinate evaluation, and decision handoff. |
+| [`fpf-decision-synthesize`](skills/fpf-decision-synthesize.skill/SKILL.md) | Choose among evaluated alternatives. | Recoverable decision, accepted losses, reopen triggers, and optional ADR. |
+| [`fpf-quality-improve`](skills/fpf-quality-improve.skill/SKILL.md) | Improve a versioned target under a declared evaluation frame. | Target change, rerun comparison, trade-offs, and outcome. |
 
 All are read-only by default. Findings do not approve designs, authorize work, provide assurance, or make gate decisions.
+
+## Installing the skills
+
+This repository is the source of truth for every bundled `fpf-*` skill. On the default local setup, entries under `~/.codex/skills/<skill-name>` link directly to `skills/<skill-name>.skill`; do not maintain duplicate packages in an Obsidian vault.
+
+Symlinks are only a local convenience. Other installations may copy each complete `.skill` package into their Codex skills directory without changing its behavior.
 
 ## Updating from upstream
 
@@ -47,10 +58,13 @@ Fetch or check out upstream `FPF-Spec.md` outside the active Obsidian vault, the
 Regenerate from the repository root:
 
 ```bash
-PYTHONDONTWRITEBYTECODE=1 python3 scripts/build_fpf_obsidian_graph.py --source /path/to/FPF-Spec.md --clean
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/build_fpf_obsidian_graph.py \
+  --source /path/to/FPF-Spec.md \
+  --source-revision 9a9a42e4d154021ca3f7415e0009a4214832f65f \
+  --generated-on 2026-08-02 --clean
 ```
 
-Check the [`validation report`](FPF-Spec/00_Index/FPF%20-%20Validation%20Report.json) for zero broken links, then review the diff.
+The report and every generated note record this revision, the SHA-256 of the exact source bytes, and the supplied generation date. Check the [`validation report`](FPF-Spec/00_Index/FPF%20-%20Validation%20Report.json) for zero broken links, then review the diff.
 
 ## Citation
 

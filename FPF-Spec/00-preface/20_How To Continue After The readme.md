@@ -9,11 +9,13 @@ part: "[[00_Hubs/FPF - Preface (non-normative)]]"
 parents:
   - "[[00_Hubs/FPF - Preface (non-normative)]]"
 source_file: "FPF-Spec.md"
+source_revision: "9a9a42e4d154021ca3f7415e0009a4214832f65f"
+source_sha256: "135b2bd2ac115eddddd0508f7340431e66359ae2faf394065d1f3e4411023171"
+generated_on: "2026-08-02"
 source_lines:
   - 1182
   - 1189
 status: "generated"
-generated_on: "2026-08-02"
 generated: true
 ---
 

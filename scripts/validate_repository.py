@@ -14,7 +14,24 @@ ROOT = Path(__file__).resolve().parents[1]
 GRAPH = ROOT / "FPF-Spec"
 REPORT_PATH = GRAPH / "00_Index" / "FPF - Validation Report.json"
 README_PATH = ROOT / "Readme.md"
+CI_PATH = ROOT / ".github" / "workflows" / "ci.yml"
 SKILLS = ROOT / "skills"
+EXPECTED_SKILL_PACKAGES = {
+    "fpf-alignment-audit.skill",
+    "fpf-applicability-scan.skill",
+    "fpf-decision-synthesize.skill",
+    "fpf-design-challenge.skill",
+    "fpf-options-explore.skill",
+    "fpf-quality-improve.skill",
+    "fpf-route.skill",
+    "fpf-sota-harvest.skill",
+}
+ROUTABLE_SKILL_PACKAGES = EXPECTED_SKILL_PACKAGES - {"fpf-route.skill"}
+FULL_REPORT_CONTRACT = (
+    "Return the complete listed artifact with every required section and evidence record, "
+    "including when work was delegated. Do not replace it with a summary, abbreviated "
+    "surrogate, or pointer to another result."
+)
 
 
 def main() -> int:
@@ -36,6 +53,9 @@ def main() -> int:
     markdown_files = sorted(GRAPH.rglob("*.md"))
     require(report.get("source") == "FPF-Spec.md", "report source must be portable")
     require(report.get("out_dir") == "FPF-Spec", "report output path must be portable")
+    for key in ("source_revision", "source_sha256", "generated_on"):
+        require(isinstance(report.get(key), str) and bool(report[key]), f"report missing {key}")
+    require(re.fullmatch(r"[0-9a-f]{64}", report.get("source_sha256", "")) is not None, "report source SHA-256 is invalid")
     require(report.get("broken_links_count") == 0, "generated graph contains broken wiki-links")
     require(report.get("markdown_files") == len(markdown_files), "report Markdown count does not match disk")
 
@@ -44,6 +64,9 @@ def main() -> int:
         text = path.read_text(encoding="utf-8", errors="replace")
         require(text.startswith("---\n"), f"missing frontmatter: {path.relative_to(ROOT)}")
         require("[[[" not in text, f"malformed triple-bracket link: {path.relative_to(ROOT)}")
+        for key in ("source_revision", "source_sha256", "generated_on"):
+            match = re.search(rf'^{key}: "([^"\n]+)"$', text, re.MULTILINE)
+            require(match is not None and match.group(1) == report.get(key), f"generated provenance mismatch: {path.relative_to(ROOT)} ({key})")
         match = re.search(r'^fpf_id: "([^"]+)"', text, re.MULTILINE)
         if match:
             fpf_ids.append(match.group(1))
@@ -58,8 +81,45 @@ def main() -> int:
         target = unquote(raw_target).split("#", 1)[0]
         require((ROOT / target).exists(), f"README link does not exist: {raw_target}")
 
+    ci_text = CI_PATH.read_text(encoding="utf-8")
+    push_block = re.search(r"(?ms)^  push:\n(?P<body>.*?)(?=^  pull_request:)", ci_text)
+    pull_request_block = re.search(r"(?ms)^  pull_request:\n(?P<body>.*?)(?=^  workflow_dispatch:)", ci_text)
+    require(push_block is not None, "CI is missing its push trigger")
+    require(pull_request_block is not None, "CI is missing its pull-request trigger")
+    if push_block:
+        push_branches = set(re.findall(r"^      - (\S+)$", push_block.group("body"), re.MULTILINE))
+        require(push_branches == {"dev", "main"}, "CI push branches must be exactly dev and main")
+    if pull_request_block:
+        pull_request_branches = set(
+            re.findall(r"^      - (\S+)$", pull_request_block.group("body"), re.MULTILINE)
+        )
+        require(pull_request_branches == {"main"}, "CI pull-request base must be exactly main")
+    require("am/dev" not in ci_text, "CI must not reference retired am/dev")
+    for condition in (
+        "github.event.pull_request.user.login == 'anatoly-m-maslennikov'",
+        "github.event.pull_request.head.repo.full_name == github.repository",
+        "github.event.pull_request.head.ref == 'dev'",
+        "github.event.pull_request.base.ref == 'main'",
+        "!github.event.pull_request.draft",
+    ):
+        require(condition in ci_text, f"CI owner auto-merge condition missing: {condition}")
+
     skill_paths = sorted(SKILLS.glob("*.skill/SKILL.md"))
-    require(len(skill_paths) == 3, "expected exactly three FPF skill packages")
+    actual_skill_packages = {path.parent.name for path in skill_paths}
+    require(
+        actual_skill_packages == EXPECTED_SKILL_PACKAGES,
+        "FPF skill package set does not match the expected catalog",
+    )
+    route_text = (SKILLS / "fpf-route.skill" / "SKILL.md").read_text(encoding="utf-8")
+    route_entries = re.findall(r"^\| `([^`]+)` \|", route_text, re.MULTILINE)
+    route_catalog = set(route_entries)
+    require(route_catalog == {name.removesuffix(".skill") for name in ROUTABLE_SKILL_PACKAGES}, "fpf-route catalog must contain exactly the seven executable packages")
+    require(len(route_entries) == len(route_catalog), "fpf-route catalog must not contain duplicate skill rows")
+    require("fpf-route" not in route_catalog, "fpf-route must not route recursively")
+
+    skills_readme = (SKILLS / "README.md").read_text(encoding="utf-8")
+    for package_name in sorted(EXPECTED_SKILL_PACKAGES):
+        require(f"`{package_name}`" in skills_readme, f"skill catalog omits {package_name}")
     for skill_path in skill_paths:
         package = skill_path.parent
         expected_name = package.name.removesuffix(".skill")
@@ -71,6 +131,24 @@ def main() -> int:
             description = re.search(r"^description:\s*(.+)$", frontmatter.group(1), re.MULTILINE)
             require(name is not None and name.group(1) == expected_name, f"skill name mismatch: {expected_name}")
             require(description is not None and bool(description.group(1).strip()), f"missing skill description: {expected_name}")
+
+        references = set(re.findall(r"(?<![\w-])\$?(fpf-[a-z][a-z-]*)(?![\w-])", skill_text))
+        installed_names = {name.removesuffix(".skill") for name in EXPECTED_SKILL_PACKAGES}
+        require(references <= installed_names, f"unresolved FPF skill reference in {expected_name}: {sorted(references - installed_names)}")
+        require(FULL_REPORT_CONTRACT in skill_text, f"missing full-report delivery contract: {expected_name}")
+        if "Produce a read-only" in skill_text:
+            require("Remain read-only unless" in skill_text or expected_name == "fpf-route", f"missing read-only boundary: {expected_name}")
+        if expected_name == "fpf-route":
+            require("Execution boundary" in skill_text, "fpf-route missing execution boundary")
+            require(
+                "Use ordinary Markdown headings and lists. Do not wrap the artifact or any section in a fenced code block."
+                in skill_text,
+                "fpf-route missing ordinary-Markdown output contract",
+            )
+        if expected_name == "fpf-decision-synthesize":
+            require("only when the user authorizes it" in skill_text, "decision synthesis missing write authority boundary")
+        if expected_name == "fpf-quality-improve":
+            require("Apply changes only when authorized." in skill_text, "quality improvement missing change authority boundary")
 
         metadata_path = package / "agents" / "openai.yaml"
         require(metadata_path.exists(), f"missing OpenAI metadata: {expected_name}")
@@ -87,6 +165,8 @@ def main() -> int:
         text=True,
     )
     require(help_result.returncode == 0 and "--source SOURCE" in help_result.stdout, "generator must require --source")
+    require("--source-revision SOURCE_REVISION" in help_result.stdout, "generator must require --source-revision")
+    require("--generated-on GENERATED_ON" in help_result.stdout, "generator must require --generated-on")
 
     if errors:
         for error in errors:
