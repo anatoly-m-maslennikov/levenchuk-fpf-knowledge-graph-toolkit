@@ -51,13 +51,16 @@ Return the complete listed artifact with every required section and evidence rec
 
 ### Required result envelope
 
-Organize the complete native artifact under exactly these three top-level Markdown headings, in this order:
+Organize the complete native artifact under exactly these four top-level Markdown headings, in this order:
 
 1. `## Task, scope, and boundaries`
 2. `## High-confidence results (>=95%)`
 3. `## Open questions (confidence <95%)`
+4. `## Skills used`
 
 In section 1, state the task and receiving use, target and current state, scope and exclusions, inputs, sources and evidence, authority, dependencies, and stop condition. In sections 2 and 3, keep every native requirement below as a subsection or item; do not omit, merge away, or summarize it.
+
+In section 4, list every skill actually executed for this result in execution order, using its exact `$skill-name`, and state each skill's role in one concise sentence. Do not list tools, the base model, or merely proposed or recommended downstream skills as used. If no other skill was executed, list only `$fpf-quality-improve`.
 
 Assign confidence to each material result and state its evidence basis. Confidence is the reviewer's claim-level epistemic confidence under the available evidence, not a statistical probability, artifact-wide score, importance, severity, authorization, acceptance, assurance, or gate result. Use these bands inside section 3:
 
