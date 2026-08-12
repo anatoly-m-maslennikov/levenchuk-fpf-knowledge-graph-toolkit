@@ -37,9 +37,12 @@ RESULT_ENVELOPE_HEADINGS = (
     "`## Task, scope, and boundaries`",
     "`## High-confidence results (>=95%)`",
     "`## Open questions (confidence <95%)`",
+    "`## Skills used`",
 )
 RESULT_ENVELOPE_CONTRACT = (
-    "Organize the complete native artifact under exactly these three top-level Markdown headings, in this order:",
+    "Organize the complete native artifact under exactly these four top-level Markdown headings, in this order:",
+    "list every skill actually executed for this result in execution order",
+    "merely proposed or recommended downstream skills as used",
     "Assign confidence to each material result and state its evidence basis.",
     "**90–94%:** probable answer, but confirmation is still needed.",
     "**Below 90%:** materially uncertain.",
@@ -209,7 +212,7 @@ def main() -> int:
         require(references <= installed_names, f"unresolved FPF skill reference in {expected_name}: {sorted(references - installed_names)}")
         require(FULL_REPORT_CONTRACT in skill_text, f"missing full-report delivery contract: {expected_name}")
         heading_positions = [skill_text.find(heading) for heading in RESULT_ENVELOPE_HEADINGS]
-        require(all(position >= 0 for position in heading_positions), f"missing three-section result envelope: {expected_name}")
+        require(all(position >= 0 for position in heading_positions), f"missing four-section result envelope: {expected_name}")
         require(heading_positions == sorted(heading_positions), f"result envelope headings out of order: {expected_name}")
         for contract_text in RESULT_ENVELOPE_CONTRACT:
             require(contract_text in skill_text, f"missing result-envelope contract in {expected_name}: {contract_text}")
