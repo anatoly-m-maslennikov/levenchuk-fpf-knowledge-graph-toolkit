@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "scenarios": [
+    {
+      "id": "discover-relevant-patterns",
+      "question": "Which FPF patterns directly apply to a bounded service-design question?",
+      "target_state": "open question",
+      "expected_sequence": ["fpf-applicability-scan"],
+      "stop_condition": "Return the smallest relevant direct-pattern set without proposing a full lifecycle."
+    },
+    {
+      "id": "map-current-field",
+      "question": "Build a current, plural evidence map for a bounded technical field.",
+      "target_state": "research need",
+      "expected_sequence": ["fpf-sota-harvest"],
+      "stop_condition": "Stop after the reconstructible field map; do not generate or select project options."
+    },
+    {
+      "id": "generate-alternatives",
+      "question": "Generate diverse alternatives for a defined problem and compare them on declared coordinates.",
+      "target_state": "open question",
+      "expected_sequence": ["fpf-options-explore"],
+      "stop_condition": "Return compared options without selecting one."
+    },
+    {
+      "id": "challenge-proposal",
+      "question": "Stress-test a concrete design proposal before implementation.",
+      "target_state": "proposal",
+      "expected_sequence": ["fpf-design-challenge"],
+      "stop_condition": "Return the bounded challenge; do not approve or implement the proposal."
+    },
+    {
+      "id": "record-decision",
+      "question": "Choose among already evaluated alternatives and produce a recoverable decision record.",
+      "target_state": "evaluated alternatives",
+      "expected_sequence": ["fpf-decision-synthesize"],
+      "stop_condition": "Return the project decision and requested ADR projection without inventing new alternatives."
+    },
+    {
+      "id": "improve-versioned-target",
+      "question": "Improve a versioned artifact using its baseline and declared evaluation frame.",
+      "target_state": "versioned improvement target",
+      "expected_sequence": ["fpf-quality-improve"],
+      "stop_condition": "Return the bounded change and re-evaluation loop; do not expand the authorized change surface."
+    },
+    {
+      "id": "audit-implemented-work",
+      "question": "Audit completed work against the relevant FPF patterns with replayable evidence.",
+      "target_state": "implemented or accepted work",
+      "expected_sequence": ["fpf-alignment-audit"],
+      "stop_condition": "Return claim-level audit verdicts without treating the audit as proposal approval."
+    },
+    {
+      "id": "research-options-decision",
+      "question": "Use current external evidence to develop alternatives, then support the authorized owner in choosing one.",
+      "target_state": "research need",
+      "expected_sequence": [
+        "fpf-sota-harvest",
+        "fpf-options-explore",
+        "fpf-decision-synthesize"
+      ],
+      "stop_condition": "Stop before decision synthesis unless the evidence map, evaluated alternatives, and decision authority are recoverable."
+    },
+    {
+      "id": "challenge-then-decide",
+      "question": "Challenge one concrete candidate, then decide among the already evaluated alternatives.",
+      "target_state": "proposal",
+      "expected_sequence": [
+        "fpf-design-challenge",
+        "fpf-decision-synthesize"
+      ],
+      "stop_condition": "Stop after the challenge if project authority or comparable evaluation evidence is missing."
+    }
+  ]
+}

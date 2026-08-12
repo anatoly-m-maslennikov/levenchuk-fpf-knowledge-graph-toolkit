@@ -16,6 +16,7 @@ REPORT_PATH = GRAPH / "00_Index" / "FPF - Validation Report.json"
 README_PATH = ROOT / "Readme.md"
 CI_PATH = ROOT / ".github" / "workflows" / "ci.yml"
 SKILLS = ROOT / "skills"
+ROUTING_SCENARIOS_PATH = SKILLS / "fpf-route.skill" / "references" / "routing-scenarios.json"
 EXPECTED_SKILL_PACKAGES = {
     "fpf-alignment-audit.skill",
     "fpf-applicability-scan.skill",
@@ -116,6 +117,52 @@ def main() -> int:
     require(route_catalog == {name.removesuffix(".skill") for name in ROUTABLE_SKILL_PACKAGES}, "fpf-route catalog must contain exactly the seven executable packages")
     require(len(route_entries) == len(route_catalog), "fpf-route catalog must not contain duplicate skill rows")
     require("fpf-route" not in route_catalog, "fpf-route must not route recursively")
+
+    try:
+        routing_fixture = json.loads(ROUTING_SCENARIOS_PATH.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        errors.append(f"cannot read routing scenarios: {exc}")
+        routing_fixture = {}
+    scenarios = routing_fixture.get("scenarios", [])
+    require(routing_fixture.get("schema_version") == 1, "routing scenario schema version must be 1")
+    require(isinstance(scenarios, list) and bool(scenarios), "routing scenarios must be a non-empty list")
+    scenario_ids: list[str] = []
+    covered_routable_skills: set[str] = set()
+    allowed_target_states = {
+        "open question",
+        "research need",
+        "proposal",
+        "evaluated alternatives",
+        "versioned improvement target",
+        "implemented or accepted work",
+    }
+    routable_names = {name.removesuffix(".skill") for name in ROUTABLE_SKILL_PACKAGES}
+    if isinstance(scenarios, list):
+        for index, scenario in enumerate(scenarios):
+            label = f"routing scenario #{index + 1}"
+            require(isinstance(scenario, dict), f"{label} must be an object")
+            if not isinstance(scenario, dict):
+                continue
+            scenario_id = scenario.get("id")
+            require(isinstance(scenario_id, str) and bool(scenario_id), f"{label} missing id")
+            if isinstance(scenario_id, str):
+                scenario_ids.append(scenario_id)
+                label = f"routing scenario {scenario_id}"
+            require(isinstance(scenario.get("question"), str) and bool(scenario["question"].strip()), f"{label} missing question")
+            require(scenario.get("target_state") in allowed_target_states, f"{label} has invalid target state")
+            sequence = scenario.get("expected_sequence")
+            require(isinstance(sequence, list) and bool(sequence), f"{label} must have a non-empty expected sequence")
+            if isinstance(sequence, list):
+                invalid = set(sequence) - routable_names
+                require(not invalid, f"{label} references unroutable skills: {sorted(invalid)}")
+                require(len(sequence) == len(set(sequence)), f"{label} must not repeat a skill")
+                covered_routable_skills.update(set(sequence) & routable_names)
+            require(
+                isinstance(scenario.get("stop_condition"), str) and bool(scenario["stop_condition"].strip()),
+                f"{label} missing stop condition",
+            )
+    require(len(scenario_ids) == len(set(scenario_ids)), "routing scenario IDs must be unique")
+    require(covered_routable_skills == routable_names, "routing scenarios must cover every executable FPF skill")
 
     skills_readme = (SKILLS / "README.md").read_text(encoding="utf-8")
     for package_name in sorted(EXPECTED_SKILL_PACKAGES):
