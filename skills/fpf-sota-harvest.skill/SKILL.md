@@ -46,6 +46,8 @@ If this workflow delegates a bounded research or synthesis lane, retrieval, wait
 
 ## Output
 
+Return the complete listed artifact with every required section and evidence record, including when work was delegated. Do not replace it with a summary, abbreviated surrogate, or pointer to another result.
+
 Return:
 
 1. **Harvest contract and resolved FPF source**

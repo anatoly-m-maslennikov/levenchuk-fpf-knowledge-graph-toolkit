@@ -55,6 +55,10 @@ Do not use vague tasks such as “apply FPF” or “review everything.” Do no
 
 ## Output
 
+Return the complete listed artifact with every required section and evidence record, including when work was delegated. Do not replace it with a summary, abbreviated surrogate, or pointer to another result.
+
+Use ordinary Markdown headings and lists. Do not wrap the artifact or any section in a fenced code block.
+
 Return:
 
 1. **Question and routing assumptions**

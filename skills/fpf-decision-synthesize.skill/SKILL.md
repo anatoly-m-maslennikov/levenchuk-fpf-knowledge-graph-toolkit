@@ -41,6 +41,8 @@ If this workflow delegates a bounded evidence, decision-analysis, or publication
 
 ## Output
 
+Return the complete listed artifact with every required section and evidence record, including when work was delegated. Do not replace it with a summary, abbreviated surrogate, or pointer to another result.
+
 Return:
 
 1. **Decision contract, authority, and resolved FPF source**

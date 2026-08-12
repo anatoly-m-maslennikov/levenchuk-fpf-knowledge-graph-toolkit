@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 GRAPH = ROOT / "FPF-Spec"
 REPORT_PATH = GRAPH / "00_Index" / "FPF - Validation Report.json"
 README_PATH = ROOT / "Readme.md"
+CI_PATH = ROOT / ".github" / "workflows" / "ci.yml"
 SKILLS = ROOT / "skills"
 EXPECTED_SKILL_PACKAGES = {
     "fpf-alignment-audit.skill",
@@ -26,6 +27,11 @@ EXPECTED_SKILL_PACKAGES = {
     "fpf-sota-harvest.skill",
 }
 ROUTABLE_SKILL_PACKAGES = EXPECTED_SKILL_PACKAGES - {"fpf-route.skill"}
+FULL_REPORT_CONTRACT = (
+    "Return the complete listed artifact with every required section and evidence record, "
+    "including when work was delegated. Do not replace it with a summary, abbreviated "
+    "surrogate, or pointer to another result."
+)
 
 
 def main() -> int:
@@ -75,6 +81,29 @@ def main() -> int:
         target = unquote(raw_target).split("#", 1)[0]
         require((ROOT / target).exists(), f"README link does not exist: {raw_target}")
 
+    ci_text = CI_PATH.read_text(encoding="utf-8")
+    push_block = re.search(r"(?ms)^  push:\n(?P<body>.*?)(?=^  pull_request:)", ci_text)
+    pull_request_block = re.search(r"(?ms)^  pull_request:\n(?P<body>.*?)(?=^  workflow_dispatch:)", ci_text)
+    require(push_block is not None, "CI is missing its push trigger")
+    require(pull_request_block is not None, "CI is missing its pull-request trigger")
+    if push_block:
+        push_branches = set(re.findall(r"^      - (\S+)$", push_block.group("body"), re.MULTILINE))
+        require(push_branches == {"dev", "main"}, "CI push branches must be exactly dev and main")
+    if pull_request_block:
+        pull_request_branches = set(
+            re.findall(r"^      - (\S+)$", pull_request_block.group("body"), re.MULTILINE)
+        )
+        require(pull_request_branches == {"main"}, "CI pull-request base must be exactly main")
+    require("am/dev" not in ci_text, "CI must not reference retired am/dev")
+    for condition in (
+        "github.event.pull_request.user.login == 'anatoly-m-maslennikov'",
+        "github.event.pull_request.head.repo.full_name == github.repository",
+        "github.event.pull_request.head.ref == 'dev'",
+        "github.event.pull_request.base.ref == 'main'",
+        "!github.event.pull_request.draft",
+    ):
+        require(condition in ci_text, f"CI owner auto-merge condition missing: {condition}")
+
     skill_paths = sorted(SKILLS.glob("*.skill/SKILL.md"))
     actual_skill_packages = {path.parent.name for path in skill_paths}
     require(
@@ -106,10 +135,16 @@ def main() -> int:
         references = set(re.findall(r"(?<![\w-])\$?(fpf-[a-z][a-z-]*)(?![\w-])", skill_text))
         installed_names = {name.removesuffix(".skill") for name in EXPECTED_SKILL_PACKAGES}
         require(references <= installed_names, f"unresolved FPF skill reference in {expected_name}: {sorted(references - installed_names)}")
+        require(FULL_REPORT_CONTRACT in skill_text, f"missing full-report delivery contract: {expected_name}")
         if "Produce a read-only" in skill_text:
             require("Remain read-only unless" in skill_text or expected_name == "fpf-route", f"missing read-only boundary: {expected_name}")
         if expected_name == "fpf-route":
             require("Execution boundary" in skill_text, "fpf-route missing execution boundary")
+            require(
+                "Use ordinary Markdown headings and lists. Do not wrap the artifact or any section in a fenced code block."
+                in skill_text,
+                "fpf-route missing ordinary-Markdown output contract",
+            )
         if expected_name == "fpf-decision-synthesize":
             require("only when the user authorizes it" in skill_text, "decision synthesis missing write authority boundary")
         if expected_name == "fpf-quality-improve":
