@@ -22,3 +22,5 @@ Generative and operational use:
 - `fpf-quality-improve.skill` runs a bounded improvement loop that requires both a target-version change and demonstrated result change in declared quality coordinates.
 
 Each package contains its complete `SKILL.md` contract and `agents/openai.yaml` interface metadata. The skills discover an accessible FPF edition at runtime and do not assume this repository path, a specific operating system, or a particular workspace layout.
+
+Every result preserves its complete native artifact under three top-level sections: task, scope, and boundaries; high-confidence results at 95% or above; and open questions below 95%, distinguishing probable answers at 90–94% from materially uncertain answers below 90%.

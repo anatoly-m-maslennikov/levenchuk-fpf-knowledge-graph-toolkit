@@ -80,7 +80,24 @@ Never upgrade an unchecked claim through reviewer consensus. Reviewers using one
 
 Return the complete listed artifact with every required section and evidence record, including when work was delegated. Do not replace it with a summary, abbreviated surrogate, or pointer to another result.
 
-Return:
+### Required result envelope
+
+Organize the complete native artifact under exactly these three top-level Markdown headings, in this order:
+
+1. `## Task, scope, and boundaries`
+2. `## High-confidence results (>=95%)`
+3. `## Open questions (confidence <95%)`
+
+In section 1, state the task and receiving use, target and current state, scope and exclusions, inputs, sources and evidence, authority, dependencies, and stop condition. In sections 2 and 3, keep every native requirement below as a subsection or item; do not omit, merge away, or summarize it.
+
+Assign confidence to each material result and state its evidence basis. Confidence is the reviewer's claim-level epistemic confidence under the available evidence, not a statistical probability, artifact-wide score, importance, severity, authorization, acceptance, assurance, or gate result. Use these bands inside section 3:
+
+- **90–94%:** probable answer, but confirmation is still needed.
+- **Below 90%:** materially uncertain.
+
+Never round up to 95%, hide conflicting, unsupported, or insufficient-basis results, or omit a lower-confidence finding. For each open question include the best current answer, confidence band or value, missing evidence or input, consequence, and exact next evidence or action. A high-confidence determination that the basis is insufficient belongs in section 2; the unresolved substantive question belongs in section 3. If no open questions remain, keep section 3 and write `None identified within the declared scope`.
+
+Preserve these native artifact requirements:
 
 1. **Audit contract, resolved FPF source, and inspected scope**
 2. **Per-claim alignment matrix**

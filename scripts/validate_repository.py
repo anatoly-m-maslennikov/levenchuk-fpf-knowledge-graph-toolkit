@@ -33,6 +33,30 @@ FULL_REPORT_CONTRACT = (
     "including when work was delegated. Do not replace it with a summary, abbreviated "
     "surrogate, or pointer to another result."
 )
+RESULT_ENVELOPE_HEADINGS = (
+    "`## Task, scope, and boundaries`",
+    "`## High-confidence results (>=95%)`",
+    "`## Open questions (confidence <95%)`",
+)
+RESULT_ENVELOPE_CONTRACT = (
+    "Organize the complete native artifact under exactly these three top-level Markdown headings, in this order:",
+    "Assign confidence to each material result and state its evidence basis.",
+    "**90–94%:** probable answer, but confirmation is still needed.",
+    "**Below 90%:** materially uncertain.",
+    "Never round up to 95%",
+    "None identified within the declared scope",
+    "Preserve these native artifact requirements:",
+)
+EXPECTED_NATIVE_OUTPUT_COUNTS = {
+    "fpf-alignment-audit": 7,
+    "fpf-applicability-scan": 5,
+    "fpf-decision-synthesize": 6,
+    "fpf-design-challenge": 5,
+    "fpf-options-explore": 6,
+    "fpf-quality-improve": 6,
+    "fpf-route": 6,
+    "fpf-sota-harvest": 6,
+}
 
 
 def main() -> int:
@@ -184,6 +208,18 @@ def main() -> int:
         installed_names = {name.removesuffix(".skill") for name in EXPECTED_SKILL_PACKAGES}
         require(references <= installed_names, f"unresolved FPF skill reference in {expected_name}: {sorted(references - installed_names)}")
         require(FULL_REPORT_CONTRACT in skill_text, f"missing full-report delivery contract: {expected_name}")
+        heading_positions = [skill_text.find(heading) for heading in RESULT_ENVELOPE_HEADINGS]
+        require(all(position >= 0 for position in heading_positions), f"missing three-section result envelope: {expected_name}")
+        require(heading_positions == sorted(heading_positions), f"result envelope headings out of order: {expected_name}")
+        for contract_text in RESULT_ENVELOPE_CONTRACT:
+            require(contract_text in skill_text, f"missing result-envelope contract in {expected_name}: {contract_text}")
+        native_marker = "Preserve these native artifact requirements:"
+        native_block = skill_text.split(native_marker, 1)[1] if native_marker in skill_text else ""
+        native_items = re.findall(r"^\d+\. \*\*", native_block, re.MULTILINE)
+        require(
+            len(native_items) == EXPECTED_NATIVE_OUTPUT_COUNTS[expected_name],
+            f"native output requirement count changed: {expected_name}",
+        )
         if "Produce a read-only" in skill_text:
             require("Remain read-only unless" in skill_text or expected_name == "fpf-route", f"missing read-only boundary: {expected_name}")
         if expected_name == "fpf-route":
