@@ -26,11 +26,13 @@ The current specification is roughly 12 MB. Loading it for every question consum
 
 - [`FPF-Knowledge-Graph/`](FPF-Knowledge-Graph/) — generated graph and validation output.
 - [`scripts/build_fpf_obsidian_graph.py`](scripts/build_fpf_obsidian_graph.py) — generator.
-- [`skills/`](skills/) — portable agent skills.
+- [`skills/`](skills/) — portable agent skills, including suite-wide output-language defaults in [`skills/fpf-settings.toml`](skills/fpf-settings.toml) and the synchronization helper [`scripts/sync_fpf_skill_settings.py`](scripts/sync_fpf_skill_settings.py).
 
 ## Included skills
 
 The skills discover FPF at runtime and assume no repository path, tool, operating system, or project layer.
+
+Their build-time default is general-language output: no FPF terms in narrative prose, with ordinary-language synonyms instead. A result may use a different style only when the user explicitly requests it. See the [skills README](skills/README.md#output-language-defaults) for the portable contract, including natural-language term explanations and the limited STE-inspired style.
 
 | Skill | Use case | Result |
 |---|---|---|

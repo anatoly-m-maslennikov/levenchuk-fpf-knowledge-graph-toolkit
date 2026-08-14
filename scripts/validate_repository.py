@@ -69,6 +69,26 @@ EXPECTED_NATIVE_OUTPUT_COUNTS = {
     "fpf-route": 6,
     "fpf-sota-harvest": 6,
 }
+SETTINGS_PATH = SKILLS / "fpf-settings.toml"
+SYNC_SETTINGS_SCRIPT = ROOT / "scripts" / "sync_fpf_skill_settings.py"
+OUTPUT_SETTINGS_START = "<!-- output-settings:start -->"
+OUTPUT_SETTINGS_END = "<!-- output-settings:end -->"
+EXPECTED_OUTPUT_SETTINGS_DEFAULTS = {
+    "output_style": "general",
+    "fpf_terms_explained": "off",
+}
+ALLOWED_OUTPUT_STYLES = {"natural", "general", "ste"}
+ALLOWED_EXPLANATION_MODES = {"full", "short", "off"}
+OUTPUT_SETTINGS_CONTRACT = (
+    "An explicit user request for a result overrides these embedded defaults.",
+    "Keep exact FPF locators and source paths in compact evidence or source records, not in narrative prose.",
+    "`natural` uses unredacted natural FPF result language",
+    "at most three short lines",
+    "`general` uses no FPF terms in the narrative.",
+    "`ste` uses no FPF terms in the narrative.",
+    "ASD-STE100 Issue 9-inspired overlay",
+    "makes no formal-conformance claim",
+)
 
 
 FORBIDDEN_PORTABILITY_PATTERNS = (
@@ -167,6 +187,23 @@ def main() -> int:
         actual_skill_packages == EXPECTED_SKILL_PACKAGES,
         "FPF skill package set does not match the expected catalog",
     )
+    try:
+        settings_text = SETTINGS_PATH.read_text(encoding="utf-8")
+    except OSError as exc:
+        errors.append(f"cannot read skill settings: {exc}")
+        settings_text = ""
+    setting_pairs = re.findall(
+        r'^(output_style|fpf_terms_explained)\s*=\s*"([a-z]+)"\s*$', settings_text, re.MULTILINE
+    )
+    settings = dict(setting_pairs)
+    require(len(setting_pairs) == 2 and len(settings) == 2, "skill settings must contain exactly two unique keys")
+    require(settings == EXPECTED_OUTPUT_SETTINGS_DEFAULTS, "skill settings must use the current suite defaults")
+    require(settings.get("output_style") in ALLOWED_OUTPUT_STYLES, "skill output_style is invalid")
+    require(settings.get("fpf_terms_explained") in ALLOWED_EXPLANATION_MODES, "skill fpf_terms_explained is invalid")
+    sync_result = subprocess.run(
+        [sys.executable, str(SYNC_SETTINGS_SCRIPT), "--check"], check=False, capture_output=True, text=True
+    )
+    require(sync_result.returncode == 0, f"FPF skill settings are out of sync: {sync_result.stderr.strip()}")
     route_text = (SKILLS / "fpf-route.skill" / "SKILL.md").read_text(encoding="utf-8")
     route_entries = re.findall(r"^\| `([^`]+)` \|", route_text, re.MULTILINE)
     route_catalog = set(route_entries)
@@ -259,6 +296,10 @@ def main() -> int:
         installed_names = {name.removesuffix(".skill") for name in EXPECTED_SKILL_PACKAGES}
         require(references <= installed_names, f"unresolved FPF skill reference in {expected_name}: {sorted(references - installed_names)}")
         require(FULL_REPORT_CONTRACT in skill_text, f"missing full-report delivery contract: {expected_name}")
+        require(skill_text.count(OUTPUT_SETTINGS_START) == 1, f"missing or duplicate output settings block: {expected_name}")
+        require(skill_text.count(OUTPUT_SETTINGS_END) == 1, f"missing or duplicate output settings block end: {expected_name}")
+        for contract_text in OUTPUT_SETTINGS_CONTRACT:
+            require(contract_text in skill_text, f"missing output settings contract in {expected_name}: {contract_text}")
         heading_positions = [skill_text.find(heading) for heading in RESULT_ENVELOPE_HEADINGS]
         require(all(position >= 0 for position in heading_positions), f"missing four-section result envelope: {expected_name}")
         require(heading_positions == sorted(heading_positions), f"result envelope headings out of order: {expected_name}")

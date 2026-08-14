@@ -5,6 +5,18 @@ description: Turn evaluated alternatives into a recoverable project decision and
 
 # FPF Decision Synthesize
 
+<!-- output-settings:start -->
+## Output language settings
+
+This package's build-time defaults are `output_style = "general"` and `fpf_terms_explained = "off"`. An explicit user request for a result overrides these embedded defaults.
+
+Apply this contract to the result narrative. Keep exact FPF locators and source paths in compact evidence or source records, not in narrative prose.
+
+- `natural` uses unredacted natural FPF result language and may use FPF terms. In this mode only, `fpf_terms_explained = "full"` explains each FPF term on first use in at most three short lines; `short` uses one brief clause or sentence (about half to one line); and `off` adds no explanation.
+- `general` uses no FPF terms in the narrative. Use ordinary-language synonyms instead. The explanation setting is ignored.
+- `ste` uses no FPF terms in the narrative. Use simplified synonyms and an ASD-STE100 Issue 9-inspired overlay: short clear sentences, one topic per sentence, active voice where practical, and vertical lists for complex text. This is guidance only and makes no formal-conformance claim. The explanation setting is ignored.
+<!-- output-settings:end -->
+
 Produce a **Decision Package** in two ordered stages: the project decision relation, then its ADR-like publication projection. Do not let the record impersonate the decision or its authority.
 
 ## Resolve scope and FPF source
