@@ -32,6 +32,7 @@ METHODS = ("copy", "symlink")
 IGNORED_NAMES = {".DS_Store", "__pycache__"}
 REQUIRED_SETTINGS = {"output_style", "fpf_terms_explained", "install_method"}
 OPTIONAL_SETTINGS = {"install_source_hash"}
+ROUTE_SKILL_NAME = "fpf-route"
 
 
 @dataclass(frozen=True)
@@ -123,11 +124,13 @@ def tree_snapshot(root: Path) -> dict[str, str]:
 
 
 def suite_digest(package_roots: dict[str, Path]) -> str:
-    """Return one stable content digest for all eight installed-name package trees."""
+    """Return one stable digest, excluding the harness-local route settings file."""
     digest = hashlib.sha256()
     for name in SKILL_NAMES:
         snapshot = tree_snapshot(package_roots[name])
         for relative, file_hash in sorted(snapshot.items()):
+            if name == ROUTE_SKILL_NAME and relative == "fpf-settings.toml":
+                continue
             digest.update(name.encode("utf-8"))
             digest.update(b"\0")
             digest.update(relative.encode("utf-8"))
@@ -143,6 +146,29 @@ def source_roots() -> dict[str, Path]:
 
 def target_roots(destination: Path) -> dict[str, Path]:
     return {name: destination / name for name in SKILL_NAMES}
+
+
+def installed_settings_path(destination: Path) -> Path:
+    """Return the local settings file embedded in the installed route package."""
+    return destination / ROUTE_SKILL_NAME / "fpf-settings.toml"
+
+
+def is_route_wrapper(target: Path, source: Path) -> bool:
+    """Return whether a real route directory links every source entry but settings."""
+    if target.is_symlink() or not target.is_dir():
+        return False
+    expected_names = {path.name for path in source.iterdir() if not ignored(path)}
+    if "fpf-settings.toml" not in expected_names:
+        return False
+    settings = target / "fpf-settings.toml"
+    if not settings.is_file() or settings.is_symlink():
+        return False
+    for source_entry in source.iterdir():
+        if ignored(source_entry) or source_entry.name == "fpf-settings.toml":
+            continue
+        if not same_link(target / source_entry.name, source_entry):
+            return False
+    return {path.name for path in target.iterdir() if not ignored(path)} == expected_names
 
 
 def same_link(target: Path, source: Path) -> bool:
@@ -166,7 +192,12 @@ def classify_install(destination: Path, stored_settings: dict[str, str]) -> tupl
         return "absent", None
 
     if all(
-        (not path.exists() and not path.is_symlink()) or same_link(path, sources[name])
+        (not path.exists() and not path.is_symlink())
+        or (
+            (is_route_wrapper(path, sources[name]) or same_link(path, sources[name]))
+            if name == ROUTE_SKILL_NAME
+            else same_link(path, sources[name])
+        )
         for name, path in targets.items()
     ):
         return "symlink-partial" if len(existing) < len(targets) else "symlink-current", None
@@ -186,14 +217,11 @@ def classify_install(destination: Path, stored_settings: dict[str, str]) -> tupl
 
 def load_installed_settings(destination: Path) -> dict[str, str]:
     """Load a persistent harness-local preference when present."""
-    path = destination / "fpf-settings.toml"
+    path = installed_settings_path(destination)
     if not path.exists() and not path.is_symlink():
         return {}
     if path.is_symlink():
-        raise ValueError(
-            f"installed settings must be a real file, not a symlink: {path}; "
-            "move it aside before adopting this installer"
-        )
+        return {}
     settings = parse_settings(path)
     missing = REQUIRED_SETTINGS - set(settings)
     if missing:
@@ -222,7 +250,7 @@ def remove_path(path: Path) -> None:
         shutil.rmtree(path)
 
 
-def replace_package(source: Path, target: Path, method: str) -> None:
+def replace_package(source: Path, target: Path, method: str, settings_text: str | None = None) -> None:
     """Atomically replace one known-managed package with a copy or symlink."""
     token = uuid.uuid4().hex
     temporary = target.parent / f".{target.name}.install-{token}"
@@ -237,7 +265,20 @@ def replace_package(source: Path, target: Path, method: str) -> None:
                 ignore=shutil.ignore_patterns(".DS_Store", "__pycache__", "*.pyc", "*.pyo"),
             )
         else:
-            temporary.symlink_to(source, target_is_directory=True)
+            if target.name == ROUTE_SKILL_NAME:
+                temporary.mkdir()
+                for source_entry in source.iterdir():
+                    if ignored(source_entry) or source_entry.name == "fpf-settings.toml":
+                        continue
+                    (temporary / source_entry.name).symlink_to(
+                        source_entry, target_is_directory=source_entry.is_dir()
+                    )
+            else:
+                temporary.symlink_to(source, target_is_directory=True)
+        if target.name == ROUTE_SKILL_NAME:
+            if settings_text is None:
+                raise ValueError("route package replacement requires local settings")
+            write_settings(temporary / "fpf-settings.toml", settings_text)
 
         had_target = target.exists() or target.is_symlink()
         if had_target:
@@ -367,9 +408,12 @@ def run(harness: Harness, arguments: list[str] | None = None) -> int:
         destination.mkdir(parents=True, exist_ok=True)
         sources = source_roots()
         targets = target_roots(destination)
+        settings_text = render_installed_settings(source_settings, method, current_source_hash)
         for name in SKILL_NAMES:
             target = targets[name]
-            if method == "symlink" and same_link(target, sources[name]):
+            if method == "symlink" and (
+                is_route_wrapper(target, sources[name]) if name == ROUTE_SKILL_NAME else same_link(target, sources[name])
+            ):
                 continue
             if method == "copy" and target.exists() and not target.is_symlink():
                 try:
@@ -377,11 +421,8 @@ def run(harness: Harness, arguments: list[str] | None = None) -> int:
                         continue
                 except ValueError:
                     pass
-            replace_package(sources[name], target, method)
-        write_settings(
-            destination / "fpf-settings.toml",
-            render_installed_settings(source_settings, method, current_source_hash),
-        )
+            replace_package(sources[name], target, method, settings_text if name == ROUTE_SKILL_NAME else None)
+        write_settings(installed_settings_path(destination), settings_text)
     except OSError as exc:
         guidance = ""
         if method == "symlink" and os.name == "nt":
@@ -390,5 +431,5 @@ def run(harness: Harness, arguments: list[str] | None = None) -> int:
         return 1
 
     print(f"INSTALLED: {harness.name}: 8 skills by {method} at {destination}")
-    print("The chosen method is saved in the installed fpf-settings.toml for later updates.")
+    print("The chosen method is saved in fpf-route/fpf-settings.toml for later updates.")
     return 0

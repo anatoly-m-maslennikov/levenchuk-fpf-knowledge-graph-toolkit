@@ -379,8 +379,9 @@ def main() -> int:
         for skill_name in (name.removesuffix(".skill") for name in EXPECTED_SKILL_PACKAGES):
             installed_skill = copy_destination / skill_name
             require(installed_skill.is_dir() and not installed_skill.is_symlink(), f"copy install is not real: {skill_name}")
-        copy_settings = copy_destination / "fpf-settings.toml"
+        copy_settings = copy_destination / "fpf-route" / "fpf-settings.toml"
         require(copy_settings.is_file() and not copy_settings.is_symlink(), "copy install settings must be a real file")
+        require(not (copy_destination / "fpf-settings.toml").exists(), "copy install must not use root settings")
         if copy_settings.exists():
             require('install_method = "copy"' in copy_settings.read_text(encoding="utf-8"), "copy choice was not saved")
 
@@ -409,14 +410,50 @@ def main() -> int:
             )
             require(link_check.returncode == 0, f"saved symlink-choice check failed: {link_check.stderr.strip()}")
             for skill_name in (name.removesuffix(".skill") for name in EXPECTED_SKILL_PACKAGES):
-                require((link_destination / skill_name).is_symlink(), f"symlink install is not linked: {skill_name}")
-            link_settings = link_destination / "fpf-settings.toml"
+                installed_skill = link_destination / skill_name
+                if skill_name == "fpf-route":
+                    require(installed_skill.is_dir() and not installed_skill.is_symlink(), "symlink route install must be a real wrapper")
+                    require((installed_skill / "SKILL.md").is_symlink(), "symlink route SKILL.md must be linked")
+                    require((installed_skill / "references").is_symlink(), "symlink route references must be linked")
+                else:
+                    require(installed_skill.is_symlink(), f"symlink install is not linked: {skill_name}")
+            link_settings = link_destination / "fpf-route" / "fpf-settings.toml"
             require(link_settings.is_file() and not link_settings.is_symlink(), "symlink install settings must be real")
+            require(not (link_destination / "fpf-settings.toml").exists(), "symlink install must not use root settings")
             if link_settings.exists():
                 require(
                     'install_method = "symlink"' in link_settings.read_text(encoding="utf-8"),
                     "symlink choice was not saved",
                 )
+            copy_to_link = subprocess.run(
+                [
+                    sys.executable,
+                    str(CODEX_INSTALLER),
+                    "--destination",
+                    str(copy_destination),
+                    "--method",
+                    "symlink",
+                    "--apply",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            require(copy_to_link.returncode == 0, f"copy-to-symlink switch failed: {copy_to_link.stderr.strip()}")
+            copy_to_link_check = subprocess.run(
+                [sys.executable, str(CODEX_INSTALLER), "--destination", str(copy_destination), "--check"],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            require(copy_to_link_check.returncode == 0, f"saved switched-choice check failed: {copy_to_link_check.stderr.strip()}")
+            switched_settings = copy_destination / "fpf-route" / "fpf-settings.toml"
+            require(
+                switched_settings.is_file()
+                and not switched_settings.is_symlink()
+                and 'install_method = "symlink"' in switched_settings.read_text(encoding="utf-8"),
+                "switched symlink choice was not saved in fpf-route settings",
+            )
 
     if errors:
         for error in errors:
