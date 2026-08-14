@@ -10,7 +10,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SETTINGS_PATH = ROOT / "skills" / "fpf-settings.toml"
+SETTINGS_PATH = ROOT / "skills" / "fpf-route.skill" / "fpf-settings.toml"
 SKILL_GLOB = "fpf-*.skill/SKILL.md"
 START = "<!-- output-settings:start -->"
 END = "<!-- output-settings:end -->"
@@ -19,7 +19,7 @@ ALLOWED_EXPLANATION_MODES = {"full", "short", "off"}
 
 
 def read_settings(path: Path) -> dict[str, str]:
-    """Read the intentionally small, two-key TOML settings file."""
+    """Read the intentionally small, flat TOML settings file."""
     try:
         text = path.read_text(encoding="utf-8")
     except OSError as exc:
@@ -30,7 +30,7 @@ def read_settings(path: Path) -> dict[str, str]:
         content = line.split("#", 1)[0].strip()
         if not content:
             continue
-        match = re.fullmatch(r'(output_style|fpf_terms_explained)\s*=\s*"([a-z]+)"', content)
+        match = re.fullmatch(r'(output_style|fpf_terms_explained|install_method)\s*=\s*"([a-z]+)"', content)
         if match is None:
             raise ValueError(f"invalid setting syntax at {path}:{line_number}")
         key, value = match.groups()
@@ -38,12 +38,14 @@ def read_settings(path: Path) -> dict[str, str]:
             raise ValueError(f"duplicate setting {key!r} in {path}")
         values[key] = value
 
-    if set(values) != {"output_style", "fpf_terms_explained"}:
-        raise ValueError("settings must contain exactly output_style and fpf_terms_explained")
+    if set(values) != {"output_style", "fpf_terms_explained", "install_method"}:
+        raise ValueError("settings must contain exactly output_style, fpf_terms_explained, and install_method")
     if values["output_style"] not in ALLOWED_OUTPUT_STYLES:
         raise ValueError("output_style must be natural, general, or ste")
     if values["fpf_terms_explained"] not in ALLOWED_EXPLANATION_MODES:
         raise ValueError("fpf_terms_explained must be full, short, or off")
+    if values["install_method"] not in {"copy", "symlink"}:
+        raise ValueError("install_method must be copy or symlink")
     return values
 
 

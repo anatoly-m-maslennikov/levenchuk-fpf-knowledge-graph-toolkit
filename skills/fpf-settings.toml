@@ -1,3 +1,0 @@
-# Build-time defaults for every portable FPF skill package.
-output_style = "general"
-fpf_terms_explained = "off"

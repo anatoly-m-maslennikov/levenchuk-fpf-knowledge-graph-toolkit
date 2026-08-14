@@ -26,7 +26,7 @@ The current specification is roughly 12 MB. Loading it for every question consum
 
 - [`FPF-Knowledge-Graph/`](FPF-Knowledge-Graph/) — generated graph and validation output.
 - [`scripts/build_fpf_obsidian_graph.py`](scripts/build_fpf_obsidian_graph.py) — generator.
-- [`skills/`](skills/) — portable agent skills, including suite-wide output-language defaults in [`skills/fpf-settings.toml`](skills/fpf-settings.toml) and the synchronization helper [`scripts/sync_fpf_skill_settings.py`](scripts/sync_fpf_skill_settings.py).
+- [`skills/`](skills/) — portable agent skills, including suite-wide defaults in [`skills/fpf-route.skill/fpf-settings.toml`](skills/fpf-route.skill/fpf-settings.toml) and the synchronization helper [`scripts/sync_fpf_skill_settings.py`](scripts/sync_fpf_skill_settings.py).
 
 ## Included skills
 
@@ -49,7 +49,18 @@ All are read-only by default. Findings do not approve designs, authorize work, p
 
 ## Installing the skills
 
-This repository is the source of truth for every bundled `fpf-*` skill. Each complete repo-owned `SKILL.md` package is the portable core; no provider-specific metadata is required. Install, copy, or link each complete package through the active skill-capable harness's supported user or project discovery mechanism. The harness owns discovery, permissions, tools, and optional delegation. Ordinary chat and raw API use are out of scope. The `.skill` suffix is only this repository's folder convention; where a runtime derives a skill ID from the installed directory name, use the unprefixed `name` declared in `SKILL.md`. Invocation notation is runtime-owned and absent from this portable core.
+This repository is the source of truth for every bundled `fpf-*` skill. Each complete repo-owned `SKILL.md` package is the portable core; no provider-specific metadata is required. The `.skill` suffix is only this repository's folder convention; installers use the unprefixed `name` declared in `SKILL.md`.
+
+Python installers are included for Codex and Claude Code:
+
+```bash
+python3 scripts/install_fpf_skills_for_codex.py --apply
+python3 scripts/install_fpf_skills_for_claude.py --apply
+```
+
+The portable default is a real copied installation. For a live installation that follows this checkout, add `--method symlink`. The chosen method is saved in the harness-local `fpf-settings.toml`; later `--apply` and `--check` calls reuse it when `--method` is omitted. `CODEX_HOME` and `CLAUDE_CONFIG_DIR` are respected, and `--destination` can select an exact skills directory. The scripts use only the Python standard library and support macOS, Linux, WSL, and native Windows. On native Windows, use the default copy mode when symlink privileges are unavailable.
+
+Both installers are read-only without `--apply`. Use `--check` to verify all eight packages and their saved settings. They refuse unmanaged conflicts rather than overwrite them.
 
 ## Updating from upstream
 
