@@ -32,7 +32,7 @@ The current specification is roughly 12 MB. Loading it for every question consum
 
 The skills discover FPF at runtime and assume no repository path, tool, operating system, or project layer.
 
-Their build-time default is general-language output: no FPF terms in narrative prose, with ordinary-language synonyms instead. A result may use a different style only when the user explicitly requests it. See the [skills README](skills/README.md#output-language-defaults) for the portable contract, including natural-language term explanations and the limited STE-inspired style.
+Their build-time default is general-language output. A result may use a different style only when the user explicitly requests it. General and STE instructions each live once in the `fpf-route` references; a skill loads only the selected style file, and natural output loads neither. See the [skills README](skills/README.md#output-language-defaults) for the portable contract.
 
 | Skill | Use case | Result |
 |---|---|---|
