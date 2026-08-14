@@ -51,15 +51,14 @@ RESULT_ENVELOPE_CONTRACT = (
     "Preserve these native artifact requirements:",
 )
 SOURCE_TRACE_CONTRACT = (
-    "Immediately after the skill list in section 4, add this compact source disclosure:",
-    "<details>",
-    "<summary>FPF sources consulted (",
+    "Immediately after the skill list in section 4, add this compact Markdown subsection:",
+    "#### FPF sources consulted (",
     "List every FPF source document actually opened exactly once.",
     "**Used** means it materially supports a result; **screened only** means it was read but not relied on.",
     "absolute machine paths",
     "use a stable URI or item identifier",
-    "If the renderer does not support `<details>`",
 )
+DISCLOSURE_HTML_TAG_PATTERN = r"</?(?:details|summary)\b[^>]*>"
 EXPECTED_NATIVE_OUTPUT_COUNTS = {
     "fpf-alignment-audit": 7,
     "fpf-applicability-scan": 5,
@@ -224,6 +223,10 @@ def main() -> int:
     skills_readme = (SKILLS / "README.md").read_text(encoding="utf-8")
     for package_name in sorted(EXPECTED_SKILL_PACKAGES):
         require(f"`{package_name}`" in skills_readme, f"skill catalog omits {package_name}")
+    require(
+        re.search(DISCLOSURE_HTML_TAG_PATTERN, skills_readme, re.IGNORECASE) is None,
+        "skills README must use plain Markdown instead of details/summary HTML",
+    )
     for portability_path in (SKILLS / "README.md", README_PATH):
         portability_text = portability_path.read_text(encoding="utf-8")
         for pattern in FORBIDDEN_PORTABILITY_PATTERNS:
@@ -245,6 +248,10 @@ def main() -> int:
 
         for pattern in FORBIDDEN_PORTABILITY_PATTERNS:
             require(re.search(pattern, skill_text, re.IGNORECASE) is None, f"runtime-specific portability term in {expected_name}: {pattern}")
+        require(
+            re.search(DISCLOSURE_HTML_TAG_PATTERN, skill_text, re.IGNORECASE) is None,
+            f"HTML disclosure tag in {expected_name}; use plain Markdown",
+        )
         require(not (package / "agents").exists(), f"provider-specific metadata directory present: {expected_name}")
         require(not any(package.rglob("*.yaml")), f"provider-specific metadata file present: {expected_name}")
 
@@ -260,7 +267,6 @@ def main() -> int:
         if expected_name != "fpf-route":
             for contract_text in SOURCE_TRACE_CONTRACT:
                 require(contract_text in skill_text, f"missing FPF source-trace contract in {expected_name}: {contract_text}")
-        require("</details>" in skill_text, f"missing FPF source-trace disclosure close in {expected_name}")
         native_marker = "Preserve these native artifact requirements:"
         native_block = skill_text.split(native_marker, 1)[1] if native_marker in skill_text else ""
         native_items = re.findall(r"^\d+\. \*\*", native_block, re.MULTILINE)
@@ -273,7 +279,7 @@ def main() -> int:
         if expected_name == "fpf-route":
             require("Execution boundary" in skill_text, "fpf-route missing execution boundary")
             require(
-                "<summary>Routing basis and FPF methodology sources</summary>" in skill_text,
+                "#### Routing basis and FPF methodology sources" in skill_text,
                 "fpf-route must disclose its routing basis and methodology-source exception",
             )
             require(
