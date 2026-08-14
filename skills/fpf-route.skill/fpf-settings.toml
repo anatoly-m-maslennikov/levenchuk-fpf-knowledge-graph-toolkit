@@ -1,0 +1,4 @@
+# Suite defaults for every portable FPF skill package.
+output_style = "general"
+fpf_terms_explained = "off"
+install_method = "copy"

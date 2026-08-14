@@ -5,6 +5,18 @@ description: Audit implemented or accepted work against relevant First Principle
 
 # FPF Alignment Audit
 
+<!-- output-settings:start -->
+## Output language settings
+
+This package's build-time defaults are `output_style = "general"` and `fpf_terms_explained = "off"`. An explicit user request for a result overrides these embedded defaults.
+
+Apply this contract to the result narrative. Keep exact FPF locators and source paths in compact evidence or source records, not in narrative prose.
+
+- `natural` uses unredacted natural FPF result language and may use FPF terms. In this mode only, `fpf_terms_explained = "full"` explains each FPF term on first use in at most three short lines; `short` uses one brief clause or sentence (about half to one line); and `off` adds no explanation.
+- `general` uses no FPF terms in the narrative. Use ordinary-language synonyms instead. The explanation setting is ignored.
+- `ste` uses no FPF terms in the narrative. Use simplified synonyms and an ASD-STE100 Issue 9-inspired overlay: short clear sentences, one topic per sentence, active voice where practical, and vertical lists for complex text. This is guidance only and makes no formal-conformance claim. The explanation setting is ignored.
+<!-- output-settings:end -->
+
 Produce a read-only **Bounded Alignment Finding**. Do not turn an audit report into project assurance, authorization, or a gate decision.
 
 ## Resolve scope and sources
@@ -93,17 +105,14 @@ In section 1, state the task and receiving use, target and current state, scope 
 
 In section 4, list every skill actually executed for this result in execution order, using its exact canonical skill ID, and state each skill's role in one concise sentence. Do not list tools, the base model, or merely proposed or recommended downstream skills as used. If no other skill was executed, list only `fpf-alignment-audit`.
 
-Immediately after the skill list in section 4, add this compact source disclosure:
+Immediately after the skill list in section 4, add this compact Markdown subsection:
 
-<details>
-<summary>FPF sources consulted (N read; M used)</summary>
+#### FPF sources consulted (N read; M used)
 
 - `FPF-Knowledge-Graph/<relative-path>.md` — **used**: <brief evidence role>
 - `FPF-Knowledge-Graph/<relative-path>.md` — **screened only**
 
-</details>
-
-List every FPF source document actually opened exactly once. **Used** means it materially supports a result; **screened only** means it was read but not relied on. Do not list merely discovered-but-unopened files, project evidence, tools, or absolute machine paths. Prefer `FPF-Knowledge-Graph/...` graph-root-relative paths; for a non-file-backed FPF edition, use a stable URI or item identifier. If the renderer does not support `<details>`, show the same compact list without the wrapper.
+List every FPF source document actually opened exactly once. **Used** means it materially supports a result; **screened only** means it was read but not relied on. Do not list merely discovered-but-unopened files, project evidence, tools, or absolute machine paths. Prefer `FPF-Knowledge-Graph/...` graph-root-relative paths; for a non-file-backed FPF edition, use a stable URI or item identifier.
 
 Assign confidence to each material result and state its evidence basis. Confidence is the reviewer's claim-level epistemic confidence under the available evidence, not a statistical probability, artifact-wide score, importance, severity, authorization, acceptance, assurance, or gate result. Use these bands inside section 3:
 

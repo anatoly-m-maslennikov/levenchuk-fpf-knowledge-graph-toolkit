@@ -4,9 +4,11 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 from urllib.parse import unquote
 
@@ -51,15 +53,14 @@ RESULT_ENVELOPE_CONTRACT = (
     "Preserve these native artifact requirements:",
 )
 SOURCE_TRACE_CONTRACT = (
-    "Immediately after the skill list in section 4, add this compact source disclosure:",
-    "<details>",
-    "<summary>FPF sources consulted (",
+    "Immediately after the skill list in section 4, add this compact Markdown subsection:",
+    "#### FPF sources consulted (",
     "List every FPF source document actually opened exactly once.",
     "**Used** means it materially supports a result; **screened only** means it was read but not relied on.",
     "absolute machine paths",
     "use a stable URI or item identifier",
-    "If the renderer does not support `<details>`",
 )
+DISCLOSURE_HTML_TAG_PATTERN = r"</?(?:details|summary)\b[^>]*>"
 EXPECTED_NATIVE_OUTPUT_COUNTS = {
     "fpf-alignment-audit": 7,
     "fpf-applicability-scan": 5,
@@ -70,6 +71,29 @@ EXPECTED_NATIVE_OUTPUT_COUNTS = {
     "fpf-route": 6,
     "fpf-sota-harvest": 6,
 }
+SETTINGS_PATH = SKILLS / "fpf-route.skill" / "fpf-settings.toml"
+SYNC_SETTINGS_SCRIPT = ROOT / "scripts" / "sync_fpf_skill_settings.py"
+CODEX_INSTALLER = ROOT / "scripts" / "install_fpf_skills_for_codex.py"
+CLAUDE_INSTALLER = ROOT / "scripts" / "install_fpf_skills_for_claude.py"
+OUTPUT_SETTINGS_START = "<!-- output-settings:start -->"
+OUTPUT_SETTINGS_END = "<!-- output-settings:end -->"
+EXPECTED_OUTPUT_SETTINGS_DEFAULTS = {
+    "output_style": "general",
+    "fpf_terms_explained": "off",
+    "install_method": "copy",
+}
+ALLOWED_OUTPUT_STYLES = {"natural", "general", "ste"}
+ALLOWED_EXPLANATION_MODES = {"full", "short", "off"}
+OUTPUT_SETTINGS_CONTRACT = (
+    "An explicit user request for a result overrides these embedded defaults.",
+    "Keep exact FPF locators and source paths in compact evidence or source records, not in narrative prose.",
+    "`natural` uses unredacted natural FPF result language",
+    "at most three short lines",
+    "`general` uses no FPF terms in the narrative.",
+    "`ste` uses no FPF terms in the narrative.",
+    "ASD-STE100 Issue 9-inspired overlay",
+    "makes no formal-conformance claim",
+)
 
 
 FORBIDDEN_PORTABILITY_PATTERNS = (
@@ -168,6 +192,26 @@ def main() -> int:
         actual_skill_packages == EXPECTED_SKILL_PACKAGES,
         "FPF skill package set does not match the expected catalog",
     )
+    try:
+        settings_text = SETTINGS_PATH.read_text(encoding="utf-8")
+    except OSError as exc:
+        errors.append(f"cannot read skill settings: {exc}")
+        settings_text = ""
+    setting_pairs = re.findall(
+        r'^(output_style|fpf_terms_explained|install_method)\s*=\s*"([a-z]+)"\s*$',
+        settings_text,
+        re.MULTILINE,
+    )
+    settings = dict(setting_pairs)
+    require(len(setting_pairs) == 3 and len(settings) == 3, "skill settings must contain exactly three unique keys")
+    require(settings == EXPECTED_OUTPUT_SETTINGS_DEFAULTS, "skill settings must use the current suite defaults")
+    require(settings.get("output_style") in ALLOWED_OUTPUT_STYLES, "skill output_style is invalid")
+    require(settings.get("fpf_terms_explained") in ALLOWED_EXPLANATION_MODES, "skill fpf_terms_explained is invalid")
+    require(settings.get("install_method") in {"copy", "symlink"}, "skill install_method is invalid")
+    sync_result = subprocess.run(
+        [sys.executable, str(SYNC_SETTINGS_SCRIPT), "--check"], check=False, capture_output=True, text=True
+    )
+    require(sync_result.returncode == 0, f"FPF skill settings are out of sync: {sync_result.stderr.strip()}")
     route_text = (SKILLS / "fpf-route.skill" / "SKILL.md").read_text(encoding="utf-8")
     route_entries = re.findall(r"^\| `([^`]+)` \|", route_text, re.MULTILINE)
     route_catalog = set(route_entries)
@@ -224,13 +268,10 @@ def main() -> int:
     skills_readme = (SKILLS / "README.md").read_text(encoding="utf-8")
     for package_name in sorted(EXPECTED_SKILL_PACKAGES):
         require(f"`{package_name}`" in skills_readme, f"skill catalog omits {package_name}")
-    for portability_path in (SKILLS / "README.md", README_PATH):
-        portability_text = portability_path.read_text(encoding="utf-8")
-        for pattern in FORBIDDEN_PORTABILITY_PATTERNS:
-            require(
-                re.search(pattern, portability_text, re.IGNORECASE) is None,
-                f"runtime-specific portability term in {portability_path.relative_to(ROOT)}: {pattern}",
-            )
+    require(
+        re.search(DISCLOSURE_HTML_TAG_PATTERN, skills_readme, re.IGNORECASE) is None,
+        "skills README must use plain Markdown instead of details/summary HTML",
+    )
     for skill_path in skill_paths:
         package = skill_path.parent
         expected_name = package.name.removesuffix(".skill")
@@ -245,6 +286,10 @@ def main() -> int:
 
         for pattern in FORBIDDEN_PORTABILITY_PATTERNS:
             require(re.search(pattern, skill_text, re.IGNORECASE) is None, f"runtime-specific portability term in {expected_name}: {pattern}")
+        require(
+            re.search(DISCLOSURE_HTML_TAG_PATTERN, skill_text, re.IGNORECASE) is None,
+            f"HTML disclosure tag in {expected_name}; use plain Markdown",
+        )
         require(not (package / "agents").exists(), f"provider-specific metadata directory present: {expected_name}")
         require(not any(package.rglob("*.yaml")), f"provider-specific metadata file present: {expected_name}")
 
@@ -252,14 +297,18 @@ def main() -> int:
         installed_names = {name.removesuffix(".skill") for name in EXPECTED_SKILL_PACKAGES}
         require(references <= installed_names, f"unresolved FPF skill reference in {expected_name}: {sorted(references - installed_names)}")
         require(FULL_REPORT_CONTRACT in skill_text, f"missing full-report delivery contract: {expected_name}")
+        require(skill_text.count(OUTPUT_SETTINGS_START) == 1, f"missing or duplicate output settings block: {expected_name}")
+        require(skill_text.count(OUTPUT_SETTINGS_END) == 1, f"missing or duplicate output settings block end: {expected_name}")
+        for contract_text in OUTPUT_SETTINGS_CONTRACT:
+            require(contract_text in skill_text, f"missing output settings contract in {expected_name}: {contract_text}")
         heading_positions = [skill_text.find(heading) for heading in RESULT_ENVELOPE_HEADINGS]
         require(all(position >= 0 for position in heading_positions), f"missing four-section result envelope: {expected_name}")
         require(heading_positions == sorted(heading_positions), f"result envelope headings out of order: {expected_name}")
         for contract_text in RESULT_ENVELOPE_CONTRACT:
             require(contract_text in skill_text, f"missing result-envelope contract in {expected_name}: {contract_text}")
-        for contract_text in SOURCE_TRACE_CONTRACT:
-            require(contract_text in skill_text, f"missing FPF source-trace contract in {expected_name}: {contract_text}")
-        require("</details>" in skill_text, f"missing FPF source-trace disclosure close in {expected_name}")
+        if expected_name != "fpf-route":
+            for contract_text in SOURCE_TRACE_CONTRACT:
+                require(contract_text in skill_text, f"missing FPF source-trace contract in {expected_name}: {contract_text}")
         native_marker = "Preserve these native artifact requirements:"
         native_block = skill_text.split(native_marker, 1)[1] if native_marker in skill_text else ""
         native_items = re.findall(r"^\d+\. \*\*", native_block, re.MULTILINE)
@@ -272,8 +321,12 @@ def main() -> int:
         if expected_name == "fpf-route":
             require("Execution boundary" in skill_text, "fpf-route missing execution boundary")
             require(
-                "<summary>FPF sources consulted (0 read; 0 used)</summary>" in skill_text,
-                "fpf-route must disclose that it reads and uses no FPF sources",
+                "#### Routing basis and FPF methodology sources" in skill_text,
+                "fpf-route must disclose its routing basis and methodology-source exception",
+            )
+            require(
+                "Do not present an empty or zero-count FPF source trace" in skill_text,
+                "fpf-route must prohibit misleading zero-count methodology traces",
             )
             require(
                 "Use ordinary Markdown headings and lists. Do not wrap the artifact or any section in a fenced code block."
@@ -294,6 +347,113 @@ def main() -> int:
     require(help_result.returncode == 0 and "--source SOURCE" in help_result.stdout, "generator must require --source")
     require("--source-revision SOURCE_REVISION" in help_result.stdout, "generator must require --source-revision")
     require("--generated-on GENERATED_ON" in help_result.stdout, "generator must require --generated-on")
+
+    for installer, harness_name in ((CODEX_INSTALLER, "Codex"), (CLAUDE_INSTALLER, "Claude Code")):
+        installer_help = subprocess.run(
+            [sys.executable, str(installer), "--help"],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        require(installer_help.returncode == 0, f"{harness_name} installer help failed")
+        for option in ("--apply", "--check", "--method", "--destination"):
+            require(option in installer_help.stdout, f"{harness_name} installer help omits {option}")
+
+    with tempfile.TemporaryDirectory(prefix="fpf-installer-validation-") as temporary_directory:
+        temporary_root = Path(temporary_directory)
+        copy_destination = temporary_root / "copy" / "skills"
+        copy_apply = subprocess.run(
+            [sys.executable, str(CODEX_INSTALLER), "--destination", str(copy_destination), "--apply"],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        require(copy_apply.returncode == 0, f"copy installer smoke test failed: {copy_apply.stderr.strip()}")
+        copy_check = subprocess.run(
+            [sys.executable, str(CODEX_INSTALLER), "--destination", str(copy_destination), "--check"],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        require(copy_check.returncode == 0, f"copy installer check failed: {copy_check.stderr.strip()}")
+        for skill_name in (name.removesuffix(".skill") for name in EXPECTED_SKILL_PACKAGES):
+            installed_skill = copy_destination / skill_name
+            require(installed_skill.is_dir() and not installed_skill.is_symlink(), f"copy install is not real: {skill_name}")
+        copy_settings = copy_destination / "fpf-route" / "fpf-settings.toml"
+        require(copy_settings.is_file() and not copy_settings.is_symlink(), "copy install settings must be a real file")
+        require(not (copy_destination / "fpf-settings.toml").exists(), "copy install must not use root settings")
+        if copy_settings.exists():
+            require('install_method = "copy"' in copy_settings.read_text(encoding="utf-8"), "copy choice was not saved")
+
+        if os.name != "nt":
+            link_destination = temporary_root / "symlink" / "skills"
+            link_apply = subprocess.run(
+                [
+                    sys.executable,
+                    str(CLAUDE_INSTALLER),
+                    "--destination",
+                    str(link_destination),
+                    "--method",
+                    "symlink",
+                    "--apply",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            require(link_apply.returncode == 0, f"symlink installer smoke test failed: {link_apply.stderr.strip()}")
+            link_check = subprocess.run(
+                [sys.executable, str(CLAUDE_INSTALLER), "--destination", str(link_destination), "--check"],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            require(link_check.returncode == 0, f"saved symlink-choice check failed: {link_check.stderr.strip()}")
+            for skill_name in (name.removesuffix(".skill") for name in EXPECTED_SKILL_PACKAGES):
+                installed_skill = link_destination / skill_name
+                if skill_name == "fpf-route":
+                    require(installed_skill.is_dir() and not installed_skill.is_symlink(), "symlink route install must be a real wrapper")
+                    require((installed_skill / "SKILL.md").is_symlink(), "symlink route SKILL.md must be linked")
+                    require((installed_skill / "references").is_symlink(), "symlink route references must be linked")
+                else:
+                    require(installed_skill.is_symlink(), f"symlink install is not linked: {skill_name}")
+            link_settings = link_destination / "fpf-route" / "fpf-settings.toml"
+            require(link_settings.is_file() and not link_settings.is_symlink(), "symlink install settings must be real")
+            require(not (link_destination / "fpf-settings.toml").exists(), "symlink install must not use root settings")
+            if link_settings.exists():
+                require(
+                    'install_method = "symlink"' in link_settings.read_text(encoding="utf-8"),
+                    "symlink choice was not saved",
+                )
+            copy_to_link = subprocess.run(
+                [
+                    sys.executable,
+                    str(CODEX_INSTALLER),
+                    "--destination",
+                    str(copy_destination),
+                    "--method",
+                    "symlink",
+                    "--apply",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            require(copy_to_link.returncode == 0, f"copy-to-symlink switch failed: {copy_to_link.stderr.strip()}")
+            copy_to_link_check = subprocess.run(
+                [sys.executable, str(CODEX_INSTALLER), "--destination", str(copy_destination), "--check"],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            require(copy_to_link_check.returncode == 0, f"saved switched-choice check failed: {copy_to_link_check.stderr.strip()}")
+            switched_settings = copy_destination / "fpf-route" / "fpf-settings.toml"
+            require(
+                switched_settings.is_file()
+                and not switched_settings.is_symlink()
+                and 'install_method = "symlink"' in switched_settings.read_text(encoding="utf-8"),
+                "switched symlink choice was not saved in fpf-route settings",
+            )
 
     if errors:
         for error in errors:
