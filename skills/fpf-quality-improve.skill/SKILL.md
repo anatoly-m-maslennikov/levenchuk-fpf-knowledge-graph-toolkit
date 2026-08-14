@@ -62,6 +62,18 @@ In section 1, state the task and receiving use, target and current state, scope 
 
 In section 4, list every skill actually executed for this result in execution order, using its exact `$skill-name`, and state each skill's role in one concise sentence. Do not list tools, the base model, or merely proposed or recommended downstream skills as used. If no other skill was executed, list only `$fpf-quality-improve`.
 
+Immediately after the skill list in section 4, add this compact source disclosure:
+
+<details>
+<summary>FPF sources consulted (N read; M used)</summary>
+
+- `FPF-Knowledge-Graph/<relative-path>.md` — **used**: <brief evidence role>
+- `FPF-Knowledge-Graph/<relative-path>.md` — **screened only**
+
+</details>
+
+List every FPF source document actually opened exactly once. **Used** means it materially supports a result; **screened only** means it was read but not relied on. Do not list merely discovered-but-unopened files, project evidence, tools, or absolute machine paths. Prefer `FPF-Knowledge-Graph/...` graph-root-relative paths; for a non-file-backed FPF edition, use a stable URI or item identifier. If the renderer does not support `<details>`, show the same compact list without the wrapper.
+
 Assign confidence to each material result and state its evidence basis. Confidence is the reviewer's claim-level epistemic confidence under the available evidence, not a statistical probability, artifact-wide score, importance, severity, authorization, acceptance, assurance, or gate result. Use these bands inside section 3:
 
 - **90–94%:** probable answer, but confirmation is still needed.
