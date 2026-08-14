@@ -1,4 +1,0 @@
-interface:
-  display_name: "FPF Route"
-  short_description: "Plan the right sequence of FPF skill calls"
-  default_prompt: "Use $fpf-route to turn this question into a minimal sequence of well-scoped FPF skill calls."

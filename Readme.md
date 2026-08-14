@@ -47,9 +47,7 @@ All are read-only by default. Findings do not approve designs, authorize work, p
 
 ## Installing the skills
 
-This repository is the source of truth for every bundled `fpf-*` skill. On the default local setup, entries under `~/.codex/skills/<skill-name>` link directly to `skills/<skill-name>.skill`; do not maintain duplicate packages in an Obsidian vault.
-
-Symlinks are only a local convenience. Other installations may copy each complete `.skill` package into their Codex skills directory without changing its behavior.
+This repository is the source of truth for every bundled `fpf-*` skill. Each complete repo-owned `SKILL.md` package is the portable core; no provider-specific metadata is required. Install, copy, or link each complete package through the active skill-capable harness's supported user or project discovery mechanism. The harness owns discovery, permissions, tools, and optional delegation. Ordinary chat and raw API use are out of scope. The `.skill` suffix is only this repository's folder convention; where a runtime derives a skill ID from the installed directory name, use the unprefixed `name` declared in `SKILL.md`. Invocation notation is runtime-owned and absent from this portable core.
 
 ## Updating from upstream
 
