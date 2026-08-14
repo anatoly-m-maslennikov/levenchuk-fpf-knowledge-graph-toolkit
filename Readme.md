@@ -58,7 +58,7 @@ python3 scripts/install_fpf_skills_for_codex.py --apply
 python3 scripts/install_fpf_skills_for_claude.py --apply
 ```
 
-The portable default is a real copied installation. For a live installation that follows this checkout, add `--method symlink`. The chosen method is saved in the harness-local `fpf-settings.toml`; later `--apply` and `--check` calls reuse it when `--method` is omitted. `CODEX_HOME` and `CLAUDE_CONFIG_DIR` are respected, and `--destination` can select an exact skills directory. The scripts use only the Python standard library and support macOS, Linux, WSL, and native Windows. On native Windows, use the default copy mode when symlink privileges are unavailable.
+The portable default is a real copied installation. For a live installation that follows this checkout, add `--method symlink`. The chosen method is saved in the harness-local `fpf-settings.toml`; later `--apply` and `--check` calls reuse it when `--method` is omitted. `CODEX_HOME` and `CLAUDE_CONFIG_DIR` are respected, and `--destination` can select an exact skills directory. The scripts use only the Python standard library and support macOS, Linux, WSL, and native Windows. On native Windows, use `py scripts\install_fpf_skills_for_codex.py --apply` (or the Claude filename) and keep the default copy mode when symlink privileges are unavailable.
 
 Both installers are read-only without `--apply`. Use `--check` to verify all eight packages and their saved settings. They refuse unmanaged conflicts rather than overwrite them.
 
