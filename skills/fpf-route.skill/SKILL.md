@@ -76,16 +76,17 @@ In section 1, state the task and receiving use, target and current state, scope 
 
 In section 4, list every skill actually executed for this result in execution order, using its exact canonical skill ID, and state each skill's role in one concise sentence. Do not list tools, the base model, or merely proposed or recommended downstream skills as used. If no other skill was executed, list only `fpf-route`; skills in the proposed sequence remain recommendations, not executed skills.
 
-Immediately after the skill list in section 4, add this compact source disclosure:
+Immediately after the skill list in section 4, add this compact routing-basis disclosure:
 
 <details>
-<summary>FPF sources consulted (0 read; 0 used)</summary>
+<summary>Routing basis and FPF methodology sources</summary>
 
-None. Routing does not read the FPF methodology.
+- **Routing basis used:** the embedded skill catalog, selection rules, and sequencing rules in `fpf-route`.
+- **FPF methodology sources:** not applicable. The router neither opens the FPF knowledge graph nor makes methodology claims. Each downstream skill reports its own FPF sources when executed.
 
 </details>
 
-List every FPF source document actually opened exactly once. **Used** means it materially supports a result; **screened only** means it was read but not relied on. Do not list merely discovered-but-unopened files, project evidence, tools, or absolute machine paths. Prefer `FPF-Knowledge-Graph/...` graph-root-relative paths; for a non-file-backed FPF edition, use a stable URI or item identifier. If the renderer does not support `<details>`, show the same compact disclosure without the wrapper. Because `fpf-route` must not read the methodology, its counts remain `0 read; 0 used`.
+If the renderer does not support `<details>`, show the same disclosure without the wrapper. Do not present an empty or zero-count FPF source trace: source accounting is not applicable to a router that makes no methodology claims. This exception applies only to `fpf-route`; every executed downstream FPF skill must list the methodology sources it actually opened and distinguish **used** from **screened only**.
 
 Assign confidence to each material result and state its evidence basis. Confidence is the reviewer's claim-level epistemic confidence under the available evidence, not a statistical probability, artifact-wide score, importance, severity, authorization, acceptance, assurance, or gate result. Use these bands inside section 3:
 

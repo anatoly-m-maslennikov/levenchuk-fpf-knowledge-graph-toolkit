@@ -257,8 +257,9 @@ def main() -> int:
         require(heading_positions == sorted(heading_positions), f"result envelope headings out of order: {expected_name}")
         for contract_text in RESULT_ENVELOPE_CONTRACT:
             require(contract_text in skill_text, f"missing result-envelope contract in {expected_name}: {contract_text}")
-        for contract_text in SOURCE_TRACE_CONTRACT:
-            require(contract_text in skill_text, f"missing FPF source-trace contract in {expected_name}: {contract_text}")
+        if expected_name != "fpf-route":
+            for contract_text in SOURCE_TRACE_CONTRACT:
+                require(contract_text in skill_text, f"missing FPF source-trace contract in {expected_name}: {contract_text}")
         require("</details>" in skill_text, f"missing FPF source-trace disclosure close in {expected_name}")
         native_marker = "Preserve these native artifact requirements:"
         native_block = skill_text.split(native_marker, 1)[1] if native_marker in skill_text else ""
@@ -272,8 +273,12 @@ def main() -> int:
         if expected_name == "fpf-route":
             require("Execution boundary" in skill_text, "fpf-route missing execution boundary")
             require(
-                "<summary>FPF sources consulted (0 read; 0 used)</summary>" in skill_text,
-                "fpf-route must disclose that it reads and uses no FPF sources",
+                "<summary>Routing basis and FPF methodology sources</summary>" in skill_text,
+                "fpf-route must disclose its routing basis and methodology-source exception",
+            )
+            require(
+                "Do not present an empty or zero-count FPF source trace" in skill_text,
+                "fpf-route must prohibit misleading zero-count methodology traces",
             )
             require(
                 "Use ordinary Markdown headings and lists. Do not wrap the artifact or any section in a fenced code block."
