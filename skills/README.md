@@ -24,3 +24,5 @@ Generative and operational use:
 Each package contains its complete `SKILL.md` contract and `agents/openai.yaml` interface metadata. The skills discover an accessible FPF edition at runtime and do not assume this repository path, a specific operating system, or a particular workspace layout.
 
 Every result preserves its complete native artifact under four top-level sections: task, scope, and boundaries; high-confidence results at 95% or above; open questions below 95%, distinguishing probable answers at 90–94% from materially uncertain answers below 90%; and skills actually used, in execution order with each skill's role.
+
+The skills-used section also contains a compact, collapsible FPF source trace. It lists every FPF source actually opened exactly once, distinguishes files materially used as evidence from files only screened, and reports read/used totals. Repository graph files use portable `FPF-Knowledge-Graph/...` paths; non-file-backed editions use stable source identifiers, and renderers without `<details>` show the same list directly. The routing skill reports `0 read; 0 used` because it does not inspect the methodology.

@@ -50,6 +50,16 @@ RESULT_ENVELOPE_CONTRACT = (
     "None identified within the declared scope",
     "Preserve these native artifact requirements:",
 )
+SOURCE_TRACE_CONTRACT = (
+    "Immediately after the skill list in section 4, add this compact source disclosure:",
+    "<details>",
+    "<summary>FPF sources consulted (",
+    "List every FPF source document actually opened exactly once.",
+    "**Used** means it materially supports a result; **screened only** means it was read but not relied on.",
+    "absolute machine paths",
+    "use a stable URI or item identifier",
+    "If the renderer does not support `<details>`",
+)
 EXPECTED_NATIVE_OUTPUT_COUNTS = {
     "fpf-alignment-audit": 7,
     "fpf-applicability-scan": 5,
@@ -216,6 +226,9 @@ def main() -> int:
         require(heading_positions == sorted(heading_positions), f"result envelope headings out of order: {expected_name}")
         for contract_text in RESULT_ENVELOPE_CONTRACT:
             require(contract_text in skill_text, f"missing result-envelope contract in {expected_name}: {contract_text}")
+        for contract_text in SOURCE_TRACE_CONTRACT:
+            require(contract_text in skill_text, f"missing FPF source-trace contract in {expected_name}: {contract_text}")
+        require("</details>" in skill_text, f"missing FPF source-trace disclosure close in {expected_name}")
         native_marker = "Preserve these native artifact requirements:"
         native_block = skill_text.split(native_marker, 1)[1] if native_marker in skill_text else ""
         native_items = re.findall(r"^\d+\. \*\*", native_block, re.MULTILINE)
@@ -227,6 +240,10 @@ def main() -> int:
             require("Remain read-only unless" in skill_text or expected_name == "fpf-route", f"missing read-only boundary: {expected_name}")
         if expected_name == "fpf-route":
             require("Execution boundary" in skill_text, "fpf-route missing execution boundary")
+            require(
+                "<summary>FPF sources consulted (0 read; 0 used)</summary>" in skill_text,
+                "fpf-route must disclose that it reads and uses no FPF sources",
+            )
             require(
                 "Use ordinary Markdown headings and lists. Do not wrap the artifact or any section in a fenced code block."
                 in skill_text,
