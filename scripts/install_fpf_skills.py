@@ -385,7 +385,10 @@ def run(harness: Harness, arguments: list[str] | None = None) -> int:
         and installed_settings.get("install_method") == method
         and installed_settings.get("install_source_hash") == current_source_hash
     )
-    packages_current = state == expected_state
+    route_layout_current = method != "symlink" or is_route_wrapper(
+        target_roots(destination)[ROUTE_SKILL_NAME], source_roots()[ROUTE_SKILL_NAME]
+    )
+    packages_current = state == expected_state and route_layout_current
 
     if args.check:
         if packages_current and settings_current:
