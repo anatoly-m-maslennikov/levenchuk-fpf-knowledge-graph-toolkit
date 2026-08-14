@@ -12,7 +12,7 @@ Produce a read-only **FPF Skill Route** for one question. Route work among the a
 1. Restate the question as one bounded receiving use. Identify the target state: open question, research need, proposal, evaluated alternatives, versioned improvement target, or implemented/accepted work.
 2. Resolve the smallest useful sequence from the available skills. One call is a valid sequence. Do not propose a full lifecycle when the requested result stops earlier.
 3. Rewrite every call as a self-contained, copy-ready task. Preserve the user's intent without embedding an expected finding, preferred option, or approval outcome.
-4. Make dependencies, parallel calls, decision ownership, missing inputs, and stop conditions explicit.
+4. Make dependencies, independent calls, decision ownership, missing inputs, and stop conditions explicit. The active runtime chooses scheduling.
 5. If no available FPF skill fits, return no call and explain which required trigger or input is absent. Never route to `fpf-route` recursively.
 
 ## Skill selection
@@ -37,7 +37,7 @@ Produce a read-only **FPF Skill Route** for one question. Route work among the a
 - Use `fpf-decision-synthesize` only when alternatives, evaluation evidence, and project decision authority are recoverable. Otherwise name the missing prerequisite.
 - Use `fpf-quality-improve` directly when a versioned target, baseline, evaluation frame, and allowed change surface exist. Do not prepend an alignment audit unless FPF alignment is itself a required baseline claim.
 - Put `fpf-alignment-audit` after implementation or acceptance, never as approval for a proposal.
-- Mark calls as parallel only when neither consumes the other's output. Name the join artifact required by the next step.
+- Mark calls as independent only when neither consumes the other's output. Name the required handoff or join artifact for the next step; the active runtime chooses scheduling.
 - End at the user's receiving use. Present later steps only as conditional follow-ups.
 
 ## Maintainer evaluation
@@ -59,7 +59,7 @@ Do not use vague tasks such as “apply FPF” or “review everything.” Do no
 
 ## Output
 
-Return the complete listed artifact with every required section and evidence record, including when work was delegated. Do not replace it with a summary, abbreviated surrogate, or pointer to another result.
+Return the complete listed artifact with every required section and evidence record, including any optional delegated work. Do not replace it with a summary, abbreviated surrogate, or pointer to another result.
 
 Use ordinary Markdown headings and lists. Do not wrap the artifact or any section in a fenced code block.
 
@@ -74,7 +74,7 @@ Organize the complete native artifact under exactly these four top-level Markdow
 
 In section 1, state the task and receiving use, target and current state, scope and exclusions, inputs, sources and evidence, authority, dependencies, and stop condition. In sections 2 and 3, keep every native requirement below as a subsection or item; do not omit, merge away, or summarize it.
 
-In section 4, list every skill actually executed for this result in execution order, using its exact `$skill-name`, and state each skill's role in one concise sentence. Do not list tools, the base model, or merely proposed or recommended downstream skills as used. If no other skill was executed, list only `$fpf-route`; skills in the proposed sequence remain recommendations, not executed skills.
+In section 4, list every skill actually executed for this result in execution order, using its exact canonical skill ID, and state each skill's role in one concise sentence. Do not list tools, the base model, or merely proposed or recommended downstream skills as used. If no other skill was executed, list only `fpf-route`; skills in the proposed sequence remain recommendations, not executed skills.
 
 Immediately after the skill list in section 4, add this compact source disclosure:
 
@@ -85,7 +85,7 @@ None. Routing does not read the FPF methodology.
 
 </details>
 
-List every FPF source document actually opened exactly once. **Used** means it materially supports a result; **screened only** means it was read but not relied on. Do not list merely discovered-but-unopened files, project evidence, tools, or absolute machine paths. Prefer `FPF-Knowledge-Graph/...` graph-root-relative paths; for a non-file-backed FPF edition, use a stable URI or item identifier. If the renderer does not support `<details>`, show the same compact disclosure without the wrapper. Because `$fpf-route` must not read the methodology, its counts remain `0 read; 0 used`.
+List every FPF source document actually opened exactly once. **Used** means it materially supports a result; **screened only** means it was read but not relied on. Do not list merely discovered-but-unopened files, project evidence, tools, or absolute machine paths. Prefer `FPF-Knowledge-Graph/...` graph-root-relative paths; for a non-file-backed FPF edition, use a stable URI or item identifier. If the renderer does not support `<details>`, show the same compact disclosure without the wrapper. Because `fpf-route` must not read the methodology, its counts remain `0 read; 0 used`.
 
 Assign confidence to each material result and state its evidence basis. Confidence is the reviewer's claim-level epistemic confidence under the available evidence, not a statistical probability, artifact-wide score, importance, severity, authorization, acceptance, assurance, or gate result. Use these bands inside section 3:
 
@@ -97,8 +97,8 @@ Never round up to 95%, hide conflicting, unsupported, or insufficient-basis resu
 Preserve these native artifact requirements:
 
 1. **Question and routing assumptions**
-2. **Proposed sequence**, using `$fpf-...` invocation names
+2. **Proposed sequence**, using canonical `fpf-...` skill IDs
 3. **Copy-ready task for each call**
-4. **Inputs, handoffs, parallel joins, and run conditions**
+4. **Inputs, handoffs, independent calls, required join artifacts, and run conditions**
 5. **Skipped skills and why**
 6. **Execution boundary** — state that no proposed skill was executed

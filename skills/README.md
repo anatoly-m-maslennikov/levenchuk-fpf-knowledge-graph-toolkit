@@ -2,7 +2,7 @@
 
 This directory contains portable AI-agent skill packages for bounded use of the First Principles Framework.
 
-These directories are the source of truth. Install them directly under the active Codex skills directory by symlink or copy; do not mirror them into an Obsidian vault.
+These directories are the source of truth. Each complete package is a portable core: no provider-specific metadata is required. Install, copy, or link a complete package through the active skill-capable harness's supported user or project discovery mechanism. The harness owns discovery, permissions, tools, and optional delegation; ordinary chat and raw API use are out of scope. The `.skill` suffix is only this repository's folder convention; where a runtime derives a skill ID from the installed directory name, use the unprefixed `name` declared in `SKILL.md`. Invocation notation is runtime-owned and absent from this portable core.
 
 Routing:
 
@@ -21,7 +21,7 @@ Generative and operational use:
 - `fpf-decision-synthesize.skill` records a recoverable project decision after candidate synthesis, then projects it into an audience-specific ADR.
 - `fpf-quality-improve.skill` runs a bounded improvement loop that requires both a target-version change and demonstrated result change in declared quality coordinates.
 
-Each package contains its complete `SKILL.md` contract and `agents/openai.yaml` interface metadata. The skills discover an accessible FPF edition at runtime and do not assume this repository path, a specific operating system, or a particular workspace layout.
+Each package contains its complete `SKILL.md` contract. The skills discover an accessible FPF edition at runtime and do not assume this repository path, a specific operating system, or a particular workspace layout.
 
 Every result preserves its complete native artifact under four top-level sections: task, scope, and boundaries; high-confidence results at 95% or above; open questions below 95%, distinguishing probable answers at 90–94% from materially uncertain answers below 90%; and skills actually used, in execution order with each skill's role.
 

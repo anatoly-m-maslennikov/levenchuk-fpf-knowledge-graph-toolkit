@@ -42,13 +42,13 @@ If “interesting” remains undefined, ask for the missing distinctions or retu
 - Route an actual selection and ADR request to `fpf-decision-synthesize` after candidates have recoverable evaluation evidence.
 - Remain layer-agnostic and artifact-agnostic. Remain read-only unless the user separately authorizes implementation or file writes.
 
-## Subagent lifecycle
+## Optional delegated work
 
-If this workflow delegates a bounded evidence or exploration lane, retrieval, wait, elapsed-time, token, credit, cost, context, and turn budgets limit only scope, root-side polling, and new work. They never authorize `interrupt_agent`, cancellation, replacement, or duplicate execution of a running subagent. After allowed waits are exhausted, leave it running, continue only non-conflicting work, and consume its result when delivered. Report `still running; polling ended`, never that the lane was stopped. Interrupt only for explicit user cancellation or override, or a confirmed safety or protected-scope violation.
+Delegation must not change the required result. Resource or retrieval limits alone do not justify cancellation, replacement, or duplicate work. Pending work may remain pending while only non-conflicting work continues. Stop it only for user cancellation or override, or a confirmed safety or protected-scope violation. If delegation is unavailable, execute directly.
 
 ## Output
 
-Return the complete listed artifact with every required section and evidence record, including when work was delegated. Do not replace it with a summary, abbreviated surrogate, or pointer to another result.
+Return the complete listed artifact with every required section and evidence record, including any optional delegated work. Do not replace it with a summary, abbreviated surrogate, or pointer to another result.
 
 ### Required result envelope
 
@@ -61,7 +61,7 @@ Organize the complete native artifact under exactly these four top-level Markdow
 
 In section 1, state the task and receiving use, target and current state, scope and exclusions, inputs, sources and evidence, authority, dependencies, and stop condition. In sections 2 and 3, keep every native requirement below as a subsection or item; do not omit, merge away, or summarize it.
 
-In section 4, list every skill actually executed for this result in execution order, using its exact `$skill-name`, and state each skill's role in one concise sentence. Do not list tools, the base model, or merely proposed or recommended downstream skills as used. If no other skill was executed, list only `$fpf-options-explore`.
+In section 4, list every skill actually executed for this result in execution order, using its exact canonical skill ID, and state each skill's role in one concise sentence. Do not list tools, the base model, or merely proposed or recommended downstream skills as used. If no other skill was executed, list only `fpf-options-explore`.
 
 Immediately after the skill list in section 4, add this compact source disclosure:
 

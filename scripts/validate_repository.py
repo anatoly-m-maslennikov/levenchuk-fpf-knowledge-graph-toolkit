@@ -30,7 +30,7 @@ EXPECTED_SKILL_PACKAGES = {
 ROUTABLE_SKILL_PACKAGES = EXPECTED_SKILL_PACKAGES - {"fpf-route.skill"}
 FULL_REPORT_CONTRACT = (
     "Return the complete listed artifact with every required section and evidence record, "
-    "including when work was delegated. Do not replace it with a summary, abbreviated "
+    "including any optional delegated work. Do not replace it with a summary, abbreviated "
     "surrogate, or pointer to another result."
 )
 RESULT_ENVELOPE_HEADINGS = (
@@ -70,6 +70,25 @@ EXPECTED_NATIVE_OUTPUT_COUNTS = {
     "fpf-route": 6,
     "fpf-sota-harvest": 6,
 }
+
+
+FORBIDDEN_PORTABILITY_PATTERNS = (
+    r"\bcod" + r"ex\b",
+    r"\bopen" + r"ai\b",
+    r"\bcla" + r"ude\b",
+    r"\bgr" + r"ok\b",
+    r"\bopen" + r"code\b",
+    r"\binter" + r"rupt_agent\b",
+    r"\bsubagent " + r"lifecycle\b",
+    r"\broot-side " + r"polling\b",
+    r"agents/open" + r"ai\.yaml",
+    r"\.cod" + r"ex/",
+    r"\.cla" + r"ude/",
+    r"\.gr" + r"ok/",
+    r"\$fpf" + r"-",
+    r"\bparallel " + r"calls\b",
+    r"\bparallel " + r"joins\b",
+)
 
 
 def main() -> int:
@@ -205,6 +224,13 @@ def main() -> int:
     skills_readme = (SKILLS / "README.md").read_text(encoding="utf-8")
     for package_name in sorted(EXPECTED_SKILL_PACKAGES):
         require(f"`{package_name}`" in skills_readme, f"skill catalog omits {package_name}")
+    for portability_path in (SKILLS / "README.md", README_PATH):
+        portability_text = portability_path.read_text(encoding="utf-8")
+        for pattern in FORBIDDEN_PORTABILITY_PATTERNS:
+            require(
+                re.search(pattern, portability_text, re.IGNORECASE) is None,
+                f"runtime-specific portability term in {portability_path.relative_to(ROOT)}: {pattern}",
+            )
     for skill_path in skill_paths:
         package = skill_path.parent
         expected_name = package.name.removesuffix(".skill")
@@ -216,6 +242,11 @@ def main() -> int:
             description = re.search(r"^description:\s*(.+)$", frontmatter.group(1), re.MULTILINE)
             require(name is not None and name.group(1) == expected_name, f"skill name mismatch: {expected_name}")
             require(description is not None and bool(description.group(1).strip()), f"missing skill description: {expected_name}")
+
+        for pattern in FORBIDDEN_PORTABILITY_PATTERNS:
+            require(re.search(pattern, skill_text, re.IGNORECASE) is None, f"runtime-specific portability term in {expected_name}: {pattern}")
+        require(not (package / "agents").exists(), f"provider-specific metadata directory present: {expected_name}")
+        require(not any(package.rglob("*.yaml")), f"provider-specific metadata file present: {expected_name}")
 
         references = set(re.findall(r"(?<![\w-])\$?(fpf-[a-z][a-z-]*)(?![\w-])", skill_text))
         installed_names = {name.removesuffix(".skill") for name in EXPECTED_SKILL_PACKAGES}
@@ -253,14 +284,6 @@ def main() -> int:
             require("only when the user authorizes it" in skill_text, "decision synthesis missing write authority boundary")
         if expected_name == "fpf-quality-improve":
             require("Apply changes only when authorized." in skill_text, "quality improvement missing change authority boundary")
-
-        metadata_path = package / "agents" / "openai.yaml"
-        require(metadata_path.exists(), f"missing OpenAI metadata: {expected_name}")
-        if metadata_path.exists():
-            metadata = metadata_path.read_text(encoding="utf-8")
-            for key in ("display_name", "short_description", "default_prompt"):
-                require(re.search(rf"^\s+{key}:\s*.+$", metadata, re.MULTILINE) is not None, f"missing {key}: {expected_name}")
-            require(f"${expected_name}" in metadata, f"default prompt does not invoke ${expected_name}")
 
     help_result = subprocess.run(
         [sys.executable, str(ROOT / "scripts" / "build_fpf_obsidian_graph.py"), "--help"],
