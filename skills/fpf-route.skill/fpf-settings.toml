@@ -1,4 +1,20 @@
 # Suite defaults for every portable FPF skill package.
+
+# Result narrative language:
+# - "natural": retain FPF terms and natural FPF wording.
+# - "general": replace FPF terms with ordinary-language synonyms.
+# - "ste": use simplified synonyms and STE-inspired writing rules.
 output_style = "general"
+
+# FPF-term explanation depth in "natural" output only:
+# - "full": explain each term on first use in up to three short lines.
+# - "short": explain each term in one brief clause or sentence.
+# - "off": do not add explanations.
+# This setting is ignored when output_style is "general" or "ste".
 fpf_terms_explained = "off"
+
+# Fresh-install fallback when neither --method nor an installed preference exists:
+# - "copy": install real, self-contained skill folders.
+# - "symlink": install live links to the repository checkout.
+# Each harness records its effective choice in its local fpf-route/fpf-settings.toml.
 install_method = "copy"
