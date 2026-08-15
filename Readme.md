@@ -32,7 +32,7 @@ The current specification is roughly 12 MB. Loading it for every question consum
 
 The skills discover FPF at runtime and assume no repository path, tool, operating system, or project layer.
 
-Their build-time default is general-language output: no FPF terms in narrative prose, with ordinary-language synonyms instead. A result may use a different style only when the user explicitly requests it. See the [skills README](skills/README.md#output-language-defaults) for the portable contract, including natural-language term explanations and the limited STE-inspired style.
+Their build-time default is general-language output. A result may use a different style only when the user explicitly requests it. General and STE instructions each live once in the `fpf-route` references; a skill loads only the selected style file, and natural output loads neither. See the [skills README](skills/README.md#output-language-defaults) for the portable contract.
 
 | Skill | Use case | Result |
 |---|---|---|
@@ -58,9 +58,9 @@ python3 scripts/install_fpf_skills_for_codex.py --apply
 python3 scripts/install_fpf_skills_for_claude.py --apply
 ```
 
-The portable default is a real copied installation. For a live installation that follows this checkout, add `--method symlink`. The chosen method is saved in the real harness-local `fpf-route/fpf-settings.toml`; later `--apply` and `--check` calls reuse it when `--method` is omitted. In symlink mode, that `fpf-route` directory is a local wrapper: its `SKILL.md` and other package entries link to this checkout, while its settings file remains local. `CODEX_HOME` and `CLAUDE_CONFIG_DIR` are respected, and `--destination` can select an exact skills directory. The scripts use only the Python standard library and support macOS, Linux, WSL, and native Windows. On native Windows, use `py scripts\install_fpf_skills_for_codex.py --apply` (or the Claude filename) and keep the default copy mode when symlink privileges are unavailable.
+The portable default is a real copied installation. For a live installation that follows this checkout, add `--method symlink`. The chosen method is saved in the real harness-local `fpf-route/fpf-settings.toml`; later `--apply` and `--check` calls reuse it when `--method` is omitted. In symlink mode, that `fpf-route` directory is a local wrapper: its `SKILL.md` and `fpf-settings.toml` are real local files, while `references` links to this checkout. This makes the route entry discoverable while preserving shared live references. `CODEX_HOME` and `CLAUDE_CONFIG_DIR` are respected, and `--destination` can select an exact skills directory. The scripts use only the Python standard library and support macOS, Linux, WSL, and native Windows. On native Windows, use `py scripts\install_fpf_skills_for_codex.py --apply` (or the Claude filename) and keep the default copy mode when symlink privileges are unavailable.
 
-Both installers are read-only without `--apply`. Use `--check` to verify all eight packages and their saved settings. They refuse unmanaged conflicts rather than overwrite them.
+Both installers are read-only without `--apply`. Use `--check` to verify all eight packages and their saved settings. With `--method symlink`, `--apply` refreshes known FPF package links, including earlier route wrappers whose `SKILL.md` was linked, when they point to an old or missing checkout; unmanaged real files and directories remain protected as conflicts.
 
 ## Updating from upstream
 

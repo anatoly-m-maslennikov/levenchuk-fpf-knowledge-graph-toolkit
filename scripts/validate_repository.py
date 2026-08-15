@@ -72,6 +72,10 @@ EXPECTED_NATIVE_OUTPUT_COUNTS = {
     "fpf-sota-harvest": 6,
 }
 SETTINGS_PATH = SKILLS / "fpf-route.skill" / "fpf-settings.toml"
+STYLE_REFERENCE_PATHS = {
+    "general": SKILLS / "fpf-route.skill" / "references" / "output-style-general.md",
+    "ste": SKILLS / "fpf-route.skill" / "references" / "output-style-ste.md",
+}
 SYNC_SETTINGS_SCRIPT = ROOT / "scripts" / "sync_fpf_skill_settings.py"
 CODEX_INSTALLER = ROOT / "scripts" / "install_fpf_skills_for_codex.py"
 CLAUDE_INSTALLER = ROOT / "scripts" / "install_fpf_skills_for_claude.py"
@@ -85,15 +89,34 @@ EXPECTED_OUTPUT_SETTINGS_DEFAULTS = {
 ALLOWED_OUTPUT_STYLES = {"natural", "general", "ste"}
 ALLOWED_EXPLANATION_MODES = {"full", "short", "off"}
 OUTPUT_SETTINGS_CONTRACT = (
-    "An explicit user request for a result overrides these embedded defaults.",
-    "Keep exact FPF locators and source paths in compact evidence or source records, not in narrative prose.",
-    "`natural` uses unredacted natural FPF result language",
-    "at most three short lines",
-    "`general` uses no FPF terms in the narrative.",
-    "`ste` uses no FPF terms in the narrative.",
-    "ASD-STE100 Issue 9-inspired overlay",
-    "makes no formal-conformance claim",
+    "Explicit user values override them.",
+    "Load at most one mode resource:",
+    "Keep exact FPF locators and source paths in compact evidence or source records, not narrative prose.",
+    "`natural`: load none; allow FPF terms.",
+    "`full` up to three short lines",
+    "`general`: load only `fpf-route/references/output-style-general.md`.",
+    "`ste`: load only `fpf-route/references/output-style-ste.md`.",
+    "Never preload an unselected resource.",
+    "If the selected file is missing, report it; do not substitute.",
 )
+STYLE_REFERENCE_CONTRACTS = {
+    "general": (
+        'Load this file only when `output_style = "general"`.',
+        "ordinary general language",
+        "meaning-preserving general-language synonyms",
+        "Ignore `fpf_terms_explained`.",
+        "Preserve the original meaning, evidence strength, confidence, and uncertainty.",
+    ),
+    "ste": (
+        'Load this file only when `output_style = "ste"`.',
+        "clear simplified synonyms",
+        "Ignore `fpf_terms_explained`.",
+        "short, clear sentences with one topic per sentence",
+        "Prefer active voice where practical.",
+        "Use vertical lists for complex information.",
+        "ASD-STE100 Issue 9-inspired overlay, not a formal-conformance claim",
+    ),
+}
 
 
 FORBIDDEN_PORTABILITY_PATTERNS = (
@@ -208,6 +231,19 @@ def main() -> int:
     require(settings.get("output_style") in ALLOWED_OUTPUT_STYLES, "skill output_style is invalid")
     require(settings.get("fpf_terms_explained") in ALLOWED_EXPLANATION_MODES, "skill fpf_terms_explained is invalid")
     require(settings.get("install_method") in {"copy", "symlink"}, "skill install_method is invalid")
+    actual_style_references = set(SKILLS.rglob("output-style-*.md"))
+    require(
+        actual_style_references == set(STYLE_REFERENCE_PATHS.values()),
+        "the suite must contain exactly one general and one STE output-style reference",
+    )
+    for style, path in STYLE_REFERENCE_PATHS.items():
+        try:
+            reference_text = path.read_text(encoding="utf-8")
+        except OSError as exc:
+            errors.append(f"cannot read {style} output-style reference: {exc}")
+            continue
+        for contract_text in STYLE_REFERENCE_CONTRACTS[style]:
+            require(contract_text in reference_text, f"missing {style} output-style rule: {contract_text}")
     sync_result = subprocess.run(
         [sys.executable, str(SYNC_SETTINGS_SCRIPT), "--check"], check=False, capture_output=True, text=True
     )
@@ -301,6 +337,9 @@ def main() -> int:
         require(skill_text.count(OUTPUT_SETTINGS_END) == 1, f"missing or duplicate output settings block end: {expected_name}")
         for contract_text in OUTPUT_SETTINGS_CONTRACT:
             require(contract_text in skill_text, f"missing output settings contract in {expected_name}: {contract_text}")
+        output_settings_block = skill_text.split(OUTPUT_SETTINGS_START, 1)[1].split(OUTPUT_SETTINGS_END, 1)[0]
+        require("short clear sentences" not in output_settings_block, f"duplicated STE rules in {expected_name}")
+        require("ordinary-language synonyms instead" not in output_settings_block, f"duplicated general rules in {expected_name}")
         heading_positions = [skill_text.find(heading) for heading in RESULT_ENVELOPE_HEADINGS]
         require(all(position >= 0 for position in heading_positions), f"missing four-section result envelope: {expected_name}")
         require(heading_positions == sorted(heading_positions), f"result envelope headings out of order: {expected_name}")
@@ -379,6 +418,11 @@ def main() -> int:
         for skill_name in (name.removesuffix(".skill") for name in EXPECTED_SKILL_PACKAGES):
             installed_skill = copy_destination / skill_name
             require(installed_skill.is_dir() and not installed_skill.is_symlink(), f"copy install is not real: {skill_name}")
+        for reference_name in ("output-style-general.md", "output-style-ste.md"):
+            require(
+                (copy_destination / "fpf-route" / "references" / reference_name).is_file(),
+                f"copy install omits shared style reference: {reference_name}",
+            )
         copy_settings = copy_destination / "fpf-route" / "fpf-settings.toml"
         require(copy_settings.is_file() and not copy_settings.is_symlink(), "copy install settings must be a real file")
         require(not (copy_destination / "fpf-settings.toml").exists(), "copy install must not use root settings")
@@ -413,10 +457,20 @@ def main() -> int:
                 installed_skill = link_destination / skill_name
                 if skill_name == "fpf-route":
                     require(installed_skill.is_dir() and not installed_skill.is_symlink(), "symlink route install must be a real wrapper")
-                    require((installed_skill / "SKILL.md").is_symlink(), "symlink route SKILL.md must be linked")
+                    require((installed_skill / "SKILL.md").is_file(), "symlink route SKILL.md must be copied")
+                    require(not (installed_skill / "SKILL.md").is_symlink(), "symlink route SKILL.md must be real")
+                    require(
+                        (installed_skill / "SKILL.md").read_bytes() == (SKILLS / "fpf-route.skill" / "SKILL.md").read_bytes(),
+                        "symlink route SKILL.md must match the source",
+                    )
                     require((installed_skill / "references").is_symlink(), "symlink route references must be linked")
                 else:
                     require(installed_skill.is_symlink(), f"symlink install is not linked: {skill_name}")
+            for reference_name in ("output-style-general.md", "output-style-ste.md"):
+                require(
+                    (link_destination / "fpf-route" / "references" / reference_name).is_file(),
+                    f"symlink install omits shared style reference: {reference_name}",
+                )
             link_settings = link_destination / "fpf-route" / "fpf-settings.toml"
             require(link_settings.is_file() and not link_settings.is_symlink(), "symlink install settings must be real")
             require(not (link_destination / "fpf-settings.toml").exists(), "symlink install must not use root settings")
