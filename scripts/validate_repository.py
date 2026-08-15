@@ -457,7 +457,12 @@ def main() -> int:
                 installed_skill = link_destination / skill_name
                 if skill_name == "fpf-route":
                     require(installed_skill.is_dir() and not installed_skill.is_symlink(), "symlink route install must be a real wrapper")
-                    require((installed_skill / "SKILL.md").is_symlink(), "symlink route SKILL.md must be linked")
+                    require((installed_skill / "SKILL.md").is_file(), "symlink route SKILL.md must be copied")
+                    require(not (installed_skill / "SKILL.md").is_symlink(), "symlink route SKILL.md must be real")
+                    require(
+                        (installed_skill / "SKILL.md").read_bytes() == (SKILLS / "fpf-route.skill" / "SKILL.md").read_bytes(),
+                        "symlink route SKILL.md must match the source",
+                    )
                     require((installed_skill / "references").is_symlink(), "symlink route references must be linked")
                 else:
                     require(installed_skill.is_symlink(), f"symlink install is not linked: {skill_name}")
