@@ -1,3 +1,6 @@
 .DS_Store
 __pycache__/
 *.py[cod]
+/.runtime/
+/.caprmedio/settings.toml
+/*-Knowledge-Graph.bak/

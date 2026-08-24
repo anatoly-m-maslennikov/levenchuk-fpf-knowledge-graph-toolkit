@@ -24,18 +24,27 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+      - name: Check out canonical FPF source revision
+        uses: actions/checkout@v4
+        with:
+          repository: ailev/FPF
+          ref: 7f7c592f4d633e54cdb202d622d6e0e05df41517
+          fetch-depth: 0
+          path: .runtime/original-fpf
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Initialize CI control panel
+        run: |
+          cp .caprmedio/settings.toml.example .caprmedio/settings.toml
+          python3 -c 'from pathlib import Path; p = Path(".caprmedio/settings.toml"); p.write_text(p.read_text().replace("../../Repos/FPF", ".runtime/original-fpf"))'
       - name: Compile scripts
-        run: PYTHONDONTWRITEBYTECODE=1 python3 -m py_compile scripts/*.py
-      - name: Validate projection and skills
-        run: PYTHONDONTWRITEBYTECODE=1 python3 scripts/validate_repository.py
-      - name: Test skill installers
-        run: PYTHONDONTWRITEBYTECODE=1 python3 -m unittest scripts/test_install_fpf_skills.py
-      - name: Check reproducible generation
-        run: PYTHONDONTWRITEBYTECODE=1 python3 scripts/test_reproducible_generation.py
+        run: python3 -X pycache_prefix=.runtime/pycache -m compileall -q scripts
+      - name: Validate script architecture
+        run: python3 -X pycache_prefix=.runtime/pycache -m scripts.validate_script_architecture
+      - name: Run deterministic maintenance suite
+        run: python3 -X pycache_prefix=.runtime/pycache -m scripts.graph_fpf_convert_from_original.run_tests
 
   auto-merge-owner-pr:
     name: auto-merge owner PR

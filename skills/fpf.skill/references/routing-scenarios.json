@@ -1,0 +1,131 @@
+{
+  "schema_version": 2,
+  "scenarios": [
+    {
+      "id": "discover-relevant-patterns",
+      "question": "Which FPF patterns directly apply to a bounded service-design question?",
+      "target_state": "open question",
+      "route_action": "calls",
+      "expected_sequence": ["applicability-scan"],
+      "stop_condition": "Return the smallest relevant direct-pattern set without proposing a full lifecycle."
+    },
+    {
+      "id": "map-current-field",
+      "question": "Build a current, plural evidence map for a bounded technical field.",
+      "target_state": "research need",
+      "route_action": "calls",
+      "expected_sequence": ["sota-harvest"],
+      "stop_condition": "Stop after the reconstructible field map; do not generate or select project options."
+    },
+    {
+      "id": "generate-alternatives",
+      "question": "Generate diverse alternatives for a defined problem and compare them on declared coordinates.",
+      "target_state": "open question",
+      "route_action": "calls",
+      "expected_sequence": ["options-explore"],
+      "stop_condition": "Return compared options without selecting one."
+    },
+    {
+      "id": "challenge-proposal",
+      "question": "Stress-test a concrete design proposal before implementation.",
+      "target_state": "proposal",
+      "route_action": "calls",
+      "expected_sequence": ["design-challenge"],
+      "stop_condition": "Return the bounded challenge; do not approve or implement the proposal."
+    },
+    {
+      "id": "record-decision",
+      "question": "Choose among already evaluated alternatives and produce a recoverable decision record.",
+      "target_state": "evaluated alternatives",
+      "route_action": "calls",
+      "expected_sequence": ["decision-synthesize"],
+      "stop_condition": "Return the project decision and requested ADR projection without inventing new alternatives."
+    },
+    {
+      "id": "improve-versioned-target",
+      "question": "Improve a versioned artifact using its baseline and declared evaluation frame.",
+      "target_state": "versioned improvement target",
+      "route_action": "calls",
+      "expected_sequence": ["quality-improve"],
+      "stop_condition": "Return the bounded change and re-evaluation loop; do not expand the authorized change surface."
+    },
+    {
+      "id": "audit-implemented-work",
+      "question": "Audit completed work against the relevant FPF patterns with replayable evidence.",
+      "target_state": "implemented or accepted work",
+      "route_action": "calls",
+      "expected_sequence": ["alignment-audit"],
+      "stop_condition": "Return claim-level audit verdicts without treating the audit as proposal approval."
+    },
+    {
+      "id": "research-options-decision",
+      "question": "Use current external evidence to develop alternatives, then support the authorized owner in choosing one.",
+      "target_state": "research need",
+      "route_action": "calls",
+      "expected_sequence": [
+        "sota-harvest",
+        "options-explore",
+        "decision-synthesize"
+      ],
+      "stop_condition": "Stop before decision synthesis unless the evidence map, evaluated alternatives, and decision authority are recoverable."
+    },
+    {
+      "id": "challenge-then-decide",
+      "question": "Challenge one concrete candidate, then decide among the already evaluated alternatives.",
+      "target_state": "proposal",
+      "route_action": "calls",
+      "expected_sequence": [
+        "design-challenge",
+        "decision-synthesize"
+      ],
+      "stop_condition": "Stop after the challenge if project authority or comparable evaluation evidence is missing."
+    },
+    {
+      "id": "composed-challenge-improve-closure",
+      "question": "$fpf design challenge + quality improve + alignment audit Strengthen this versioned proposal and verify the accepted repair set.",
+      "target_state": "composed review campaign",
+      "route_action": "calls",
+      "expected_sequence": [
+        "design-challenge",
+        "quality-improve",
+        "alignment-audit"
+      ],
+      "expected_mode": "composition",
+      "stop_condition": "Share one finding registry, stop at unmet authority gates, and return one consolidated issue list plus one mapped repair list."
+    },
+    {
+      "id": "campaign-applied-repairs-closure",
+      "question": "The accepted repair batch is applied. Verify only the registered findings and frozen regression matrix.",
+      "target_state": "review campaign",
+      "route_action": "calls",
+      "expected_sequence": ["alignment-audit"],
+      "expected_mode": "closure",
+      "stop_condition": "Close verified fingerprints or return the consolidated campaign to the owner; do not widen scope."
+    },
+    {
+      "id": "campaign-unchanged-frontier-stop",
+      "question": "The same semantic frontier and evaluation profile already used their full challenge and audit budgets. Review it again.",
+      "target_state": "review campaign",
+      "route_action": "stop",
+      "expected_sequence": [],
+      "stop_condition": "Return no FPF call because an unchanged frontier and profile forbid another full review."
+    },
+    {
+      "id": "campaign-repairs-not-applied",
+      "question": "The owner accepted the registered repairs, but they have not been applied. What FPF review runs next?",
+      "target_state": "review campaign",
+      "route_action": "external_action",
+      "expected_sequence": [],
+      "stop_condition": "Return no FPF call; the authorized repair batch must be applied before closure review."
+    },
+    {
+      "id": "campaign-material-semantic-change",
+      "question": "An accepted repair materially changed the proposal's meaning. Challenge the successor semantic frontier.",
+      "target_state": "review campaign",
+      "route_action": "calls",
+      "expected_sequence": ["design-challenge"],
+      "expected_mode": "full",
+      "stop_condition": "Review the successor frontier once and preserve the predecessor campaign."
+    }
+  ]
+}

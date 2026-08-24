@@ -4,22 +4,22 @@ context:
   - "FPF"
 page_type: "fpf-part"
 mode: "index-generated"
-title: "Part I – Annexes & Extended Tutorials"
+title: "Part I - Annexes & Extended Tutorials"
 source_file: "FPF-Spec.md"
-source_revision: "9a9a42e4d154021ca3f7415e0009a4214832f65f"
-source_sha256: "135b2bd2ac115eddddd0508f7340431e66359ae2faf394065d1f3e4411023171"
-generated_on: "2026-08-02"
+source_revision: "7f7c592f4d633e54cdb202d622d6e0e05df41517"
+source_sha256: "6bdfe1a4347fde18dd50d69d16599f1513890a921627ec602d1d1b075109b48d"
+generated_on: "2026-08-24"
 source_lines:
-  - 102807
-  - 103021
+  - 103791
+  - 104005
 status: "generated"
 generated: true
 ---
 
 
-# Part I – Annexes & Extended Tutorials
+# Part I - Annexes & Extended Tutorials
 
-Source lines: `102807-103021` in `FPF-Spec.md`.
+Source lines: `103791-104005` in `FPF-Spec.md`.
 
 ## Pages
 
@@ -29,4 +29,4 @@ Source lines: `102807-103021` in `FPF-Spec.md`.
 
 | ID | Page | Type | Lines |
 |---|---|---|---|
-| I.2 | [[I_Annexes & Extended Tutorials/00_02_Expanded Entry Disambiguation Cases/00_I.02 - Expanded Entry Disambiguation Cases]] | fpf-pattern | 102813-103021 |
+| I.2 | [[I_Annexes & Extended Tutorials/00_02_Expanded Entry Disambiguation Cases/00_I.02 - Expanded Entry Disambiguation Cases]] | fpf-pattern | 103797-104005 |

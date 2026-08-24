@@ -9,12 +9,12 @@ part: "[[00_Hubs/FPF - Preface (non-normative)]]"
 parents:
   - "[[00_Hubs/FPF - Preface (non-normative)]]"
 source_file: "FPF-Spec.md"
-source_revision: "9a9a42e4d154021ca3f7415e0009a4214832f65f"
-source_sha256: "135b2bd2ac115eddddd0508f7340431e66359ae2faf394065d1f3e4411023171"
-generated_on: "2026-08-02"
+source_revision: "7f7c592f4d633e54cdb202d622d6e0e05df41517"
+source_sha256: "6bdfe1a4347fde18dd50d69d16599f1513890a921627ec602d1d1b075109b48d"
+generated_on: "2026-08-24"
 source_lines:
-  - 1090
-  - 1108
+  - 1191
+  - 1209
 status: "generated"
 generated: true
 ---
@@ -22,10 +22,10 @@ generated: true
 
 Several commitments make FPF more than a collection of patterns.
 
-1. Holons give one root for systems, bodies of knowledge, organizations-as-systems, publication systems, work occurrences, disciplines, and other admitted entities that can be treated as wholes and parts; roles and methods stay adjacent governed values rather than holon kinds by label.
+1. Holons give one root for systems, bodies of knowledge, organizations-as-systems, publication systems, work occurrences, disciplines, methods, and other admitted entities that can be treated as wholes and parts. A local system-role kind is instead a context-local `U.Kind`; it is not a holon by kind identity.
 2. The project entity under concern and its description are kept distinct so descriptions, views, diagrams, publications, and carriers do not replace what they describe.
 3. Context keeps meaning local, while bridges and term sheets let meanings travel without collapse.
-4. Role, method, plan, performed work, evidence, decision, and gate are different kinds of project objects.
+4. A local system-role kind, system-role assignment, method, plan, performed work, evidence, decision, and gate are different project objects or relations.
 5. Architecture is structure of holons, and architecture descriptions are descriptions of that structure.
 6. Evidence and assurance are first-class, so trust is not reduced to confidence prose.
 7. Comparison and improvement are evaluable only with declared characteristics, scales, candidate sets, and current comparator fields.

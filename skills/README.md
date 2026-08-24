@@ -1,36 +1,53 @@
 # FPF Skills
 
-This directory contains portable AI-agent skill packages for bounded use of the First Principles Framework.
+This directory contains one portable end-user First Principles Framework skill and two separate repository-service graph skills.
 
-These directories are the source of truth. Each complete package is a portable core: no provider-specific metadata is required. Install, copy, or link a complete package through the active skill-capable harness's supported user or project discovery mechanism. The harness owns discovery, permissions, tools, and optional delegation; ordinary chat and raw API use are out of scope. The `.skill` suffix is only this repository's folder convention; where a runtime derives a skill ID from the installed directory name, use the unprefixed `name` declared in `SKILL.md`. Invocation notation is runtime-owned and absent from this portable core.
+## `$fpf` prompt graph
 
-Routing:
+[`fpf.skill`](fpf.skill/SKILL.md) is the single end-user package. Its root `SKILL.md` is a small lazy router; [`graph.json`](fpf.skill/graph.json) declares commands, aliases, keywords, persistence flags, and legal handoffs; the substantive contracts live under [`prompts/`](fpf.skill/prompts/).
 
-- `fpf-route.skill` turns one question into the smallest useful ordered sequence of copy-ready FPF skill calls without executing them.
+Canonical Codex invocation is `$fpf`:
 
-Review and applicability:
+- `$fpf help` shows the help page and never saves.
+- `$fpf plan <question>` returns the smallest useful call plan without executing it and never saves. `plan` replaces the former `route` name; `route` remains a resolver alias.
+- `$fpf applicability scan <task>` finds the smallest relevant pattern set.
+- `$fpf sota harvest <task>` builds a reconstructible plural evidence map.
+- `$fpf options explore <task>` generates and compares candidates without selection.
+- `$fpf design challenge <task>` challenges a proposal before implementation.
+- `$fpf decision synthesize <task>` records a recoverable choice among evaluated alternatives and can project an ADR.
+- `$fpf quality improve <task>` runs a bounded target-change and re-evaluation loop.
+- `$fpf alignment audit <task>` audits implemented or accepted work.
 
-- `fpf-applicability-scan.skill` identifies the smallest relevant set of FPF patterns for one question.
-- `fpf-design-challenge.skill` challenges a proposed or not-yet-implemented design with bounded FPF evidence.
-- `fpf-alignment-audit.skill` audits implemented or accepted work against relevant FPF patterns.
+Natural-language text after `$fpf` is scored against the graph. One clear match runs that analytical prompt; an unmatched or tied request falls back to `plan`. Only the selected prompt is loaded. A textual `/fpf` prefix is accepted by the resolver for host portability, but a Codex skill is invoked as `$fpf`.
 
-Generative and operational use:
+Exact analytical commands can be stacked with spaces around `+`: `$fpf design challenge + quality improve + alignment audit <shared task>`. Task text is allowed only after the last command, and every adjacent pair must be a declared graph edge. The nodes run lazily under one campaign envelope and stop at unmet evidence, decision, or mutation gates. One consolidated result and report contains the deduplicated issue registry, one mapped fixes and improvements list, verification state, residual risk, and the actually executed node/source trace; intermediate node reports are suppressed.
 
-- `fpf-options-explore.skill` generates diverse NQD-guided candidates and optionally compares method families through a pinned parity contract.
-- `fpf-sota-harvest.skill` builds a reconstructible, plural SoTA synthesis pack without silently fusing rival traditions.
-- `fpf-decision-synthesize.skill` records a recoverable project decision after candidate synthesis, then projects it into an audience-specific ADR.
-- `fpf-quality-improve.skill` runs a bounded improvement loop that requires both a target-version change and demonstrated result change in declared quality coordinates.
+The repository installers install the single end-user `fpf` package globally for Codex or Claude Code; this project does not expose another project-local `$fpf` entry. Project discovery under [`.agents/skills/`](../.agents/skills/) contains only two service skills: [`graph-fpf-convert-from-original.skill`](graph-fpf-convert-from-original.skill/SKILL.md) refreshes the full upstream HEAD into a revision-named tracked package, applies any colocated patches, stages the verified effective sources, performs transactional graph conversions and repair loops, and clears runtime sources plus backups only after acceptance; [`graph-fpf-evaluate-conversion-result.skill`](graph-fpf-evaluate-conversion-result.skill/SKILL.md) independently evaluates the candidate and emits revision-bound cleanup evidence only for PASS.
 
-Each package contains its complete `SKILL.md` contract. The skills discover an accessible FPF edition at runtime and do not assume this repository path, a specific operating system, or a particular workspace layout.
+## Review campaigns
 
-## Output language defaults
+When work continues from an earlier FPF report or finding set, analytical prompts load the shared [`review-campaign.md`](fpf.skill/references/review-campaign.md) protocol. It preserves semantic and carrier frontiers, the frozen evaluation profile, predecessor, stable finding fingerprints, lifecycle states, and the one permitted next transition. For one unchanged semantic frontier and profile, the budget is one full design challenge and one full post-application alignment audit; registered repairs use targeted closure checks, and an unchanged frontier stops instead of restarting the sequence. An explicit stack is one campaign surface and cannot reset this budget.
 
-[`fpf-route.skill/fpf-settings.toml`](fpf-route.skill/fpf-settings.toml) is the source for the suite-wide defaults: `output_style = "general"`, `fpf_terms_explained = "off"`, and `install_method = "copy"`. The generated settings block in every package keeps each standalone copy portable; run `python3 scripts/sync_fpf_skill_settings.py --apply` from the repository root after changing either output setting, then run `--check`.
+`$fpf plan` applies these phase gates before proposing calls. The seven analytical nodes preserve the campaign handoff when they participate. A repeated report or different node does not reset the budget or create a new finding when the failure predicate is unchanged.
 
-The repository installers for Codex and Claude Code copy packages by default and accept `--method symlink` for a live link to the checkout. The selected method is written to the real harness-local `fpf-route/fpf-settings.toml`, outside the repository, so later installations and updates reuse it automatically. In symlink mode, `fpf-route` is a local wrapper directory: `SKILL.md` and `fpf-settings.toml` are real local files, while `references` links to this package. This keeps the route entry discoverable and its settings local while preserving live shared references. Both modes work on macOS, Linux, and WSL. Copy mode also avoids native Windows symlink-permission requirements.
+## Output and report defaults
 
-An explicit user request overrides these embedded defaults for that result. `natural` retains natural FPF language, applies `full`, `short`, or `off` term explanations, and loads no style file. `general` loads only [`output-style-general.md`](fpf-route.skill/references/output-style-general.md); `ste` loads only [`output-style-ste.md`](fpf-route.skill/references/output-style-ste.md). Skills never preload the unselected file. In every style, retain exact FPF locators and source paths in compact evidence or source records rather than narrative prose.
+[`.caprmedio/settings.toml.example`](../.caprmedio/settings.toml.example) defines the tracked defaults for the repository's ignored control panel: `output_style = "general"`, `fpf_terms_explained = "off"`, `save_report = "on"`, `report_style = "plain"`, and `install_method = "copy"`. The generated settings block in each of the eight non-help prompt files keeps the package portable. After changing a suite setting, run `python3 -B -m scripts.sync_fpf_skill_settings --apply`, then run `--check`.
 
-Every result preserves its complete native artifact under four top-level sections: task, scope, and boundaries; high-confidence results at 95% or above; open questions below 95%, distinguishing probable answers at 90–94% from materially uncertain answers below 90%; and skills actually used, in execution order with each skill's role.
+An explicit user request overrides an accessible `.caprmedio/settings.toml` setting, which overrides the embedded default. `natural` loads no style file. `general` loads only [`output-style-general.md`](fpf.skill/references/output-style-general.md); `ste` loads only [`output-style-ste.md`](fpf.skill/references/output-style-ste.md). Prompts never preload the unselected file.
 
-The skills-used section also contains a compact plain-Markdown FPF source trace. Methodology-consuming skills list every FPF source actually opened exactly once, distinguish files materially used as evidence from files only screened, and report read/used totals. Repository graph files use portable `FPF-Knowledge-Graph/...` paths, while non-file-backed editions use stable source identifiers. `fpf-route` is the explicit exception: because it uses its embedded skill catalog and makes no methodology claims, it reports that routing basis and marks FPF methodology sources as not applicable instead of showing a misleading zero-count trace.
+The seven analytical nodes always return their complete Markdown artifact in chat. When saving is on, they load [`report-persistence.md`](fpf.skill/references/report-persistence.md). Plain delivery writes a non-overwriting UTF-8 copy under the active workspace's `fpf-reports/` unless the user supplies a destination. CAPRMEDIO delivery then loads the isolated [`caprmedio-report-adapter.md`](fpf.skill/references/caprmedio-report-adapter.md), selects the narrowest proven Scope Unit containing the whole analysis, handles ordered BSEED scope specially, and creates one governed non-normative Analysis Report Atom. It fails closed when topology or Atom admission rules are unresolved. `$fpf help` and `$fpf plan` never load persistence and never create reports.
+
+Every analytical result preserves four top-level sections: task, scope, and boundaries; high-confidence results at 95% or above; open questions below 95%; and nodes actually used. Methodology-consuming nodes include a compact FPF source trace. `$fpf plan` is the explicit source-accounting exception because it makes no methodology claims.
+
+## Installation and validation
+
+The installers use the `name: fpf` package identity and install only `fpf.skill`; both repository-service graph skills are excluded. Conversely, project discovery exposes only the service skills and excludes `fpf`, preventing duplicate Project and Personal entries. A schema-2 receipt allows a safe migration from the former eight-package suite: unmodified installer-managed packages are removed, while modified or unmanaged legacy packages block migration and remain untouched.
+
+Run package checks with:
+
+```bash
+python3 -B skills/fpf.skill/scripts/route_fpf.py --check
+python3 -B -m unittest discover -s skills/fpf.skill/scripts/tests -p 'test_*.py'
+python3 -B -m scripts.validate_repository
+```

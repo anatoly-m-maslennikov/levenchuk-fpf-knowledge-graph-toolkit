@@ -1,0 +1,16 @@
+{
+  "hubs": 4,
+  "pages": 25,
+  "ids": 8,
+  "markdown_files": 32,
+  "broken_links_count": 0,
+  "broken_links_sample": [],
+  "unresolved_relations_count": 0,
+  "unresolved_relations_sample": [],
+  "source": "Narrativization-and-Narrative-Studies-Principles-Framework.md",
+  "out_dir": "NPF-Knowledge-Graph",
+  "source_revision": "d77339d7056433de3ee55ad863860ee4b3006f6f",
+  "source_sha256": "80f2d5ec3524b7947a3c36928bf774f61a9c68d4efc9ec5fc0d23206f01534e4",
+  "generated_on": "2026-08-24",
+  "framework": "NPF"
+}

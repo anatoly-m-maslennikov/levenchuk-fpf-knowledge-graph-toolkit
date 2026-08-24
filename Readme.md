@@ -4,13 +4,13 @@ An Obsidian-ready, LLM-friendly usability fork of the original [First Principles
 
 ## About this fork and FPF
 
-This repository does not redefine FPF or claim authority over it. The canonical source and its evolution remain in [ailev/FPF](https://github.com/ailev/FPF).
+This repository does not claim authority over upstream FPF. The canonical upstream source and its evolution remain in [ailev/FPF](https://github.com/ailev/FPF). This toolkit keeps a revision-bound local source package and may apply explicit repository-owned patches before graph conversion; any such patch is a toolkit change, not an upstream FPF change.
 
-This build uses upstream FPF revision [`9a9a42e`](https://github.com/ailev/FPF/commit/9a9a42e4d154021ca3f7415e0009a4214832f65f), dated **2026-08-02**.
+The FPF graph uses upstream revision [`7f7c592`](https://github.com/ailev/FPF/commit/7f7c592f4d633e54cdb202d622d6e0e05df41517), dated **2026-08-23**. The NPF projection is packaged under the same full repository HEAD; its unchanged narrativization bytes remain traceable through the source metadata.
 
 FPF was created by **Anatoly Levenchuk, with AI-agent assistance**. It is a pattern language for making difficult engineering, research, management, governance, and human/AI work explicit and reviewable. It separates entities from descriptions, evidence, decisions, plans, and performed work; scopes claims to their intended use; and identifies the direct patterns governing a question.
 
-The normative content is not rewritten. A script generates smaller linked notes, hubs, indexes, and frontmatter from the upstream source; the monolithic source itself is not stored in this repository.
+The effective conversion sources are in [`.fpf-original-7f7c592f4d633e54cdb202d622d6e0e05df41517/`](.fpf-original-7f7c592f4d633e54cdb202d622d6e0e05df41517/). The folder contains every file tracked by that upstream HEAD and SHA-256 metadata for upstream and effective bytes. Its patch list is currently empty because upstream now contains `F.0.2 Conceptual Synthesis across Source Ontologies`; a future repository-owned patch must live in this same revision-named folder and appear in the metadata. A script stages the verified package and generates smaller linked notes, hubs, indexes, and frontmatter. Runtime copies and graph backups are deleted after acceptance; the revision-named source package remains tracked.
 
 ## Why this version
 
@@ -25,54 +25,69 @@ The current specification is roughly 12 MB. Loading it for every question consum
 ## Repository layout
 
 - [`FPF-Knowledge-Graph/`](FPF-Knowledge-Graph/) — generated graph and validation output.
-- [`scripts/build_fpf_obsidian_graph.py`](scripts/build_fpf_obsidian_graph.py) — generator.
-- [`skills/`](skills/) — portable agent skills, including suite-wide defaults in [`skills/fpf-route.skill/fpf-settings.toml`](skills/fpf-route.skill/fpf-settings.toml) and the synchronization helper [`scripts/sync_fpf_skill_settings.py`](scripts/sync_fpf_skill_settings.py).
+- [`NPF-Knowledge-Graph/`](NPF-Knowledge-Graph/) — generated narrativization and narrative-studies graph using canonical `NSTD.*` identifiers and project-local `NPF` graph labels.
+- [`scripts/`](scripts/README.md) — repository tools, one directory per tool with colocated tests.
+- [`scripts/build_fpf_obsidian_graph/`](scripts/build_fpf_obsidian_graph/) — generator.
+- [`scripts/graph_npf_convert_from_original/`](scripts/graph_npf_convert_from_original/) — transactional NPF converter using the same configured original repository.
+- [`.caprmedio/settings.toml.example`](.caprmedio/settings.toml.example) — tracked template for the repository's single ignored control panel.
+- [`.fpf-original-7f7c592f4d633e54cdb202d622d6e0e05df41517/`](.fpf-original-7f7c592f4d633e54cdb202d622d6e0e05df41517/) — digest-bound full source package for upstream HEAD `7f7c592`; currently unpatched because upstream includes the required synthesis pattern.
+- [`skills/`](skills/) — portable agent skills whose embedded defaults are synchronized from the control panel by [`scripts/sync_fpf_skill_settings/`](scripts/sync_fpf_skill_settings/).
 
 ## Included skills
 
-The skills discover FPF at runtime and assume no repository path, tool, operating system, or project layer.
+The methodology skill discovers FPF at runtime and assumes no repository path, tool, operating system, or project layer. Installers expose it as the global Personal `$fpf` entry. This project exposes only the converter and evaluator service skills, avoiding a duplicate project-local `$fpf`. The original-to-graph converter skill resolves this owning checkout and its ignored repository setting at runtime.
 
-Their build-time default is general-language output. A result may use a different style only when the user explicitly requests it. General and STE instructions each live once in the `fpf-route` references; a skill loads only the selected style file, and natural output loads neither. See the [skills README](skills/README.md#output-language-defaults) for the portable contract.
+The single end-user `$fpf` package is a lazy prompt graph. Its build-time defaults are general-language output, `save_report = "on"`, and `report_style = "plain"` (`plain` or `caprmedio`). A result may use a different style or report setting when the user explicitly requests it; an accessible harness-local or repository suite setting otherwise overrides the embedded defaults; `report_style` is consulted only when saving is on. General and STE instructions each live once under the package references; a prompt loads only the selected style file, and natural output loads neither. See the [skills README](skills/README.md#output-and-report-defaults) for the portable contract.
 
-| Skill | Use case | Result |
+| Command | Use case | Result |
 |---|---|---|
-| [`fpf-route`](skills/fpf-route.skill/SKILL.md) | Turn one question into the right FPF workflow. | Minimal ordered skill calls with copy-ready tasks and handoffs. |
-| [`fpf-applicability-scan`](skills/fpf-applicability-scan.skill/SKILL.md) | Decide whether FPF is useful and which patterns apply. | Smallest relevant set, basis, first result, use, and stop boundary. |
-| [`fpf-design-challenge`](skills/fpf-design-challenge.skill/SKILL.md) | Challenge a proposal or not-yet-implemented decision. | Bounded finding with evidence and supported corrections. |
-| [`fpf-alignment-audit`](skills/fpf-alignment-audit.skill/SKILL.md) | Check implemented or accepted work. | Per-claim semantic/mechanical audit with a bounded verdict. |
-| [`fpf-sota-harvest`](skills/fpf-sota-harvest.skill/SKILL.md) | Map a bounded, plural state of the art. | Reconstructible corpus, claims, traditions, and disagreements. |
-| [`fpf-options-explore`](skills/fpf-options-explore.skill/SKILL.md) | Generate and compare diverse candidates. | Candidate set, declared-coordinate evaluation, and decision handoff. |
-| [`fpf-decision-synthesize`](skills/fpf-decision-synthesize.skill/SKILL.md) | Choose among evaluated alternatives. | Recoverable decision, accepted losses, reopen triggers, and optional ADR. |
-| [`fpf-quality-improve`](skills/fpf-quality-improve.skill/SKILL.md) | Improve a versioned target under a declared evaluation frame. | Target change, rerun comparison, trade-offs, and outcome. |
+| [`$fpf help`](skills/fpf.skill/prompts/help.md) | Show the prompt tree and examples. | Help only; never saves. |
+| [`$fpf plan`](skills/fpf.skill/prompts/plan.md) | Turn one question into the right FPF workflow. | Minimal ordered calls; never executes or saves. |
+| [`$fpf applicability scan`](skills/fpf.skill/prompts/applicability-scan.md) | Decide whether FPF is useful and which patterns apply. | Smallest relevant set, basis, use, and stop boundary. |
+| [`$fpf design challenge`](skills/fpf.skill/prompts/design-challenge.md) | Challenge a proposal or not-yet-implemented decision. | Bounded finding with evidence and supported corrections. |
+| [`$fpf alignment audit`](skills/fpf.skill/prompts/alignment-audit.md) | Check implemented or accepted work. | Per-claim semantic/mechanical audit with a bounded verdict. |
+| [`$fpf sota harvest`](skills/fpf.skill/prompts/sota-harvest.md) | Map a bounded, plural state of the art. | Reconstructible corpus, claims, traditions, and disagreements. |
+| [`$fpf options explore`](skills/fpf.skill/prompts/options-explore.md) | Generate and compare diverse candidates. | Candidate set, declared-coordinate evaluation, and decision handoff. |
+| [`$fpf decision synthesize`](skills/fpf.skill/prompts/decision-synthesize.md) | Choose among evaluated alternatives. | Recoverable decision, accepted losses, reopen triggers, and optional ADR. |
+| [`$fpf quality improve`](skills/fpf.skill/prompts/quality-improve.md) | Improve a versioned target under a declared evaluation frame. | Target change, rerun comparison, trade-offs, and outcome. |
+| [`graph-fpf-convert-from-original`](skills/graph-fpf-convert-from-original.skill/SKILL.md) | Convert canonical `ailev/FPF` into this repository's generated graph. | Transactional backup, deterministic tests, and repair-loop coordination. |
+| [`graph-fpf-evaluate-conversion-result`](skills/graph-fpf-evaluate-conversion-result.skill/SKILL.md) | Evaluate one generated conversion candidate. | Exhaustive mechanical coverage, bounded semantic fidelity, historical regression probes, broader graph risks, and a classified verdict. |
 
-All are read-only by default. Findings do not approve designs, authorize work, provide assurance, or make gate decisions.
+The seven analytical nodes may save their complete result when `save_report = "on"`: `plain` preserves the plain Markdown copy, while `caprmedio` follows the verified CAPRMEDIO Analysis Report Atom adapter, including narrowest-containing-Scope-Unit selection and the BSEED special case. That does not authorize edits to the target. `$fpf help` and `$fpf plan` remain ephemeral and ignore report persistence and `report_style`.
+
+Analytical commands can be composed explicitly with spaces around `+`, for example `$fpf design challenge + quality improve + alignment audit <shared task>`. A composition follows only legal graph handoffs, shares one campaign and stable finding registry, and stops at missing evidence or authority gates. It returns and saves one consolidated artifact: every issue and weak point found within the declared scope and evaluation profile, one deduplicated fixes and improvements list mapped to those findings, and the final verification and residual-risk state. Intermediate nodes do not create separate reports.
+
+Multi-step reviews use one shared [review-campaign protocol](skills/fpf.skill/references/review-campaign.md): stable finding fingerprints, explicit phases, one full challenge and one post-application audit per unchanged semantic frontier, targeted closure checks, and a hard stop when neither the frontier nor evaluation profile changed. This prevents design challenge and alignment audit from repeatedly reviewing the same unchanged target.
 
 ## Installing the skills
 
-This repository is the source of truth for every bundled `fpf-*` skill. Each complete repo-owned `SKILL.md` package is the portable core; no provider-specific metadata is required. The `.skill` suffix is only this repository's folder convention; installers use the unprefixed `name` declared in `SKILL.md`.
+This repository is the source of truth for every bundled skill. [`fpf.skill`](skills/fpf.skill/) is the one end-user methodology package; repository-service skills use a different name. The complete repo-owned package is the portable core; no provider-specific metadata is required. The `.skill` suffix is only this repository's source-folder convention; installers use `name: fpf` from `SKILL.md`.
 
 Python installers are included for Codex and Claude Code:
 
 ```bash
-python3 scripts/install_fpf_skills_for_codex.py --apply
-python3 scripts/install_fpf_skills_for_claude.py --apply
+python3 -X pycache_prefix=.runtime/pycache -m scripts.install_fpf_skills.for_codex --apply
+python3 -X pycache_prefix=.runtime/pycache -m scripts.install_fpf_skills.for_claude --apply
 ```
 
-The portable default is a real copied installation. For a live installation that follows this checkout, add `--method symlink`. The chosen method is saved in the real harness-local `fpf-route/fpf-settings.toml`; later `--apply` and `--check` calls reuse it when `--method` is omitted. In symlink mode, that `fpf-route` directory is a local wrapper: its `SKILL.md` and `fpf-settings.toml` are real local files, while `references` links to this checkout. This makes the route entry discoverable while preserving shared live references. `CODEX_HOME` and `CLAUDE_CONFIG_DIR` are respected, and `--destination` can select an exact skills directory. The scripts use only the Python standard library and support macOS, Linux, WSL, and native Windows. On native Windows, use `py scripts\install_fpf_skills_for_codex.py --apply` (or the Claude filename) and keep the default copy mode when symlink privileges are unavailable.
+The install method is read only from `[skills].install_method` in `.caprmedio/settings.toml`: `copy` creates self-contained directories and `symlink` creates live links to this checkout. The installers create an operational `.fpf-skills-install.json` receipt at the destination; it records provenance for safe updates but is not another settings authority. `CODEX_HOME` and `CLAUDE_CONFIG_DIR` are respected, and `--destination` can select an exact skills directory. On native Windows, use `py -m scripts.install_fpf_skills.for_codex --apply` and select `copy` in the control panel when symlink privileges are unavailable.
 
-Both installers are read-only without `--apply`. Use `--check` to verify all eight packages and their saved settings. With `--method symlink`, `--apply` refreshes known FPF package links, including earlier route wrappers whose `SKILL.md` was linked, when they point to an old or missing checkout; unmanaged real files and directories remain protected as conflicts.
+Both installers are read-only without `--apply`. Use `--check` to verify the single end-user `fpf` package and its receipt. Applying over the former eight-package suite removes only unmodified installer-managed legacy packages; modified or unmanaged legacy packages block migration and remain untouched. The separate conversion and conversion-result-evaluation service skills are deliberately not installed globally, while project discovery deliberately excludes the end-user `fpf` package.
 
 ## Updating from upstream
 
-Fetch or check out upstream `FPF-Spec.md` outside the active Obsidian vault, then pass its path explicitly to the generator.
+Fetch or check out the original `ailev/FPF` repository outside the active Obsidian vault and treat it as read-only input. On first use, [`scripts/init_settings/`](scripts/init_settings/) creates ignored `.caprmedio/settings.toml` from the tracked example. `[paths].fpf_original_repo` points to that repository; `[skills]` is the one control surface for portable output, report, and installer defaults. Edit only this local control panel when the checkout or preferences differ. An explicit graph-builder `--source` still overrides the derived `FPF-Spec.md` path.
+
+For a new upstream HEAD, first run `python3 -X pycache_prefix=.runtime/pycache -m scripts.graph_fpf_convert_from_original --refresh-source-package`. It copies every upstream-tracked file into a package whose folder name includes the full upstream commit, applies any colocated `.patch` files in filename order, and writes digest metadata. It never makes a local source patch, commit, or push in the external checkout; fast-forwarding that checkout to upstream is the refresh precondition. Then run `--check-settings` and `--stage-sources`; both reconstruct the effective result from the recorded upstream commit and fail if a patch, metadata record, stored byte, or file inventory differs. Run the FPF converter and then `python3 -X pycache_prefix=.runtime/pycache -m scripts.graph_npf_convert_from_original`; both read only the staged effective package and preserve their current graphs as temporary `.bak` trees. Run the deterministic suite, prepare the eval pack, and execute the separate evaluator. After it writes revision- and tree-bound PASS evidence, run `--finalize-accepted`. Finalization reruns the complete suite and clears the runtime stage plus every root `*-Knowledge-Graph.bak` tree while retaining the tracked revision-named package. Failed tests, failed evaluation, or stale evidence preserve all temporary inputs and backups.
+
+The NPF projection uses the same staged checkout and reads `Narrativization-and-Narrative-Studies-Principles-Framework.md`. It writes `NPF-Knowledge-Graph`, temporarily rotates an existing projection to `NPF-Knowledge-Graph.bak`, and participates in the complete acceptance suite before cleanup.
 
 Regenerate from the repository root:
 
 ```bash
-PYTHONDONTWRITEBYTECODE=1 python3 scripts/build_fpf_obsidian_graph.py \
-  --source /path/to/FPF-Spec.md \
-  --source-revision 9a9a42e4d154021ca3f7415e0009a4214832f65f \
-  --generated-on 2026-08-02 --clean
+python3 -X pycache_prefix=.runtime/pycache -m scripts.build_fpf_obsidian_graph \
+  --source-revision 7f7c592f4d633e54cdb202d622d6e0e05df41517 \
+  --generated-on 2026-08-24 --clean
 ```
 
 The report and every generated note record this revision, the SHA-256 of the exact source bytes, and the supplied generation date. Check the [`validation report`](FPF-Knowledge-Graph/00_Index/FPF%20-%20Validation%20Report.json) for zero broken links, then review the diff.

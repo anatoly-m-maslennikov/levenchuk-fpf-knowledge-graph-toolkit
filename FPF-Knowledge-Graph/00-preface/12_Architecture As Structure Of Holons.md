@@ -9,12 +9,12 @@ part: "[[00_Hubs/FPF - Preface (non-normative)]]"
 parents:
   - "[[00_Hubs/FPF - Preface (non-normative)]]"
 source_file: "FPF-Spec.md"
-source_revision: "9a9a42e4d154021ca3f7415e0009a4214832f65f"
-source_sha256: "135b2bd2ac115eddddd0508f7340431e66359ae2faf394065d1f3e4411023171"
-generated_on: "2026-08-02"
+source_revision: "7f7c592f4d633e54cdb202d622d6e0e05df41517"
+source_sha256: "6bdfe1a4347fde18dd50d69d16599f1513890a921627ec602d1d1b075109b48d"
+generated_on: "2026-08-24"
 source_lines:
-  - 1040
-  - 1053
+  - 1141
+  - 1154
 status: "generated"
 generated: true
 ---
@@ -26,7 +26,7 @@ This makes architecture broad. There can be architecture of a physical system, s
 
 Architecture descriptions, structural views, viewpoints, diagrams, models, and publication forms are descriptions or publications about architecture. They are valuable, but they do not replace the architecture itself.
 
-The architecture patterns make this distinction usable. [[C_Kernel Extension Specifications/18_30_Grounded Architecture and Selected-Structure Adequacy/00_C.30 - Grounded Architecture and Selected-Structure Adequacy|C.30]] governs architecture as an EntityOfConcern. [[A_Kernel Architecture Cluster/22_Structure and Structural Views (STRUCT-CAL)/00_A.22 - Structure and Structural Views (STRUCT-CAL)|A.22]] governs architectural characteristics. [[C_Kernel Extension Specifications/18_30_Grounded Architecture and Selected-Structure Adequacy/04_C.30.ASV - Architecture Structural View Adequacy (ASV)|C.30.ASV]] governs architecture structural views. [[C_Kernel Extension Specifications/18_30_Grounded Architecture and Selected-Structure Adequacy/01_AD_Architecture Description Adequacy/00_C.30.AD - Architecture Description Adequacy|C.30.AD]] governs architecture descriptions. [[A_Kernel Architecture Cluster/06_Signature Stack & Boundary Discipline/15_A.06.M - Module Relation Repair|A.6.M]] governs module-interface relation repair. [[C_Kernel Extension Specifications/19_31_Modularity and Reusable Structure Characteristics/00_C.31 - Modularity and Reusable Structure Characteristics|C.31]] and related architecture patterns govern modularity, reusable structure, scale, selected structures, interlevel tension, and architecture-changing moves.
+The architecture pattern descriptions make this distinction usable without creating a second ontology. The defining or constraining `ClaimGraph` sources are located at [[C_Kernel Extension Specifications/18_30_Grounded Architecture and Selected-Structure Adequacy/00_C.30 - Grounded Architecture and Selected-Structure Adequacy|C.30]] for architecture as an EntityOfConcern, [[A_Kernel Architecture Cluster/22_Structure and Structural Views (STRUCT-CAL)/00_A.22 - Structure and Structural Views (STRUCT-CAL)|A.22]] for selected structure, [[C_Kernel Extension Specifications/18_30_Grounded Architecture and Selected-Structure Adequacy/04_C.30.ASV - Architecture Structural View Adequacy (ASV)|C.30.ASV]] for architecture structural-view assertions, [[C_Kernel Extension Specifications/18_30_Grounded Architecture and Selected-Structure Adequacy/01_AD_Architecture Description Adequacy/00_C.30.AD - Architecture Description Adequacy|C.30.AD]] for architecture-description assertions, and [[A_Kernel Architecture Cluster/06_Signature Stack & Boundary Discipline/15_A.06.M - Module Relation Repair|A.6.M]] for module-interface relation repair. [[C_Kernel Extension Specifications/19_31_Modularity and Reusable Structure Characteristics/00_C.31 - Modularity and Reusable Structure Characteristics|C.31]] and related architecture pattern descriptions locate exact rule content for modularity, reusable structure, scale, interlevel tension, and architecture-changing assertions. Architecture, selected structure, each description episteme, each view, each publication, and each change remain separate subjects.
 
 This matters because architecture work is not only "draw the diagram". It is also "which structure matters", "what characteristic changes", "what tradeoff is visible", "what description is needed", "what interface claim is being made", "what evidence would make this architecture decision responsible", and "which move changes the architecture rather than merely changing a document about it".
 

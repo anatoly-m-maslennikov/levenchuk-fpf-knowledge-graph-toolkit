@@ -1,0 +1,9 @@
+[paths]
+fpf_original_repo = "../../Repos/FPF"
+
+[skills]
+output_style = "general"
+fpf_terms_explained = "off"
+save_report = "on"
+report_style = "plain"
+install_method = "copy"

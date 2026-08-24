@@ -4,22 +4,22 @@ context:
   - "FPF"
 page_type: "fpf-part"
 mode: "index-generated"
-title: "Part B — Trans-disciplinary Reasoning Cluster"
+title: "Part B - Trans-disciplinary Reasoning Cluster"
 source_file: "FPF-Spec.md"
-source_revision: "9a9a42e4d154021ca3f7415e0009a4214832f65f"
-source_sha256: "135b2bd2ac115eddddd0508f7340431e66359ae2faf394065d1f3e4411023171"
-generated_on: "2026-08-02"
+source_revision: "7f7c592f4d633e54cdb202d622d6e0e05df41517"
+source_sha256: "6bdfe1a4347fde18dd50d69d16599f1513890a921627ec602d1d1b075109b48d"
+generated_on: "2026-08-24"
 source_lines:
-  - 35172
-  - 40854
+  - 34432
+  - 39906
 status: "generated"
 generated: true
 ---
 
 
-# Part B — Trans-disciplinary Reasoning Cluster
+# Part B - Trans-disciplinary Reasoning Cluster
 
-Source lines: `35172-40854` in `FPF-Spec.md`.
+Source lines: `34432-39906` in `FPF-Spec.md`.
 
 ## Pages
 
@@ -36,10 +36,10 @@ Source lines: `35172-40854` in `FPF-Spec.md`.
 - [[B_Trans-disciplinary Reasoning Cluster/01_02_Meta-Holon Transition - Whole Reidentification/03_B.02.03 - Meta-Holon Transition With Episteme Result|B.2.3]] — Meta-Holon Transition With Episteme Result
 - [[B_Trans-disciplinary Reasoning Cluster/01_02_Meta-Holon Transition - Whole Reidentification/04_B.02.04 - Capability and Functioning Whole Reidentification|B.2.4]] — Capability and Functioning Whole Reidentification
 - [[B_Trans-disciplinary Reasoning Cluster/01_02_Meta-Holon Transition - Whole Reidentification/05_B.02.05 - Supervisor-Subholon Feedback Relation|B.2.5]] — Supervisor-Subholon Feedback Relation
-- [[B_Trans-disciplinary Reasoning Cluster/02_03_Trust and Assurance Calculus (F-G-R with Congruence)/00_B.03 - Trust and Assurance Calculus (F-G-R with Congruence)|B.3]] — Trust and Assurance Calculus (F-G-R with Congruence)
-- [[B_Trans-disciplinary Reasoning Cluster/02_03_Trust and Assurance Calculus (F-G-R with Congruence)/01_B.03.03 - Assurance Subtypes & Levels|B.3.3]] — Assurance Subtypes & Levels
-- [[B_Trans-disciplinary Reasoning Cluster/02_03_Trust and Assurance Calculus (F-G-R with Congruence)/02_B.03.04 - Evidence Decay & Epistemic Debt|B.3.4]] — Evidence Decay & Epistemic Debt
-- [[B_Trans-disciplinary Reasoning Cluster/02_03_Trust and Assurance Calculus (F-G-R with Congruence)/03_B.03.05 - Working-Model Relations & Grounding (CT2R-LOG)|B.3.5]] — Working-Model Relations & Grounding (CT2R-LOG)
+- [[B_Trans-disciplinary Reasoning Cluster/02_03_Trust and Assurance Calculus/00_B.03 - Trust and Assurance Calculus|B.3]] — Trust and Assurance Calculus
+- [[B_Trans-disciplinary Reasoning Cluster/02_03_Trust and Assurance Calculus/01_B.03.03 - Assurance Subtypes & Levels|B.3.3]] — Assurance Subtypes & Levels
+- [[B_Trans-disciplinary Reasoning Cluster/02_03_Trust and Assurance Calculus/02_B.03.04 - Evidence Decay & Epistemic Debt|B.3.4]] — Evidence Decay & Epistemic Debt
+- [[B_Trans-disciplinary Reasoning Cluster/02_03_Trust and Assurance Calculus/03_B.03.05 - Working-Model Relations & Grounding (CT2R-LOG)|B.3.5]] — Working-Model Relations & Grounding (CT2R-LOG)
 - [[B_Trans-disciplinary Reasoning Cluster/03_04_Canonical Evolution Loop/00_B.04 - Canonical Evolution Loop|B.4]] — Canonical Evolution Loop
 - [[B_Trans-disciplinary Reasoning Cluster/03_04_Canonical Evolution Loop/01_B.04.01 - Observe -- Notice -- Stabilize -- Route|B.4.1]] — Observe -> Notice -> Stabilize -> Route
 - [[B_Trans-disciplinary Reasoning Cluster/04_05_Canonical Reasoning Cycle/00_B.05 - Canonical Reasoning Cycle|B.5]] — Canonical Reasoning Cycle
@@ -53,28 +53,28 @@ Source lines: `35172-40854` in `FPF-Spec.md`.
 
 | ID | Page | Type | Lines |
 |---|---|---|---|
-| B.1 | [[B_Trans-disciplinary Reasoning Cluster/00_01_Holon Aggregation and Part-Whole Construction/00_B.01 - Holon Aggregation and Part-Whole Construction]] | fpf-pattern | 35174-35407 |
-| B.1.1 | [[B_Trans-disciplinary Reasoning Cluster/00_01_Holon Aggregation and Part-Whole Construction/01_B.01.01 - Dependency Structure and Relation Grounding]] | fpf-pattern | 35408-35617 |
-| B.1.2 | [[B_Trans-disciplinary Reasoning Cluster/00_01_Holon Aggregation and Part-Whole Construction/02_B.01.02 - System Aggregation and Holon Delimitation]] | fpf-pattern | 35618-35836 |
-| B.1.3 | [[B_Trans-disciplinary Reasoning Cluster/00_01_Holon Aggregation and Part-Whole Construction/03_B.01.03 - Γepist - Knowledge-Specific Aggregation]] | fpf-pattern | 35837-36131 |
-| B.1.4 | [[B_Trans-disciplinary Reasoning Cluster/00_01_Holon Aggregation and Part-Whole Construction/04_B.01.04 - Contextual and Temporal Aggregation]] | fpf-pattern | 36132-36342 |
-| B.1.5 | [[B_Trans-disciplinary Reasoning Cluster/00_01_Holon Aggregation and Part-Whole Construction/05_B.01.05 - Gammamethod - Order-Sensitive Method Composition and Work Enactment]] | fpf-pattern | 36343-36739 |
-| B.1.6 | [[B_Trans-disciplinary Reasoning Cluster/00_01_Holon Aggregation and Part-Whole Construction/06_B.01.06 - Work-Resource Aggregation]] | fpf-pattern | 36740-36973 |
-| B.2 | [[B_Trans-disciplinary Reasoning Cluster/01_02_Meta-Holon Transition - Whole Reidentification/00_B.02 - Meta-Holon Transition - Whole Reidentification]] | fpf-pattern | 36974-37280 |
-| B.2.P | [[B_Trans-disciplinary Reasoning Cluster/01_02_Meta-Holon Transition - Whole Reidentification/01_B.02.P - Emergence and MHT Precision Restoration]] | fpf-pattern | 37281-37537 |
-| B.2.2 | [[B_Trans-disciplinary Reasoning Cluster/01_02_Meta-Holon Transition - Whole Reidentification/02_B.02.02 - Meta-System Transition - System Specialization of MHT]] | fpf-pattern | 37538-37762 |
-| B.2.3 | [[B_Trans-disciplinary Reasoning Cluster/01_02_Meta-Holon Transition - Whole Reidentification/03_B.02.03 - Meta-Holon Transition With Episteme Result]] | fpf-pattern | 37763-37970 |
-| B.2.4 | [[B_Trans-disciplinary Reasoning Cluster/01_02_Meta-Holon Transition - Whole Reidentification/04_B.02.04 - Capability and Functioning Whole Reidentification]] | fpf-pattern | 37971-38168 |
-| B.2.5 | [[B_Trans-disciplinary Reasoning Cluster/01_02_Meta-Holon Transition - Whole Reidentification/05_B.02.05 - Supervisor-Subholon Feedback Relation]] | fpf-pattern | 38169-38382 |
-| B.3 | [[B_Trans-disciplinary Reasoning Cluster/02_03_Trust and Assurance Calculus (F-G-R with Congruence)/00_B.03 - Trust and Assurance Calculus (F-G-R with Congruence)]] | fpf-pattern | 38383-38986 |
-| B.3.3 | [[B_Trans-disciplinary Reasoning Cluster/02_03_Trust and Assurance Calculus (F-G-R with Congruence)/01_B.03.03 - Assurance Subtypes & Levels]] | fpf-pattern | 38987-39070 |
-| B.3.4 | [[B_Trans-disciplinary Reasoning Cluster/02_03_Trust and Assurance Calculus (F-G-R with Congruence)/02_B.03.04 - Evidence Decay & Epistemic Debt]] | fpf-pattern | 39071-39188 |
-| B.3.5 | [[B_Trans-disciplinary Reasoning Cluster/02_03_Trust and Assurance Calculus (F-G-R with Congruence)/03_B.03.05 - Working-Model Relations & Grounding (CT2R-LOG)]] | fpf-pattern | 39189-39539 |
-| B.4 | [[B_Trans-disciplinary Reasoning Cluster/03_04_Canonical Evolution Loop/00_B.04 - Canonical Evolution Loop]] | fpf-pattern | 39540-39683 |
-| B.4.1 | [[B_Trans-disciplinary Reasoning Cluster/03_04_Canonical Evolution Loop/01_B.04.01 - Observe -- Notice -- Stabilize -- Route]] | fpf-pattern | 39684-39912 |
-| B.5 | [[B_Trans-disciplinary Reasoning Cluster/04_05_Canonical Reasoning Cycle/00_B.05 - Canonical Reasoning Cycle]] | fpf-pattern | 39913-40012 |
-| B.5.1 | [[B_Trans-disciplinary Reasoning Cluster/04_05_Canonical Reasoning Cycle/01_B.05.01 - Explore → Shape → Evidence → Operate]] | fpf-pattern | 40013-40072 |
-| B.5.2 | [[B_Trans-disciplinary Reasoning Cluster/04_05_Canonical Reasoning Cycle/02_Abductive Loop/00_B.05.02 - Abductive Loop]] | fpf-pattern | 40073-40393 |
-| B.5.2.0 | [[B_Trans-disciplinary Reasoning Cluster/04_05_Canonical Reasoning Cycle/02_Abductive Loop/01_B.05.02.00 - U.AbductivePrompt]] | fpf-pattern | 40394-40586 |
-| B.5.2.1 | [[B_Trans-disciplinary Reasoning Cluster/04_05_Canonical Reasoning Cycle/02_Abductive Loop/02_B.05.02.01 - Creative Abduction with NQD]] | fpf-pattern | 40587-40760 |
-| B.5.3 | [[B_Trans-disciplinary Reasoning Cluster/04_05_Canonical Reasoning Cycle/03_B.05.03 - Domain-Concept Bridge]] | fpf-pattern | 40761-40854 |
+| B.1 | [[B_Trans-disciplinary Reasoning Cluster/00_01_Holon Aggregation and Part-Whole Construction/00_B.01 - Holon Aggregation and Part-Whole Construction]] | fpf-pattern | 34434-34669 |
+| B.1.1 | [[B_Trans-disciplinary Reasoning Cluster/00_01_Holon Aggregation and Part-Whole Construction/01_B.01.01 - Dependency Structure and Relation Grounding]] | fpf-pattern | 34670-34884 |
+| B.1.2 | [[B_Trans-disciplinary Reasoning Cluster/00_01_Holon Aggregation and Part-Whole Construction/02_B.01.02 - System Aggregation and Holon Delimitation]] | fpf-pattern | 34885-35103 |
+| B.1.3 | [[B_Trans-disciplinary Reasoning Cluster/00_01_Holon Aggregation and Part-Whole Construction/03_B.01.03 - Γepist - Knowledge-Specific Aggregation]] | fpf-pattern | 35104-35397 |
+| B.1.4 | [[B_Trans-disciplinary Reasoning Cluster/00_01_Holon Aggregation and Part-Whole Construction/04_B.01.04 - Contextual and Temporal Aggregation]] | fpf-pattern | 35398-35610 |
+| B.1.5 | [[B_Trans-disciplinary Reasoning Cluster/00_01_Holon Aggregation and Part-Whole Construction/05_B.01.05 - Gammamethod - Order-Sensitive Method Composition and Work Enactment]] | fpf-pattern | 35611-36029 |
+| B.1.6 | [[B_Trans-disciplinary Reasoning Cluster/00_01_Holon Aggregation and Part-Whole Construction/06_B.01.06 - Work-Resource Aggregation]] | fpf-pattern | 36030-36266 |
+| B.2 | [[B_Trans-disciplinary Reasoning Cluster/01_02_Meta-Holon Transition - Whole Reidentification/00_B.02 - Meta-Holon Transition - Whole Reidentification]] | fpf-pattern | 36267-36577 |
+| B.2.P | [[B_Trans-disciplinary Reasoning Cluster/01_02_Meta-Holon Transition - Whole Reidentification/01_B.02.P - Emergence and MHT Precision Restoration]] | fpf-pattern | 36578-36834 |
+| B.2.2 | [[B_Trans-disciplinary Reasoning Cluster/01_02_Meta-Holon Transition - Whole Reidentification/02_B.02.02 - Meta-System Transition - System Specialization of MHT]] | fpf-pattern | 36835-37059 |
+| B.2.3 | [[B_Trans-disciplinary Reasoning Cluster/01_02_Meta-Holon Transition - Whole Reidentification/03_B.02.03 - Meta-Holon Transition With Episteme Result]] | fpf-pattern | 37060-37267 |
+| B.2.4 | [[B_Trans-disciplinary Reasoning Cluster/01_02_Meta-Holon Transition - Whole Reidentification/04_B.02.04 - Capability and Functioning Whole Reidentification]] | fpf-pattern | 37268-37465 |
+| B.2.5 | [[B_Trans-disciplinary Reasoning Cluster/01_02_Meta-Holon Transition - Whole Reidentification/05_B.02.05 - Supervisor-Subholon Feedback Relation]] | fpf-pattern | 37466-37683 |
+| B.3 | [[B_Trans-disciplinary Reasoning Cluster/02_03_Trust and Assurance Calculus/00_B.03 - Trust and Assurance Calculus]] | fpf-pattern | 37684-38004 |
+| B.3.3 | [[B_Trans-disciplinary Reasoning Cluster/02_03_Trust and Assurance Calculus/01_B.03.03 - Assurance Subtypes & Levels]] | fpf-pattern | 38005-38088 |
+| B.3.4 | [[B_Trans-disciplinary Reasoning Cluster/02_03_Trust and Assurance Calculus/02_B.03.04 - Evidence Decay & Epistemic Debt]] | fpf-pattern | 38089-38206 |
+| B.3.5 | [[B_Trans-disciplinary Reasoning Cluster/02_03_Trust and Assurance Calculus/03_B.03.05 - Working-Model Relations & Grounding (CT2R-LOG)]] | fpf-pattern | 38207-38557 |
+| B.4 | [[B_Trans-disciplinary Reasoning Cluster/03_04_Canonical Evolution Loop/00_B.04 - Canonical Evolution Loop]] | fpf-pattern | 38558-38735 |
+| B.4.1 | [[B_Trans-disciplinary Reasoning Cluster/03_04_Canonical Evolution Loop/01_B.04.01 - Observe -- Notice -- Stabilize -- Route]] | fpf-pattern | 38736-38964 |
+| B.5 | [[B_Trans-disciplinary Reasoning Cluster/04_05_Canonical Reasoning Cycle/00_B.05 - Canonical Reasoning Cycle]] | fpf-pattern | 38965-39064 |
+| B.5.1 | [[B_Trans-disciplinary Reasoning Cluster/04_05_Canonical Reasoning Cycle/01_B.05.01 - Explore → Shape → Evidence → Operate]] | fpf-pattern | 39065-39124 |
+| B.5.2 | [[B_Trans-disciplinary Reasoning Cluster/04_05_Canonical Reasoning Cycle/02_Abductive Loop/00_B.05.02 - Abductive Loop]] | fpf-pattern | 39125-39445 |
+| B.5.2.0 | [[B_Trans-disciplinary Reasoning Cluster/04_05_Canonical Reasoning Cycle/02_Abductive Loop/01_B.05.02.00 - U.AbductivePrompt]] | fpf-pattern | 39446-39638 |
+| B.5.2.1 | [[B_Trans-disciplinary Reasoning Cluster/04_05_Canonical Reasoning Cycle/02_Abductive Loop/02_B.05.02.01 - Creative Abduction with NQD]] | fpf-pattern | 39639-39812 |
+| B.5.3 | [[B_Trans-disciplinary Reasoning Cluster/04_05_Canonical Reasoning Cycle/03_B.05.03 - Domain-Concept Bridge]] | fpf-pattern | 39813-39906 |
