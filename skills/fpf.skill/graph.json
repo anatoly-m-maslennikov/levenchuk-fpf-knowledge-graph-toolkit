@@ -1,0 +1,113 @@
+{
+  "schema_version": 2,
+  "fallback_node": "plan",
+  "composition": {
+    "operator": "+",
+    "reference": "references/composition.md",
+    "report_node": "composition"
+  },
+  "nodes": [
+    {
+      "id": "help",
+      "command": "help",
+      "aliases": ["?", "commands", "usage"],
+      "description": "Show the FPF command tree and usage examples.",
+      "prompt": "prompts/help.md",
+      "persist_report": false,
+      "exact_only": true,
+      "keywords": []
+    },
+    {
+      "id": "plan",
+      "command": "plan",
+      "aliases": ["planner", "route", "workflow", "which skill"],
+      "description": "Return the smallest useful ordered FPF call plan without executing it.",
+      "prompt": "prompts/plan.md",
+      "persist_report": false,
+      "exact_only": false,
+      "keywords": ["plan", "route", "sequence", "workflow", "which skill", "what should i use", "then"]
+    },
+    {
+      "id": "applicability-scan",
+      "command": "applicability scan",
+      "aliases": ["applicability", "scan", "relevant patterns"],
+      "description": "Find the smallest relevant set of direct FPF patterns for a bounded question.",
+      "prompt": "prompts/applicability-scan.md",
+      "persist_report": true,
+      "exact_only": false,
+      "keywords": ["apply", "applicable", "applicability", "relevant", "fpf patterns", "which patterns", "what fpf can contribute", "borrow from fpf"]
+    },
+    {
+      "id": "sota-harvest",
+      "command": "sota harvest",
+      "aliases": ["sota", "state of the art", "research harvest"],
+      "description": "Build a bounded, reconstructible, plural state-of-the-art synthesis.",
+      "prompt": "prompts/sota-harvest.md",
+      "persist_report": true,
+      "exact_only": false,
+      "keywords": ["sota", "state of the art", "research", "field map", "evidence map", "plural", "landscape", "current evidence", "rival traditions"]
+    },
+    {
+      "id": "options-explore",
+      "command": "options explore",
+      "aliases": ["options", "explore options", "alternatives"],
+      "description": "Generate and compare diverse alternatives without selecting a winner.",
+      "prompt": "prompts/options-explore.md",
+      "persist_report": true,
+      "exact_only": false,
+      "keywords": ["options", "alternatives", "candidates", "explore", "compare", "non-obvious", "nqd"]
+    },
+    {
+      "id": "design-challenge",
+      "command": "design challenge",
+      "aliases": ["challenge", "challenge design", "critique", "stress test"],
+      "description": "Challenge one proposed or not-yet-implemented design with bounded FPF evidence.",
+      "prompt": "prompts/design-challenge.md",
+      "persist_report": true,
+      "exact_only": false,
+      "keywords": ["design", "proposal", "challenge", "critique", "stress test", "before implementation", "architecture", "taxonomy"]
+    },
+    {
+      "id": "decision-synthesize",
+      "command": "decision synthesize",
+      "aliases": ["decision", "decide", "synthesize decision", "adr"],
+      "description": "Turn evaluated alternatives into a recoverable decision and ADR projection.",
+      "prompt": "prompts/decision-synthesize.md",
+      "persist_report": true,
+      "exact_only": false,
+      "keywords": ["decision", "decide", "choose", "selection", "adr", "evaluated alternatives", "reopen trigger"]
+    },
+    {
+      "id": "quality-improve",
+      "command": "quality improve",
+      "aliases": ["improve", "quality", "improvement loop"],
+      "description": "Run a bounded change and re-evaluation loop for a versioned target.",
+      "prompt": "prompts/quality-improve.md",
+      "persist_report": true,
+      "exact_only": false,
+      "keywords": ["improve", "improvement", "quality", "versioned", "baseline", "re-evaluate", "evaluation frame"]
+    },
+    {
+      "id": "alignment-audit",
+      "command": "alignment audit",
+      "aliases": ["audit", "alignment", "final review", "closure audit"],
+      "description": "Audit implemented or accepted work against relevant FPF patterns.",
+      "prompt": "prompts/alignment-audit.md",
+      "persist_report": true,
+      "exact_only": false,
+      "keywords": ["audit", "alignment", "implemented", "accepted work", "final review", "closure", "regression", "verify"]
+    }
+  ],
+  "edges": [
+    {"from": "applicability-scan", "to": "sota-harvest", "relation": "may clarify research frame"},
+    {"from": "applicability-scan", "to": "options-explore", "relation": "may supply applicable patterns"},
+    {"from": "sota-harvest", "to": "options-explore", "relation": "supplies current evidence"},
+    {"from": "options-explore", "to": "design-challenge", "relation": "supplies a candidate proposal"},
+    {"from": "options-explore", "to": "decision-synthesize", "relation": "supplies evaluated alternatives"},
+    {"from": "design-challenge", "to": "decision-synthesize", "relation": "supplies challenge evidence"},
+    {"from": "design-challenge", "to": "quality-improve", "relation": "accepted findings may define a bounded improvement target"},
+    {"from": "decision-synthesize", "to": "quality-improve", "relation": "may authorize a bounded improvement"},
+    {"from": "quality-improve", "to": "alignment-audit", "relation": "supplies changed target and rerun evidence"},
+    {"from": "design-challenge", "to": "alignment-audit", "relation": "applied repairs may enter closure audit"}
+  ]
+}

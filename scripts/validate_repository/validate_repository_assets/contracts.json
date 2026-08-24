@@ -1,0 +1,146 @@
+{
+  "tool_files": [
+    "scripts/build_fpf_obsidian_graph/build_fpf_obsidian_graph.py",
+    "scripts/check_fpf_skill_graph_compatibility/check_fpf_skill_graph_compatibility.py",
+    "scripts/graph_fpf_convert_from_original/graph_fpf_convert_from_original.py",
+    "scripts/graph_fpf_convert_from_original/run_tests.py",
+    "scripts/graph_fpf_convert_from_original/prepare_eval.py",
+    "scripts/graph_npf_convert_from_original/graph_npf_convert_from_original.py",
+    "scripts/init_settings/init_settings.py",
+    "scripts/install_fpf_skills/install_fpf_skills.py",
+    "scripts/sync_fpf_skill_settings/sync_fpf_skill_settings.py",
+    "scripts/validate_fpf_graph/validate_fpf_graph.py",
+    "scripts/validate_npf_graph/validate_npf_graph.py",
+    "scripts/validate_repository/validate_repository.py",
+    "scripts/validate_script_architecture/validate_script_architecture.py"
+  ],
+  "end_user_skills": ["fpf"],
+  "service_skills": [
+    "graph-fpf-convert-from-original",
+    "graph-fpf-evaluate-conversion-result"
+  ],
+  "prompt_nodes": [
+    "help", "plan", "applicability-scan", "sota-harvest", "options-explore",
+    "design-challenge", "decision-synthesize", "quality-improve", "alignment-audit"
+  ],
+  "analytical_nodes": [
+    "applicability-scan", "sota-harvest", "options-explore", "design-challenge",
+    "decision-synthesize", "quality-improve", "alignment-audit"
+  ],
+  "settings": {
+    "output_style": "general",
+    "fpf_terms_explained": "off",
+    "save_report": "on",
+    "report_style": "plain",
+    "install_method": "copy"
+  },
+  "fpf_skill_fragments": [
+    "name: fpf", "lazy-loaded prompt graph", "scripts/route_fpf.py",
+    "prompts/help.md", "prompts/plan.md", "references/report-persistence.md",
+    "references/composition.md", "mode: composition"
+  ],
+  "common_prompt_fragments": [
+    "<!-- output-settings:start -->",
+    "<!-- output-settings:end -->",
+    "Explicit user instruction overrides an accessible `.caprmedio/settings.toml` control-panel setting",
+    "For output language, load at most one mode resource:",
+    "Never preload an unselected resource.",
+    "## Task, scope, and boundaries",
+    "## High-confidence results (>=95%)",
+    "## Open questions (confidence <95%)",
+    "## Skills used",
+    "references/review-campaign.md"
+  ],
+  "analytical_prompt_fragments": [
+    "Return the complete artifact in chat.",
+    "When `save_report = \"on\"`, consult `report_style`, then load only",
+    "#### FPF sources consulted ("
+  ],
+  "plan_prompt_fragments": [
+    "`$fpf plan` is the exception: it remains ephemeral",
+    "never creates a report file",
+    "never loads `references/report-persistence.md`",
+    "Execution boundary"
+  ],
+  "service_skill_fragments": {
+    "graph-fpf-convert-from-original": [
+      "scripts.graph_fpf_convert_from_original",
+      "scripts.graph_fpf_convert_from_original.run_tests",
+      "scripts.graph_fpf_convert_from_original.prepare_eval",
+      "graph-fpf-evaluate-conversion-result",
+      "FPF-Knowledge-Graph.bak",
+      "tooling failed",
+      "conversion failed and rolled back"
+    ],
+    "graph-fpf-evaluate-conversion-result": [
+      "read-only **FPF Graph Conversion Evaluation**",
+      "references/evaluation-profile.md",
+      "all fourteen issue families",
+      "exhaustive mechanical checks",
+      "bounded semantic",
+      "UPSTREAM CONDITION",
+      "Faithfully exposed upstream-source conditions do not by themselves block conversion acceptance",
+      "no converter repair required"
+    ]
+  },
+  "reference_fragments": {
+    "fpf.skill/references/report-persistence.md": [
+      "Resolve `report_style` only now, after report saving is on",
+      "Never overwrite:",
+      "## Plain report delivery",
+      "## CAPRMEDIO report delivery",
+      "references/caprmedio-report-adapter.md"
+    ],
+    "fpf.skill/references/caprmedio-report-adapter.md": [
+      "narrowest structural Scope Unit",
+      "BSEED special case",
+      "project-native Atom creation operation",
+      "stop unsaved"
+    ],
+    "fpf.skill/references/review-campaign.md": [
+      "semantic_frontier",
+      "evaluation_profile",
+      "OPEN -> DECIDED -> APPLIED -> VERIFIED",
+      "Unchanged semantic frontier and unchanged evaluation profile",
+      "one full post-application alignment audit",
+      "explicit `+` composition is one campaign execution surface"
+    ],
+    "fpf.skill/references/composition.md": [
+      "One composition envelope",
+      "Stable consolidated findings",
+      "One repair and improvement list",
+      "Every finding must map to at least one action",
+      "one bounded campaign, not an autonomous review-and-fix loop",
+      "Consolidated issues and weak points",
+      "Consolidated fixes and improvements",
+      "Persist once"
+    ],
+    "fpf.skill/references/output-style-general.md": [
+      "ordinary general language",
+      "meaning-preserving general-language synonyms"
+    ],
+    "fpf.skill/references/output-style-ste.md": [
+      "clear simplified synonyms",
+      "Prefer active voice where practical."
+    ],
+    "graph-fpf-evaluate-conversion-result.skill/references/evaluation-profile.md": [
+      "Exhaustive mechanical coverage",
+      "Bounded semantic coverage",
+      "malformed triple-bracket links",
+      "table pipe corruption",
+      "table rows shaped like `# | ...`",
+      "case-insensitive collision",
+      "byte-identical trees",
+      "correct exhaustive classification",
+      "shared faulty parsing",
+      "Repository and consumer compatibility"
+    ]
+  },
+  "ci_fragments": [
+    "github.event.pull_request.user.login == 'anatoly-m-maslennikov'",
+    "github.event.pull_request.head.repo.full_name == github.repository",
+    "github.event.pull_request.head.ref == 'dev'",
+    "github.event.pull_request.base.ref == 'main'",
+    "!github.event.pull_request.draft"
+  ]
+}
