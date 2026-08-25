@@ -6,12 +6,12 @@ page_type: "fpf-part"
 mode: "index-generated"
 title: "Part C - Kernel Extension Specifications"
 source_file: "FPF-Spec.md"
-source_revision: "7f7c592f4d633e54cdb202d622d6e0e05df41517"
-source_sha256: "6bdfe1a4347fde18dd50d69d16599f1513890a921627ec602d1d1b075109b48d"
-generated_on: "2026-08-24"
+source_revision: "563f4c8e06a319cbd375b66cdbb2df27a5f8b9ef"
+source_sha256: "c9551f2a4b52c9e57972a11552ab945f52a3522f433c54395221b16bef375ac7"
+generated_on: "2026-08-26"
 source_lines:
-  - 39907
-  - 65932
+  - 39869
+  - 65896
 status: "generated"
 generated: true
 ---
@@ -19,7 +19,7 @@ generated: true
 
 # Part C - Kernel Extension Specifications
 
-Source lines: `39907-65932` in `FPF-Spec.md`.
+Source lines: `39869-65896` in `FPF-Spec.md`.
 
 ## Pages
 
@@ -104,79 +104,79 @@ Source lines: `39907-65932` in `FPF-Spec.md`.
 
 | ID | Page | Type | Lines |
 |---|---|---|---|
-| C.2 | [[C_Kernel Extension Specifications/00_02_Epistemic holon composition (KD-CAL)/00_C.02 - Epistemic holon composition (KD-CAL)]] | fpf-pattern | 39914-40022 |
-| C.2.1 | [[C_Kernel Extension Specifications/00_02_Epistemic holon composition (KD-CAL)/01_C.02.01 - U.Episteme- Constitution, Empirical Grounding, and Edition Relations]] | fpf-pattern | 40023-40608 |
-| C.2.P | [[C_Kernel Extension Specifications/00_02_Epistemic holon composition (KD-CAL)/02_P_Epistemic Precision Restoration/00_C.02.P - Epistemic Precision Restoration]] | fpf-pattern | 40609-41132 |
-| C.2.2 | [[C_Kernel Extension Specifications/00_02_Epistemic holon composition (KD-CAL)/03_C.02.02 - Reliability R in the F-G-R triad]] | fpf-pattern | 41133-41491 |
-| C.2.2a | [[C_Kernel Extension Specifications/00_02_Epistemic holon composition (KD-CAL)/04_C.02.2a - U.LanguageStateSpace - Language-state chart over U.CharacteristicSpace]] | fpf-pattern | 41492-41751 |
-| C.2.3 | [[C_Kernel Extension Specifications/00_02_Epistemic holon composition (KD-CAL)/05_C.02.03 - Unified Formality Characteristic F]] | fpf-pattern | 41752-42063 |
-| C.2.LS | [[C_Kernel Extension Specifications/00_02_Epistemic holon composition (KD-CAL)/06_C.02.LS - U.LanguageStateFacetProfile - Thin profile bundle for language-state facets]] | fpf-pattern | 42064-42312 |
-| C.2.4 | [[C_Kernel Extension Specifications/00_02_Epistemic holon composition (KD-CAL)/07_C.02.04 - U.ArticulationExplicitness]] | fpf-pattern | 42313-42515 |
-| C.2.5 | [[C_Kernel Extension Specifications/00_02_Epistemic holon composition (KD-CAL)/08_C.02.05 - U.LanguageStateClosureDegree]] | fpf-pattern | 42516-42708 |
-| C.2.6 | [[C_Kernel Extension Specifications/00_02_Epistemic holon composition (KD-CAL)/09_C.02.06 - U.LanguageStateAnchoringMode]] | fpf-pattern | 42709-42883 |
-| C.2.7 | [[C_Kernel Extension Specifications/00_02_Epistemic holon composition (KD-CAL)/10_C.02.07 - U.LanguageStateRepresentationFactorBundle]] | fpf-pattern | 42884-43058 |
-| C.2.P.DR | [[C_Kernel Extension Specifications/00_02_Epistemic holon composition (KD-CAL)/02_P_Epistemic Precision Restoration/01_C.02.P.DR - Declarative Representation Precision Restoration]] | fpf-pattern | 43059-43402 |
-| C.3 | [[C_Kernel Extension Specifications/01_03_Kinds, Intent and Extent, and Typed Reasoning/00_C.03 - Kinds, Intent and Extent, and Typed Reasoning]] | fpf-pattern | 43403-43573 |
-| C.3.1 | [[C_Kernel Extension Specifications/01_03_Kinds, Intent and Extent, and Typed Reasoning/01_C.03.01 - U.Kind and U.SubkindOf Core]] | fpf-pattern | 43574-43733 |
-| C.3.2 | [[C_Kernel Extension Specifications/01_03_Kinds, Intent and Extent, and Typed Reasoning/02_C.03.02 - Kind Intent, Membership Judgment, and Extension]] | fpf-pattern | 43734-43973 |
-| C.3.3 | [[C_Kernel Extension Specifications/01_03_Kinds, Intent and Extent, and Typed Reasoning/03_C.03.03 - KindBridge and CL^k - Cross-local Correspondence between Distinct Kinds]] | fpf-pattern | 43974-44167 |
-| C.3.4 | [[C_Kernel Extension Specifications/01_03_Kinds, Intent and Extent, and Typed Reasoning/04_C.03.04 - KindUseAdaptationDeclaration - Contextual Adaptation of Kinds without Cloning]] | fpf-pattern | 44168-44378 |
-| C.3.5 | [[C_Kernel Extension Specifications/01_03_Kinds, Intent and Extent, and Typed Reasoning/05_C.03.05 - KindAT - Intentional Abstraction Facet for Kinds (K0…K3)]] | fpf-pattern | 44379-44537 |
-| C.3.A | [[C_Kernel Extension Specifications/01_03_Kinds, Intent and Extent, and Typed Reasoning/06_C.03.A - Typed Guard Macros for Kinds + USM (Annex)]] | fpf-pattern | 44538-44998 |
-| C.11 | [[C_Kernel Extension Specifications/02_11_Decision Theory (Decsn-CAL)/00_C.11 - Decision Theory (Decsn-CAL)]] | fpf-pattern | 44999-45704 |
-| C.13 | [[C_Kernel Extension Specifications/03_13_Constructional Mereology (Compose-CAL)/00_C.13 - Constructional Mereology (Compose-CAL)]] | fpf-pattern | 45705-45955 |
-| C.16 | [[C_Kernel Extension Specifications/04_16_Measurement & Metrics Characterization (MM-CHR)/00_C.16 - Measurement & Metrics Characterization (MM-CHR)]] | fpf-pattern | 45956-46251 |
-| C.16.P | [[C_Kernel Extension Specifications/04_16_Measurement & Metrics Characterization (MM-CHR)/01_C.16.P - Characteristic and Scale Precision Restoration]] | fpf-pattern | 46252-46502 |
-| C.16.Q | [[C_Kernel Extension Specifications/04_16_Measurement & Metrics Characterization (MM-CHR)/02_C.16.Q - Quality-Term Precision Restoration]] | fpf-pattern | 46503-47353 |
-| C.17 | [[C_Kernel Extension Specifications/05_17_Characterising Generative Novelty and Value/00_C.17 - Characterising Generative Novelty and Value]] | fpf-pattern | 47354-47756 |
-| C.18 | [[C_Kernel Extension Specifications/06_18_Open-Ended Search Archive and Front Stewardship/00_C.18 - Open-Ended Search Archive and Front Stewardship]] | fpf-pattern | 47757-48035 |
-| C.18.1 | [[C_Kernel Extension Specifications/06_18_Open-Ended Search Archive and Front Stewardship/01_C.18.01 - Scaling-Law Lens Binding (SLL)]] | fpf-pattern | 48036-48170 |
-| C.19 | [[C_Kernel Extension Specifications/07_19_Explore-Exploit Live-Pool Governor/00_C.19 - Explore-Exploit Live-Pool Governor]] | fpf-pattern | 48171-48544 |
-| C.19.1 | [[C_Kernel Extension Specifications/07_19_Explore-Exploit Live-Pool Governor/01_C.19.01 - Bitter-Lesson Preference (BLP)]] | fpf-pattern | 48545-48700 |
-| C.19.2 | [[C_Kernel Extension Specifications/07_19_Explore-Exploit Live-Pool Governor/02_C.19.02 - Use-Bounded Apparatus Application]] | fpf-pattern | 48701-48868 |
-| C.20 | [[C_Kernel Extension Specifications/08_20_Composition of U.Discipline (Discipline-CAL)/00_C.20 - Composition of U.Discipline (Discipline-CAL)]] | fpf-pattern | 48869-49226 |
-| C.21 | [[C_Kernel Extension Specifications/09_21_Field Health & Structure (Discipline-CHR)/00_C.21 - Field Health & Structure (Discipline-CHR)]] | fpf-pattern | 49227-49491 |
-| C.22 | [[C_Kernel Extension Specifications/10_22_Task Typing and TaskSignature Assignment (Problem-CHR)/00_C.22 - Task Typing and TaskSignature Assignment (Problem-CHR)]] | fpf-pattern | 49492-49875 |
-| C.22.1 | [[C_Kernel Extension Specifications/10_22_Task Typing and TaskSignature Assignment (Problem-CHR)/01_C.22.01 - Task-family adaptation signature]] | fpf-pattern | 49876-50024 |
-| C.22.PFR | [[C_Kernel Extension Specifications/10_22_Task Typing and TaskSignature Assignment (Problem-CHR)/02_C.22.PFR - Problematic-For Relation]] | fpf-pattern | 50025-50357 |
-| C.22.2 | [[C_Kernel Extension Specifications/10_22_Task Typing and TaskSignature Assignment (Problem-CHR)/03_C.22.02 - ProblemCard]] | fpf-pattern | 50358-51015 |
-| C.23 | [[C_Kernel Extension Specifications/11_23_MethodFamily Evidence & Maturity (Method-SoS-LOG)/00_C.23 - MethodFamily Evidence & Maturity (Method-SoS-LOG)]] | fpf-pattern | 51016-51218 |
-| C.24 | [[C_Kernel Extension Specifications/12_24_Agentic Tool-Use and Call Planning (C.Agent-Tools-CAL)/00_C.24 - Agentic Tool-Use and Call Planning (C.Agent-Tools-CAL)]] | fpf-pattern | 51219-51552 |
-| C.25 | [[C_Kernel Extension Specifications/13_25_Q-Bundle- Authoring --ilities- as Structured Quality Bundles/00_C.25 - Q-Bundle- Authoring --ilities- as Structured Quality Bundles]] | fpf-pattern | 51553-51970 |
-| C.26 | [[C_Kernel Extension Specifications/14_26_Quantum-Like Modeling Lens/00_C.26 - Quantum-Like Modeling Lens]] | fpf-pattern | 51971-52586 |
-| C.26.1 | [[C_Kernel Extension Specifications/14_26_Quantum-Like Modeling Lens/01_C.26.01 - Probe-Coupled Boundary Interaction]] | fpf-pattern | 52587-52886 |
-| C.26.2 | [[C_Kernel Extension Specifications/14_26_Quantum-Like Modeling Lens/02_C.26.02 - Enacted Distributed State Evidence]] | fpf-pattern | 52887-53229 |
-| C.26.3 | [[C_Kernel Extension Specifications/14_26_Quantum-Like Modeling Lens/03_C.26.03 - Viability-Envelope Boundary Regulation]] | fpf-pattern | 53230-53564 |
-| C.27 | [[C_Kernel Extension Specifications/15_27_Temporal Claim Adequacy- State Readings, Temporal Trends, and Intervention-Sensitive Change/00_C.27 - Temporal Claim Adequacy- State Readings, Temporal Trends, and Intervention-Sensitive Change]] | fpf-pattern | 53565-54041 |
-| C.27.TA | [[C_Kernel Extension Specifications/15_27_Temporal Claim Adequacy- State Readings, Temporal Trends, and Intervention-Sensitive Change/01_C.27.TA - Temporal Aspect- Time Windows, Rhythm, Cadence, and Currentness]] | fpf-pattern | 54042-54323 |
-| C.28 | [[C_Kernel Extension Specifications/16_28_CausalUse-CAL- Causal-Use Questions, Identification, and Realizability/00_C.28 - CausalUse-CAL- Causal-Use Questions, Identification, and Realizability]] | fpf-pattern | 54324-55080 |
-| C.29 | [[C_Kernel Extension Specifications/17_29_Mathematical Lens Use/00_C.29 - Mathematical Lens Use]] | fpf-pattern | 55081-56448 |
-| C.30 | [[C_Kernel Extension Specifications/18_30_Grounded Architecture and Selected-Structure Adequacy/00_C.30 - Grounded Architecture and Selected-Structure Adequacy]] | fpf-pattern | 56449-57156 |
-| C.30.AD | [[C_Kernel Extension Specifications/18_30_Grounded Architecture and Selected-Structure Adequacy/01_AD_Architecture Description Adequacy/00_C.30.AD - Architecture Description Adequacy]] | fpf-pattern | 57157-57622 |
-| C.30.AD.BA | [[C_Kernel Extension Specifications/18_30_Grounded Architecture and Selected-Structure Adequacy/01_AD_Architecture Description Adequacy/01_C.30.AD.BA - Built-Asset Architecture Description and Reference Designation]] | fpf-pattern | 57623-57884 |
-| C.30.P | [[C_Kernel Extension Specifications/18_30_Grounded Architecture and Selected-Structure Adequacy/02_C.30.P - Architecture and Structure Precision Restoration]] | fpf-pattern | 57885-58132 |
-| C.30.STRAT | [[C_Kernel Extension Specifications/18_30_Grounded Architecture and Selected-Structure Adequacy/03_C.30.STRAT - Stratification Wording Precision Restoration]] | fpf-pattern | 58133-58392 |
-| C.30.ASV | [[C_Kernel Extension Specifications/18_30_Grounded Architecture and Selected-Structure Adequacy/04_C.30.ASV - Architecture Structural View Adequacy (ASV)]] | fpf-pattern | 58393-59198 |
-| C.30.LCA | [[C_Kernel Extension Specifications/18_30_Grounded Architecture and Selected-Structure Adequacy/05_C.30.LCA - Control Structure View Adequacy (LCA)]] | fpf-pattern | 59199-59506 |
-| C.30.ILC | [[C_Kernel Extension Specifications/18_30_Grounded Architecture and Selected-Structure Adequacy/06_C.30.ILC - Cross-Scope Architecture Residual Triage]] | fpf-pattern | 59507-59761 |
-| C.30.TFS-REL | [[C_Kernel Extension Specifications/18_30_Grounded Architecture and Selected-Structure Adequacy/07_C.30.TFS-REL - Architecture Transformation-Flow Structure Relation]] | fpf-pattern | 59762-60181 |
-| C.31 | [[C_Kernel Extension Specifications/19_31_Modularity and Reusable Structure Characteristics/00_C.31 - Modularity and Reusable Structure Characteristics]] | fpf-pattern | 60182-60563 |
-| C.31.RSA | [[C_Kernel Extension Specifications/19_31_Modularity and Reusable Structure Characteristics/01_C.31.RSA - Reusable Structure Accounting]] | fpf-pattern | 60564-60959 |
-| C.31.ASAP | [[C_Kernel Extension Specifications/19_31_Modularity and Reusable Structure Characteristics/02_C.31.ASAP - Architecture Scale-Amenability Preference]] | fpf-pattern | 60960-61282 |
-| C.32 | [[C_Kernel Extension Specifications/20_32_Architecture Candidate Synthesis/00_C.32 - Architecture Candidate Synthesis]] | fpf-pattern | 61283-61636 |
-| C.32.P2S | [[C_Kernel Extension Specifications/20_32_Architecture Candidate Synthesis/01_C.32.P2S - Problem-to-Structure Architecturing Unfolding]] | fpf-pattern | 61637-61990 |
-| C.32.HCS | [[C_Kernel Extension Specifications/20_32_Architecture Candidate Synthesis/02_C.32.HCS - Architecture-Bearing Family Characteristic Starter Packs]] | fpf-pattern | 61991-62195 |
-| C.32.ACS | [[C_Kernel Extension Specifications/20_32_Architecture Candidate Synthesis/03_C.32.ACS - Architecture Characteristic Criteria Set for Improvement Cycles]] | fpf-pattern | 62196-62483 |
-| C.32.ACE | [[C_Kernel Extension Specifications/20_32_Architecture Candidate Synthesis/04_C.32.ACE - Architecture Characteristic Eval Programs]] | fpf-pattern | 62484-62701 |
-| C.32.CONWAY | [[C_Kernel Extension Specifications/20_32_Architecture Candidate Synthesis/05_C.32.CONWAY - Architecture-Influence and Transformed-Architecture Correspondence]] | fpf-pattern | 62702-63129 |
-| C.32.MLAO | [[C_Kernel Extension Specifications/20_32_Architecture Candidate Synthesis/06_C.32.MLAO - Multilevel Architecture Residual Optimization]] | fpf-pattern | 63130-63404 |
-| C.32.MWA | [[C_Kernel Extension Specifications/20_32_Architecture Candidate Synthesis/07_C.32.MWA - Practice Architecture Synthesis from Several Structures]] | fpf-pattern | 63405-63606 |
-| C.32.FAIL | [[C_Kernel Extension Specifications/20_32_Architecture Candidate Synthesis/08_C.32.FAIL - Architecture Failure Recognition and Repair]] | fpf-pattern | 63607-63851 |
-| C.32.PAD | [[C_Kernel Extension Specifications/20_32_Architecture Candidate Synthesis/09_C.32.PAD - Project Architecture Decision After Candidate Synthesis]] | fpf-pattern | 63852-64212 |
-| C.32.ADR | [[C_Kernel Extension Specifications/20_32_Architecture Candidate Synthesis/10_C.32.ADR - Architecture Decision Record Projection]] | fpf-pattern | 64213-64440 |
-| C.32.ADA | [[C_Kernel Extension Specifications/20_32_Architecture Candidate Synthesis/11_C.32.ADA - Architecture Decision Adequacy Scales]] | fpf-pattern | 64441-64738 |
-| C.33 | [[C_Kernel Extension Specifications/21_33_Structural Information Adequacy for Architecture Capture and Missing-Structure Return/00_C.33 - Structural Information Adequacy for Architecture Capture and Missing-Structure Return]] | fpf-pattern | 64739-64945 |
-| C.34 | [[C_Kernel Extension Specifications/22_34_Structural Correspondence, Equivalence, and Morphism Adequacy/00_C.34 - Structural Correspondence, Equivalence, and Morphism Adequacy]] | fpf-pattern | 64946-65134 |
-| C.35 | [[C_Kernel Extension Specifications/23_35_Structural Synthesis and Discovery Adequacy/00_C.35 - Structural Synthesis and Discovery Adequacy]] | fpf-pattern | 65135-65381 |
-| C.36 | [[C_Kernel Extension Specifications/24_36_Cultural Evolution and Cultural-Evolution Engineering/00_C.36 - Cultural Evolution and Cultural-Evolution Engineering]] | fpf-pattern | 65382-65764 |
-| C.36.P | [[C_Kernel Extension Specifications/24_36_Cultural Evolution and Cultural-Evolution Engineering/01_C.36.P - Cultural-Evolution Wording-Use Precision Restoration]] | fpf-pattern | 65765-65932 |
+| C.2 | [[C_Kernel Extension Specifications/00_02_Epistemic holon composition (KD-CAL)/00_C.02 - Epistemic holon composition (KD-CAL)]] | fpf-pattern | 39876-39984 |
+| C.2.1 | [[C_Kernel Extension Specifications/00_02_Epistemic holon composition (KD-CAL)/01_C.02.01 - U.Episteme- Constitution, Empirical Grounding, and Edition Relations]] | fpf-pattern | 39985-40570 |
+| C.2.P | [[C_Kernel Extension Specifications/00_02_Epistemic holon composition (KD-CAL)/02_P_Epistemic Precision Restoration/00_C.02.P - Epistemic Precision Restoration]] | fpf-pattern | 40571-41094 |
+| C.2.2 | [[C_Kernel Extension Specifications/00_02_Epistemic holon composition (KD-CAL)/03_C.02.02 - Reliability R in the F-G-R triad]] | fpf-pattern | 41095-41453 |
+| C.2.2a | [[C_Kernel Extension Specifications/00_02_Epistemic holon composition (KD-CAL)/04_C.02.2a - U.LanguageStateSpace - Language-state chart over U.CharacteristicSpace]] | fpf-pattern | 41454-41713 |
+| C.2.3 | [[C_Kernel Extension Specifications/00_02_Epistemic holon composition (KD-CAL)/05_C.02.03 - Unified Formality Characteristic F]] | fpf-pattern | 41714-42025 |
+| C.2.LS | [[C_Kernel Extension Specifications/00_02_Epistemic holon composition (KD-CAL)/06_C.02.LS - U.LanguageStateFacetProfile - Thin profile bundle for language-state facets]] | fpf-pattern | 42026-42274 |
+| C.2.4 | [[C_Kernel Extension Specifications/00_02_Epistemic holon composition (KD-CAL)/07_C.02.04 - U.ArticulationExplicitness]] | fpf-pattern | 42275-42477 |
+| C.2.5 | [[C_Kernel Extension Specifications/00_02_Epistemic holon composition (KD-CAL)/08_C.02.05 - U.LanguageStateClosureDegree]] | fpf-pattern | 42478-42670 |
+| C.2.6 | [[C_Kernel Extension Specifications/00_02_Epistemic holon composition (KD-CAL)/09_C.02.06 - U.LanguageStateAnchoringMode]] | fpf-pattern | 42671-42845 |
+| C.2.7 | [[C_Kernel Extension Specifications/00_02_Epistemic holon composition (KD-CAL)/10_C.02.07 - U.LanguageStateRepresentationFactorBundle]] | fpf-pattern | 42846-43020 |
+| C.2.P.DR | [[C_Kernel Extension Specifications/00_02_Epistemic holon composition (KD-CAL)/02_P_Epistemic Precision Restoration/01_C.02.P.DR - Declarative Representation Precision Restoration]] | fpf-pattern | 43021-43364 |
+| C.3 | [[C_Kernel Extension Specifications/01_03_Kinds, Intent and Extent, and Typed Reasoning/00_C.03 - Kinds, Intent and Extent, and Typed Reasoning]] | fpf-pattern | 43365-43535 |
+| C.3.1 | [[C_Kernel Extension Specifications/01_03_Kinds, Intent and Extent, and Typed Reasoning/01_C.03.01 - U.Kind and U.SubkindOf Core]] | fpf-pattern | 43536-43695 |
+| C.3.2 | [[C_Kernel Extension Specifications/01_03_Kinds, Intent and Extent, and Typed Reasoning/02_C.03.02 - Kind Intent, Membership Judgment, and Extension]] | fpf-pattern | 43696-43935 |
+| C.3.3 | [[C_Kernel Extension Specifications/01_03_Kinds, Intent and Extent, and Typed Reasoning/03_C.03.03 - KindBridge and CL^k - Cross-local Correspondence between Distinct Kinds]] | fpf-pattern | 43936-44129 |
+| C.3.4 | [[C_Kernel Extension Specifications/01_03_Kinds, Intent and Extent, and Typed Reasoning/04_C.03.04 - KindUseAdaptationDeclaration - Contextual Adaptation of Kinds without Cloning]] | fpf-pattern | 44130-44340 |
+| C.3.5 | [[C_Kernel Extension Specifications/01_03_Kinds, Intent and Extent, and Typed Reasoning/05_C.03.05 - KindAT - Intentional Abstraction Facet for Kinds (K0…K3)]] | fpf-pattern | 44341-44499 |
+| C.3.A | [[C_Kernel Extension Specifications/01_03_Kinds, Intent and Extent, and Typed Reasoning/06_C.03.A - Typed Guard Macros for Kinds + USM (Annex)]] | fpf-pattern | 44500-44960 |
+| C.11 | [[C_Kernel Extension Specifications/02_11_Decision Theory (Decsn-CAL)/00_C.11 - Decision Theory (Decsn-CAL)]] | fpf-pattern | 44961-45666 |
+| C.13 | [[C_Kernel Extension Specifications/03_13_Constructional Mereology (Compose-CAL)/00_C.13 - Constructional Mereology (Compose-CAL)]] | fpf-pattern | 45667-45919 |
+| C.16 | [[C_Kernel Extension Specifications/04_16_Measurement & Metrics Characterization (MM-CHR)/00_C.16 - Measurement & Metrics Characterization (MM-CHR)]] | fpf-pattern | 45920-46215 |
+| C.16.P | [[C_Kernel Extension Specifications/04_16_Measurement & Metrics Characterization (MM-CHR)/01_C.16.P - Characteristic and Scale Precision Restoration]] | fpf-pattern | 46216-46466 |
+| C.16.Q | [[C_Kernel Extension Specifications/04_16_Measurement & Metrics Characterization (MM-CHR)/02_C.16.Q - Quality-Term Precision Restoration]] | fpf-pattern | 46467-47317 |
+| C.17 | [[C_Kernel Extension Specifications/05_17_Characterising Generative Novelty and Value/00_C.17 - Characterising Generative Novelty and Value]] | fpf-pattern | 47318-47720 |
+| C.18 | [[C_Kernel Extension Specifications/06_18_Open-Ended Search Archive and Front Stewardship/00_C.18 - Open-Ended Search Archive and Front Stewardship]] | fpf-pattern | 47721-47999 |
+| C.18.1 | [[C_Kernel Extension Specifications/06_18_Open-Ended Search Archive and Front Stewardship/01_C.18.01 - Scaling-Law Lens Binding (SLL)]] | fpf-pattern | 48000-48134 |
+| C.19 | [[C_Kernel Extension Specifications/07_19_Explore-Exploit Live-Pool Governor/00_C.19 - Explore-Exploit Live-Pool Governor]] | fpf-pattern | 48135-48508 |
+| C.19.1 | [[C_Kernel Extension Specifications/07_19_Explore-Exploit Live-Pool Governor/01_C.19.01 - Bitter-Lesson Preference (BLP)]] | fpf-pattern | 48509-48664 |
+| C.19.2 | [[C_Kernel Extension Specifications/07_19_Explore-Exploit Live-Pool Governor/02_C.19.02 - Use-Bounded Apparatus Application]] | fpf-pattern | 48665-48832 |
+| C.20 | [[C_Kernel Extension Specifications/08_20_Composition of U.Discipline (Discipline-CAL)/00_C.20 - Composition of U.Discipline (Discipline-CAL)]] | fpf-pattern | 48833-49190 |
+| C.21 | [[C_Kernel Extension Specifications/09_21_Field Health & Structure (Discipline-CHR)/00_C.21 - Field Health & Structure (Discipline-CHR)]] | fpf-pattern | 49191-49455 |
+| C.22 | [[C_Kernel Extension Specifications/10_22_Task Typing and TaskSignature Assignment (Problem-CHR)/00_C.22 - Task Typing and TaskSignature Assignment (Problem-CHR)]] | fpf-pattern | 49456-49839 |
+| C.22.1 | [[C_Kernel Extension Specifications/10_22_Task Typing and TaskSignature Assignment (Problem-CHR)/01_C.22.01 - Task-family adaptation signature]] | fpf-pattern | 49840-49988 |
+| C.22.PFR | [[C_Kernel Extension Specifications/10_22_Task Typing and TaskSignature Assignment (Problem-CHR)/02_C.22.PFR - Problematic-For Relation]] | fpf-pattern | 49989-50321 |
+| C.22.2 | [[C_Kernel Extension Specifications/10_22_Task Typing and TaskSignature Assignment (Problem-CHR)/03_C.22.02 - ProblemCard]] | fpf-pattern | 50322-50979 |
+| C.23 | [[C_Kernel Extension Specifications/11_23_MethodFamily Evidence & Maturity (Method-SoS-LOG)/00_C.23 - MethodFamily Evidence & Maturity (Method-SoS-LOG)]] | fpf-pattern | 50980-51182 |
+| C.24 | [[C_Kernel Extension Specifications/12_24_Agentic Tool-Use and Call Planning (C.Agent-Tools-CAL)/00_C.24 - Agentic Tool-Use and Call Planning (C.Agent-Tools-CAL)]] | fpf-pattern | 51183-51516 |
+| C.25 | [[C_Kernel Extension Specifications/13_25_Q-Bundle- Authoring --ilities- as Structured Quality Bundles/00_C.25 - Q-Bundle- Authoring --ilities- as Structured Quality Bundles]] | fpf-pattern | 51517-51934 |
+| C.26 | [[C_Kernel Extension Specifications/14_26_Quantum-Like Modeling Lens/00_C.26 - Quantum-Like Modeling Lens]] | fpf-pattern | 51935-52550 |
+| C.26.1 | [[C_Kernel Extension Specifications/14_26_Quantum-Like Modeling Lens/01_C.26.01 - Probe-Coupled Boundary Interaction]] | fpf-pattern | 52551-52850 |
+| C.26.2 | [[C_Kernel Extension Specifications/14_26_Quantum-Like Modeling Lens/02_C.26.02 - Enacted Distributed State Evidence]] | fpf-pattern | 52851-53193 |
+| C.26.3 | [[C_Kernel Extension Specifications/14_26_Quantum-Like Modeling Lens/03_C.26.03 - Viability-Envelope Boundary Regulation]] | fpf-pattern | 53194-53528 |
+| C.27 | [[C_Kernel Extension Specifications/15_27_Temporal Claim Adequacy- State Readings, Temporal Trends, and Intervention-Sensitive Change/00_C.27 - Temporal Claim Adequacy- State Readings, Temporal Trends, and Intervention-Sensitive Change]] | fpf-pattern | 53529-54005 |
+| C.27.TA | [[C_Kernel Extension Specifications/15_27_Temporal Claim Adequacy- State Readings, Temporal Trends, and Intervention-Sensitive Change/01_C.27.TA - Temporal Aspect- Time Windows, Rhythm, Cadence, and Currentness]] | fpf-pattern | 54006-54287 |
+| C.28 | [[C_Kernel Extension Specifications/16_28_CausalUse-CAL- Causal-Use Questions, Identification, and Realizability/00_C.28 - CausalUse-CAL- Causal-Use Questions, Identification, and Realizability]] | fpf-pattern | 54288-55044 |
+| C.29 | [[C_Kernel Extension Specifications/17_29_Mathematical Lens Use/00_C.29 - Mathematical Lens Use]] | fpf-pattern | 55045-56412 |
+| C.30 | [[C_Kernel Extension Specifications/18_30_Grounded Architecture and Selected-Structure Adequacy/00_C.30 - Grounded Architecture and Selected-Structure Adequacy]] | fpf-pattern | 56413-57120 |
+| C.30.AD | [[C_Kernel Extension Specifications/18_30_Grounded Architecture and Selected-Structure Adequacy/01_AD_Architecture Description Adequacy/00_C.30.AD - Architecture Description Adequacy]] | fpf-pattern | 57121-57586 |
+| C.30.AD.BA | [[C_Kernel Extension Specifications/18_30_Grounded Architecture and Selected-Structure Adequacy/01_AD_Architecture Description Adequacy/01_C.30.AD.BA - Built-Asset Architecture Description and Reference Designation]] | fpf-pattern | 57587-57848 |
+| C.30.P | [[C_Kernel Extension Specifications/18_30_Grounded Architecture and Selected-Structure Adequacy/02_C.30.P - Architecture and Structure Precision Restoration]] | fpf-pattern | 57849-58096 |
+| C.30.STRAT | [[C_Kernel Extension Specifications/18_30_Grounded Architecture and Selected-Structure Adequacy/03_C.30.STRAT - Stratification Wording Precision Restoration]] | fpf-pattern | 58097-58356 |
+| C.30.ASV | [[C_Kernel Extension Specifications/18_30_Grounded Architecture and Selected-Structure Adequacy/04_C.30.ASV - Architecture Structural View Adequacy (ASV)]] | fpf-pattern | 58357-59162 |
+| C.30.LCA | [[C_Kernel Extension Specifications/18_30_Grounded Architecture and Selected-Structure Adequacy/05_C.30.LCA - Control Structure View Adequacy (LCA)]] | fpf-pattern | 59163-59470 |
+| C.30.ILC | [[C_Kernel Extension Specifications/18_30_Grounded Architecture and Selected-Structure Adequacy/06_C.30.ILC - Cross-Scope Architecture Residual Triage]] | fpf-pattern | 59471-59725 |
+| C.30.TFS-REL | [[C_Kernel Extension Specifications/18_30_Grounded Architecture and Selected-Structure Adequacy/07_C.30.TFS-REL - Architecture Transformation-Flow Structure Relation]] | fpf-pattern | 59726-60145 |
+| C.31 | [[C_Kernel Extension Specifications/19_31_Modularity and Reusable Structure Characteristics/00_C.31 - Modularity and Reusable Structure Characteristics]] | fpf-pattern | 60146-60527 |
+| C.31.RSA | [[C_Kernel Extension Specifications/19_31_Modularity and Reusable Structure Characteristics/01_C.31.RSA - Reusable Structure Accounting]] | fpf-pattern | 60528-60923 |
+| C.31.ASAP | [[C_Kernel Extension Specifications/19_31_Modularity and Reusable Structure Characteristics/02_C.31.ASAP - Architecture Scale-Amenability Preference]] | fpf-pattern | 60924-61246 |
+| C.32 | [[C_Kernel Extension Specifications/20_32_Architecture Candidate Synthesis/00_C.32 - Architecture Candidate Synthesis]] | fpf-pattern | 61247-61600 |
+| C.32.P2S | [[C_Kernel Extension Specifications/20_32_Architecture Candidate Synthesis/01_C.32.P2S - Problem-to-Structure Architecturing Unfolding]] | fpf-pattern | 61601-61954 |
+| C.32.HCS | [[C_Kernel Extension Specifications/20_32_Architecture Candidate Synthesis/02_C.32.HCS - Architecture-Bearing Family Characteristic Starter Packs]] | fpf-pattern | 61955-62159 |
+| C.32.ACS | [[C_Kernel Extension Specifications/20_32_Architecture Candidate Synthesis/03_C.32.ACS - Architecture Characteristic Criteria Set for Improvement Cycles]] | fpf-pattern | 62160-62447 |
+| C.32.ACE | [[C_Kernel Extension Specifications/20_32_Architecture Candidate Synthesis/04_C.32.ACE - Architecture Characteristic Eval Programs]] | fpf-pattern | 62448-62665 |
+| C.32.CONWAY | [[C_Kernel Extension Specifications/20_32_Architecture Candidate Synthesis/05_C.32.CONWAY - Architecture-Influence and Transformed-Architecture Correspondence]] | fpf-pattern | 62666-63093 |
+| C.32.MLAO | [[C_Kernel Extension Specifications/20_32_Architecture Candidate Synthesis/06_C.32.MLAO - Multilevel Architecture Residual Optimization]] | fpf-pattern | 63094-63368 |
+| C.32.MWA | [[C_Kernel Extension Specifications/20_32_Architecture Candidate Synthesis/07_C.32.MWA - Practice Architecture Synthesis from Several Structures]] | fpf-pattern | 63369-63570 |
+| C.32.FAIL | [[C_Kernel Extension Specifications/20_32_Architecture Candidate Synthesis/08_C.32.FAIL - Architecture Failure Recognition and Repair]] | fpf-pattern | 63571-63815 |
+| C.32.PAD | [[C_Kernel Extension Specifications/20_32_Architecture Candidate Synthesis/09_C.32.PAD - Project Architecture Decision After Candidate Synthesis]] | fpf-pattern | 63816-64176 |
+| C.32.ADR | [[C_Kernel Extension Specifications/20_32_Architecture Candidate Synthesis/10_C.32.ADR - Architecture Decision Record Projection]] | fpf-pattern | 64177-64404 |
+| C.32.ADA | [[C_Kernel Extension Specifications/20_32_Architecture Candidate Synthesis/11_C.32.ADA - Architecture Decision Adequacy Scales]] | fpf-pattern | 64405-64702 |
+| C.33 | [[C_Kernel Extension Specifications/21_33_Structural Information Adequacy for Architecture Capture and Missing-Structure Return/00_C.33 - Structural Information Adequacy for Architecture Capture and Missing-Structure Return]] | fpf-pattern | 64703-64909 |
+| C.34 | [[C_Kernel Extension Specifications/22_34_Structural Correspondence, Equivalence, and Morphism Adequacy/00_C.34 - Structural Correspondence, Equivalence, and Morphism Adequacy]] | fpf-pattern | 64910-65098 |
+| C.35 | [[C_Kernel Extension Specifications/23_35_Structural Synthesis and Discovery Adequacy/00_C.35 - Structural Synthesis and Discovery Adequacy]] | fpf-pattern | 65099-65345 |
+| C.36 | [[C_Kernel Extension Specifications/24_36_Cultural Evolution and Cultural-Evolution Engineering/00_C.36 - Cultural Evolution and Cultural-Evolution Engineering]] | fpf-pattern | 65346-65728 |
+| C.36.P | [[C_Kernel Extension Specifications/24_36_Cultural Evolution and Cultural-Evolution Engineering/01_C.36.P - Cultural-Evolution Wording-Use Precision Restoration]] | fpf-pattern | 65729-65896 |

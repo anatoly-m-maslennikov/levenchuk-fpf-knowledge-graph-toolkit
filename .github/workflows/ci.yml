@@ -28,7 +28,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: ailev/FPF
-          ref: 7f7c592f4d633e54cdb202d622d6e0e05df41517
+          ref: 563f4c8e06a319cbd375b66cdbb2df27a5f8b9ef
           fetch-depth: 0
           path: .runtime/original-fpf
       - name: Set up Python

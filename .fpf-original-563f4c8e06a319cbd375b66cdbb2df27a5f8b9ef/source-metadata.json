@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
   "upstream_repository": "ailev/FPF",
-  "upstream_revision": "7f7c592f4d633e54cdb202d622d6e0e05df41517",
+  "upstream_revision": "563f4c8e06a319cbd375b66cdbb2df27a5f8b9ef",
   "upstream_remote": "https://github.com/ailev/FPF.git",
   "tracked_files": [
     {
       "path": "FPF-Spec.md",
-      "source_revision": "7f7c592f4d633e54cdb202d622d6e0e05df41517",
-      "upstream_sha256": "6bdfe1a4347fde18dd50d69d16599f1513890a921627ec602d1d1b075109b48d",
-      "effective_sha256": "6bdfe1a4347fde18dd50d69d16599f1513890a921627ec602d1d1b075109b48d"
+      "source_revision": "042cd107e0ab4b471d698f8b8416b0fe8265b21d",
+      "upstream_sha256": "c9551f2a4b52c9e57972a11552ab945f52a3522f433c54395221b16bef375ac7",
+      "effective_sha256": "c9551f2a4b52c9e57972a11552ab945f52a3522f433c54395221b16bef375ac7"
     },
     {
       "path": "Narrativization-and-Narrative-Studies-Principles-Framework.md",
@@ -18,9 +18,9 @@
     },
     {
       "path": "Readme.md",
-      "source_revision": "44dd88188a07646ef23aca32627a3f670525853f",
-      "upstream_sha256": "6c8d87a641f36d34a9d84aa0ab8e7565dcca2a691482a0cee31bd28a743eb3fd",
-      "effective_sha256": "6c8d87a641f36d34a9d84aa0ab8e7565dcca2a691482a0cee31bd28a743eb3fd"
+      "source_revision": "563f4c8e06a319cbd375b66cdbb2df27a5f8b9ef",
+      "upstream_sha256": "30b159231366d0129f9a7c2e5459c4be0ee40095dc91900427f4649da5767d46",
+      "effective_sha256": "30b159231366d0129f9a7c2e5459c4be0ee40095dc91900427f4649da5767d46"
     }
   ],
   "patches": []
