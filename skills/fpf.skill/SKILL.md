@@ -1,6 +1,6 @@
 ---
 name: fpf
-description: Route and run one command or an explicit + composition through the repository's First Principles Framework (FPF) prompt graph. Use when the user invokes $fpf, asks for FPF help or planning, or wants an applicability scan, SoTA harvest, option exploration, design challenge, decision synthesis, quality improvement, or alignment audit.
+description: Route and run one command or an explicit + composition in English or Russian through the repository's First Principles Framework (FPF) prompt graph. Use when the user invokes $fpf, asks for FPF help or planning, or wants an applicability scan, SoTA harvest, option exploration, design challenge, decision synthesis, quality improvement, or alignment audit.
 ---
 
 # FPF
@@ -9,16 +9,17 @@ Treat this package as a lazy-loaded prompt graph. Do not preload every prompt.
 
 ## Resolve the node or composition
 
-1. Pass the complete invocation text to `scripts/route_fpf.py` when local script execution is available:
+1. Resolve `output_language`: explicit user instruction overrides an accessible `.caprmedio/settings.toml` value, which overrides the embedded default `auto`. Accepted values are `auto`, `en`, and `ru`.
+2. Pass the complete invocation text and resolved language setting to `scripts/route_fpf.py` when local script execution is available:
 
-   `python3 <this-skill-directory>/scripts/route_fpf.py --text "<complete invocation>"`
+   `python3 <this-skill-directory>/scripts/route_fpf.py --language "<auto|en|ru>" --text "<complete invocation>"`
 
-2. For a single-node result, use the returned `prompt` path relative to this skill directory. If script execution is unavailable, reproduce the same precedence from `graph.json`: explicit composition first, longest exact command or alias next, then keyword score, then `plan` as the safe fallback.
-3. Preserve the returned residual `task`; it is the input to the selected prompt.
+3. For a single-node result, use the returned `prompt` path relative to this skill directory. The router selects the Russian help page when the resolved language is `ru`. If script execution is unavailable, reproduce the same precedence from `graph.json`: explicit composition first, longest exact command or alias next, then keyword score, then `plan` as the safe fallback. With `auto`, select Russian only when the invocation or residual task contains meaningful Russian Cyrillic text; otherwise select English.
+4. Preserve the returned residual `task` and `language`; they are inputs to the selected prompt.
 
 If the router returns `composition_error`, pass it to `$fpf plan` with the original task so the plan can explain the invalid handoff and the smallest legal correction.
 
-Canonical invocation is `$fpf`. A textual `/fpf` prefix is accepted by the resolver for portability, but a Codex skill is invoked as `$fpf`.
+Canonical command identifiers remain English and canonical invocation is `$fpf`. Russian aliases and Russian natural-language routing are supported. A textual `/fpf` prefix is accepted by the resolver for portability, but a Codex skill is invoked as `$fpf`.
 
 ## Execute the resolved mode
 
@@ -26,11 +27,11 @@ For `mode: composition`, load `references/composition.md` completely. Execute on
 
 For a single-node result:
 
-- `help`: load `prompts/help.md`, return its help page, and stop. Never save a report.
+- `help`: load the returned localized help prompt (`prompts/help.md` or `prompts/help-ru.md`), return its help page, and stop. Never save a report.
 - `plan`: load `prompts/plan.md`, produce only the call plan, and stop. Do not execute proposed nodes and never save a report.
 - Any analytical node: load only its returned prompt, execute that contract on the residual task, and follow its output and report settings.
 
-The seven analytical prompts may refer to shared files under `references/`. Load a referenced file only when its prompt says to do so. In particular, load `references/report-persistence.md` only after report saving resolves to on; load the CAPRMEDIO adapter only when the selected report style is `caprmedio`.
+The seven analytical prompts may refer to shared files under `references/`. Load a referenced file only when its prompt says to do so. In particular, load `references/output-language-ru.md` only for Russian output; load `references/report-persistence.md` only after report saving resolves to on; load the CAPRMEDIO adapter only when the selected report style is `caprmedio`.
 
 Do not treat a graph edge as permission to execute another node. Edges are legal handoffs for `$fpf plan` and validators for an explicit `+` composition. A direct analytical call still executes one node unless the user explicitly composes commands.
 

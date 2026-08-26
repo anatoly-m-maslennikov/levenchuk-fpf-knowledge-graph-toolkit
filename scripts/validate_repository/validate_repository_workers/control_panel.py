@@ -23,6 +23,7 @@ def _require(condition: bool, message: str, errors: list[str]) -> None:
 
 def _validate_settings_values(values: dict[str, str], errors: list[str]) -> None:
     allowed = dict(
+        output_language={"auto", "en", "ru"},
         output_style={"natural", "general", "ste"},
         fpf_terms_explained={"full", "short", "off"},
         save_report={"on", "off"}, report_style={"plain", "caprmedio"},

@@ -28,6 +28,7 @@
     "decision-synthesize", "quality-improve", "alignment-audit"
   ],
   "settings": {
+    "output_language": "auto",
     "output_style": "general",
     "fpf_terms_explained": "off",
     "save_report": "on",
@@ -35,7 +36,7 @@
     "install_method": "copy"
   },
   "fpf_skill_fragments": [
-    "name: fpf", "lazy-loaded prompt graph", "scripts/route_fpf.py",
+    "name: fpf", "lazy-loaded prompt graph", "scripts/route_fpf.py", "output_language",
     "prompts/help.md", "prompts/plan.md", "references/report-persistence.md",
     "references/composition.md", "mode: composition"
   ],
@@ -43,7 +44,8 @@
     "<!-- output-settings:start -->",
     "<!-- output-settings:end -->",
     "Explicit user instruction overrides an accessible `.caprmedio/settings.toml` control-panel setting",
-    "For output language, load at most one mode resource:",
+    "Resolve `output_language` before output style.",
+    "For output style, load at most one mode resource:",
     "Never preload an unselected resource.",
     "## Task, scope, and boundaries",
     "## High-confidence results (>=95%)",
@@ -122,6 +124,12 @@
     "fpf.skill/references/output-style-ste.md": [
       "clear simplified synonyms",
       "Prefer active voice where practical."
+    ],
+    "fpf.skill/references/output-language-ru.md": [
+      "Write narrative prose, headings, explanations, recommendations, and saved report prose in clear Russian.",
+      "Keep canonical `$fpf` command identifiers",
+      "Do not translate direct quotations.",
+      "language localization must not change a verdict or boundary"
     ],
     "graph-fpf-evaluate-conversion-result.skill/references/evaluation-profile.md": [
       "Exhaustive mechanical coverage",

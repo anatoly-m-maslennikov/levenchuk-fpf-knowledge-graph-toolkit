@@ -2,6 +2,8 @@
 
 `$fpf` is one skill backed by a graph of lazily loaded prompts. Give it a direct command or a natural-language task.
 
+English and Russian routing are supported. Canonical command identifiers remain English; `$fpf помощь` opens the Russian help page.
+
 ## Command tree
 
 ```text
@@ -46,5 +48,9 @@ Use `$fpf plan` when you want the workflow but do not want any analytical prompt
 ## Report modes
 
 The default analytical behavior is `save_report = "on"` and `report_style = "plain"`. An accessible `.caprmedio/settings.toml` can select `report_style = "caprmedio"`; an explicit user instruction wins over project settings. CAPRMEDIO mode creates a non-normative Analysis Report Atom in the narrowest proven Scope Unit that contains the analysis scope. It fails closed when topology or Atom admission rules cannot be resolved.
+
+## Output language
+
+The default `output_language = "auto"` selects Russian when the invocation or residual task contains meaningful Russian Cyrillic text and English otherwise. `ru` and `en` fix the language. Exact commands, FPF IDs and locators, source paths, code, direct quotations, URLs, and citation targets are not translated.
 
 Canonical Codex syntax is `$fpf`. The resolver also understands a textual `/fpf` prefix when another host passes it through, but this does not register a native custom slash command.

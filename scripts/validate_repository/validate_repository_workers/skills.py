@@ -126,6 +126,10 @@ def _validate_manifest(root: Path, contracts: dict[str, object]) -> list[str]:
         expected_prompt = f"prompts/{node.get('id')}.md"
         if node.get("prompt") != expected_prompt:
             errors.append(f"FPF graph prompt path mismatch: {node.get('id')}")
+        for language, localized in node.get("localized_prompts", {}).items():
+            localized_path = root / "skills/fpf.skill" / localized
+            if language not in {"en", "ru"} or not localized_path.is_file():
+                errors.append(f"FPF graph localized prompt is invalid: {node.get('id')}:{language}")
 
     return errors
 

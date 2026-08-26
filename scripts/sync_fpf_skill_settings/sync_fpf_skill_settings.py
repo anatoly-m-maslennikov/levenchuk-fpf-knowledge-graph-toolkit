@@ -23,6 +23,7 @@ def read_settings(path: Path = SETTINGS_PATH) -> dict[str, str]:
     example = EXAMPLE_PATH if path == SETTINGS_PATH else path.with_name("settings.toml.example")
     values, _ = read_skill_settings(path, example)
     allowed = dict(
+        output_language={"auto", "en", "ru"},
         output_style={"natural", "general", "ste"},
         fpf_terms_explained={"full", "short", "off"},
         save_report={"on", "off"}, report_style={"plain", "caprmedio"},
@@ -52,8 +53,9 @@ def render_block(settings: dict[str, str], *, is_plan: bool) -> str:
     return f'''{START}
 ## Output and report settings
 
-Embedded defaults: `output_style = "{settings["output_style"]}"`; `fpf_terms_explained = "{settings["fpf_terms_explained"]}"`; `save_report = "{settings["save_report"]}"` (`on` or `off`); `report_style = "{settings["report_style"]}"` (`plain` or `caprmedio`, consulted only when saving is on). Explicit user instruction overrides an accessible `.caprmedio/settings.toml` control-panel setting, which overrides these embedded defaults.
-For output language, load at most one mode resource:
+Embedded defaults: `output_language = "{settings["output_language"]}"` (`auto`, `en`, or `ru`); `output_style = "{settings["output_style"]}"`; `fpf_terms_explained = "{settings["fpf_terms_explained"]}"`; `save_report = "{settings["save_report"]}"` (`on` or `off`); `report_style = "{settings["report_style"]}"` (`plain` or `caprmedio`, consulted only when saving is on). Explicit user instruction overrides an accessible `.caprmedio/settings.toml` control-panel setting, which overrides these embedded defaults.
+Resolve `output_language` before output style. `en` means English and loads no language resource. `ru` means Russian and loads only `references/output-language-ru.md`. With `auto`, use Russian when the user's invocation or residual task contains meaningful Russian Cyrillic text; otherwise use English. Never infer language from quoted source text, identifiers, paths, or citations alone. Never preload an unselected language resource.
+For output style, load at most one mode resource:
 - `natural`: load none; allow FPF terms. On first use, explain each term per `fpf_terms_explained`: `full` up to three short lines, `short` one sentence, `off` none.
 - `general`: load only `references/output-style-general.md`.
 - `ste`: load only `references/output-style-ste.md`.

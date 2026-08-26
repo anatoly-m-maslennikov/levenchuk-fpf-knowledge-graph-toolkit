@@ -11,6 +11,7 @@ from scripts.init_settings.init_settings import ensure_settings, read_fpf_source
 
 SKILLS = '''
 [skills]
+output_language = "auto"
 output_style = "general"
 fpf_terms_explained = "off"
 save_report = "on"
@@ -51,6 +52,25 @@ class SettingsInitializationTests(unittest.TestCase):
             self.assertFalse(created)
             self.assertEqual(settings.read_text(encoding="utf-8"), '[paths]\nfpf_original_repo = "custom"\n' + SKILLS)
 
+
+
+class LegacySettingsCompatibilityTests(unittest.TestCase):
+    def test_legacy_five_setting_panel_defaults_output_language_to_auto(self) -> None:
+        with temporary_workspace() as temp:
+            root = Path(temp)
+            settings = root / ".caprmedio/settings.toml"
+            example = root / ".caprmedio/settings.toml.example"
+            settings.parent.mkdir()
+            legacy = SKILLS.replace('output_language = "auto"\n', "")
+            settings.write_text('[paths]\nfpf_original_repo = "FPF"\n' + legacy, encoding="utf-8")
+            example.write_text('[paths]\nfpf_original_repo = "FPF"\n' + SKILLS, encoding="utf-8")
+
+            from scripts.init_settings.init_settings import read_skill_settings
+
+            values, created = read_skill_settings(settings, example)
+
+            self.assertFalse(created)
+            self.assertEqual("auto", values["output_language"])
 
 
 class SettingsResolutionTests(unittest.TestCase):

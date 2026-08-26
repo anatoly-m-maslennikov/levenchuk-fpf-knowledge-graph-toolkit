@@ -2,6 +2,7 @@
 fpf_original_repo = "../../Repos/FPF"
 
 [skills]
+output_language = "auto"
 output_style = "general"
 fpf_terms_explained = "off"
 save_report = "on"

@@ -12,6 +12,7 @@ from pathlib import Path
 
 SKILL_ROOT = Path(__file__).resolve().parent.parent
 GRAPH_PATH = SKILL_ROOT / "graph.json"
+SUPPORTED_LANGUAGES = {"auto", "en", "ru"}
 SCRIPT_ROOT = Path(__file__).resolve().parent
 if str(SCRIPT_ROOT) not in sys.path:
     sys.path.insert(0, str(SCRIPT_ROOT))
@@ -27,6 +28,15 @@ def normalize(value: str) -> str:
 
 def strip_invocation(value: str) -> str:
     return re.sub(r"^\s*(?:\$|/)?fpf\b\s*", "", value, count=1, flags=re.IGNORECASE).strip()
+
+
+def resolve_language(invocation: str, requested: str = "auto") -> tuple[str, str]:
+    if requested not in SUPPORTED_LANGUAGES:
+        raise ValueError(f"unsupported output language: {requested}")
+    if requested != "auto":
+        return requested, "explicit-or-setting"
+    cyrillic_count = len(re.findall(r"[\u0400-\u04ff]", strip_invocation(invocation)))
+    return ("ru", "auto-cyrillic") if cyrillic_count >= 2 else ("en", "auto-default")
 
 
 def load_graph() -> dict:
@@ -54,6 +64,15 @@ def validate_graph(graph: dict) -> list[str]:
         prompt = node.get("prompt", "")
         if not prompt or not (SKILL_ROOT / prompt).is_file():
             errors.append(f"{node_id}: prompt does not exist: {prompt}")
+        localized_prompts = node.get("localized_prompts", {})
+        if not isinstance(localized_prompts, dict):
+            errors.append(f"{node_id}: localized_prompts must be an object")
+        else:
+            for language, localized_prompt in localized_prompts.items():
+                if language not in SUPPORTED_LANGUAGES - {"auto"}:
+                    errors.append(f"{node_id}: unsupported localized prompt language: {language}")
+                if not localized_prompt or not (SKILL_ROOT / localized_prompt).is_file():
+                    errors.append(f"{node_id}: localized prompt does not exist: {localized_prompt}")
         aliases = [node.get("command", ""), *node.get("aliases", [])]
         for alias in aliases:
             key = normalize(alias)
@@ -105,23 +124,29 @@ def validate_graph(graph: dict) -> list[str]:
             errors.append("routing scenarios must cover all analytical nodes")
 
     help_text = (SKILL_ROOT / "prompts/help.md").read_text(encoding="utf-8")
+    help_ru_text = (SKILL_ROOT / "prompts/help-ru.md").read_text(encoding="utf-8")
     for node in nodes:
         if f"$fpf {node['command']}" not in help_text:
             errors.append(f"help page omits $fpf {node['command']}")
+        if f"$fpf {node['command']}" not in help_ru_text:
+            errors.append(f"Russian help page omits $fpf {node['command']}")
     return errors
 
 
-def resolve(invocation: str, graph: dict) -> dict:
+def resolve(invocation: str, graph: dict, language: str = "auto") -> dict:
+    resolved_language, language_selected_by = resolve_language(invocation, language)
     task = strip_invocation(invocation)
     composition = resolve_composition(task, graph)
     if composition is not None:
+        composition["language"] = resolved_language
+        composition["language_selected_by"] = language_selected_by
         return composition
     normalized_task = normalize(task)
     nodes = graph["nodes"]
 
     if not normalized_task:
         node = next(item for item in nodes if item["id"] == "help")
-        return result(node, "", "empty-invocation", 0)
+        return result(node, "", "empty-invocation", 0, resolved_language, language_selected_by)
 
     exact_candidates: list[tuple[int, dict, str]] = []
     for node in nodes:
@@ -134,7 +159,7 @@ def resolve(invocation: str, graph: dict) -> dict:
         residual_words = task.split()
         alias_words = len(alias.split())
         residual = " ".join(residual_words[alias_words:]).strip()
-        return result(node, residual, "exact-command", 100)
+        return result(node, residual, "exact-command", 100, resolved_language, language_selected_by)
 
     scores: list[tuple[int, dict]] = []
     for node in nodes:
@@ -150,22 +175,27 @@ def resolve(invocation: str, graph: dict) -> dict:
     best_score = max(score for score, _ in scores)
     best_nodes = [node for score, node in scores if score == best_score and score > 0]
     if len(best_nodes) == 1:
-        return result(best_nodes[0], task, "keyword-score", best_score)
+        return result(best_nodes[0], task, "keyword-score", best_score, resolved_language, language_selected_by)
 
     fallback = next(item for item in nodes if item["id"] == graph["fallback_node"])
     selected_by = "ambiguous-fallback" if best_nodes else "unmatched-fallback"
-    return result(fallback, task, selected_by, best_score)
+    return result(fallback, task, selected_by, best_score, resolved_language, language_selected_by)
 
 
-def result(node: dict, task: str, selected_by: str, score: int) -> dict:
+def result(
+    node: dict, task: str, selected_by: str, score: int,
+    language: str, language_selected_by: str,
+) -> dict:
     return {
         "node": node["id"],
         "command": f"$fpf {node['command']}",
-        "prompt": node["prompt"],
+        "prompt": node.get("localized_prompts", {}).get(language, node["prompt"]),
         "persist_report": node["persist_report"],
         "task": task,
         "selected_by": selected_by,
         "score": score,
+        "language": language,
+        "language_selected_by": language_selected_by,
     }
 
 
@@ -173,6 +203,10 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("invocation", nargs="*", help="FPF invocation to resolve")
     parser.add_argument("--text", help="FPF invocation as one string")
+    parser.add_argument(
+        "--language", choices=sorted(SUPPORTED_LANGUAGES), default="auto",
+        help="output language override; auto detects meaningful Cyrillic text",
+    )
     parser.add_argument("--check", action="store_true", help="validate graph and resources")
     args = parser.parse_args()
 
@@ -187,7 +221,7 @@ def main() -> int:
         return 0
 
     invocation = args.text if args.text is not None else " ".join(args.invocation)
-    print(json.dumps(resolve(invocation, graph), ensure_ascii=False, indent=2))
+    print(json.dumps(resolve(invocation, graph, args.language), ensure_ascii=False, indent=2))
     return 0
 
 

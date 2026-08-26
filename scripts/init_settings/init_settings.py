@@ -16,8 +16,10 @@ EXAMPLE_PATH = CONTROL_ROOT / "settings.toml.example"
 REQUIRED_SECTIONS = {"paths", "skills"}
 REQUIRED_PATH_KEYS = {"fpf_original_repo"}
 REQUIRED_SKILL_KEYS = {
-    "output_style", "fpf_terms_explained", "save_report", "report_style", "install_method"
+    "output_language", "output_style", "fpf_terms_explained", "save_report",
+    "report_style", "install_method",
 }
+LEGACY_SKILL_KEYS = REQUIRED_SKILL_KEYS - {"output_language"}
 FPF_SOURCE_NAME = "FPF-Spec.md"
 NPF_SOURCE_NAME = "Narrativization-and-Narrative-Studies-Principles-Framework.md"
 
@@ -49,8 +51,11 @@ def read_control_panel(
         raise ValueError("control panel must contain exactly [paths] and [skills]")
     if set(settings["paths"]) != REQUIRED_PATH_KEYS:
         raise ValueError("[paths] must contain exactly fpf_original_repo")
-    if set(settings["skills"]) != REQUIRED_SKILL_KEYS:
-        raise ValueError("[skills] must contain exactly the five suite settings")
+    skill_keys = set(settings["skills"])
+    if skill_keys == LEGACY_SKILL_KEYS:
+        settings["skills"]["output_language"] = "auto"
+    elif skill_keys != REQUIRED_SKILL_KEYS:
+        raise ValueError("[skills] must contain exactly the six suite settings")
     return settings, created
 
 
