@@ -4,7 +4,7 @@ This directory contains one portable end-user First Principles Framework skill a
 
 ## `$fpf` prompt graph
 
-[`fpf.skill`](fpf.skill/SKILL.md) is the single end-user package. Its root `SKILL.md` is only a thin dispatch gate: exact English and Russian Help calls load [`help.en.md`](fpf.skill/prompts/help.en.md) or [`help.ru.md`](fpf.skill/prompts/help.ru.md) directly, while every other call lazily loads [`doer.md`](fpf.skill/prompts/doer.md). The doer owns routing and execution; [`graph.json`](fpf.skill/graph.json) declares commands, aliases, keywords, persistence flags, and legal handoffs; substantive node contracts remain under [`prompts/`](fpf.skill/prompts/).
+[`fpf.skill`](fpf.skill/SKILL.md) is the single end-user package. Its root `SKILL.md` is only a thin dispatch gate: exact English and Russian Help calls load [`help.en.md`](fpf.skill/prompts/help.en.md) or [`help.ru.md`](fpf.skill/prompts/help.ru.md) directly, while every other call lazily loads [`runtime.md`](fpf.skill/prompts/runtime.md). The runtime owns routing and execution; [`graph.json`](fpf.skill/graph.json) declares commands, aliases, keywords, persistence flags, and legal handoffs; substantive node contracts remain under [`prompts/`](fpf.skill/prompts/).
 
 Canonical Codex invocation is `$fpf`:
 
@@ -18,7 +18,7 @@ Canonical Codex invocation is `$fpf`:
 - `$fpf quality improve <task>` runs a bounded target-change and re-evaluation loop.
 - `$fpf alignment audit <task>` audits implemented or accepted work.
 
-Natural-language text after `$fpf` is scored against the graph in English or Russian. Russian aliases route to the same canonical English command identifiers. One clear match runs that analytical prompt; an unmatched or tied request falls back to `plan`. Only the doer and selected node prompt are loaded. Exact `$fpf help` and `$fpf помощь` bypass the doer and router entirely. A textual `/fpf` prefix is accepted by the resolver for host portability, but a Codex skill is invoked as `$fpf`.
+Natural-language text after `$fpf` is scored against the graph in English or Russian. Russian aliases route to the same canonical English command identifiers. One clear match runs that analytical prompt; an unmatched or tied request falls back to `plan`. Only the runtime and selected node prompt are loaded. Exact `$fpf help` and `$fpf помощь` bypass the runtime and router entirely. A textual `/fpf` prefix is accepted by the resolver for host portability, but a Codex skill is invoked as `$fpf`.
 
 Exact analytical commands can be stacked with spaces around `+`: `$fpf design challenge + quality improve + alignment audit <shared task>`. Task text is allowed only after the last command, and every adjacent pair must be a declared graph edge. The nodes run lazily under one campaign envelope and stop at unmet evidence, decision, or mutation gates. One consolidated result and report contains the deduplicated issue registry, one mapped fixes and improvements list, verification state, residual risk, and the actually executed node/source trace; intermediate node reports are suppressed.
 
