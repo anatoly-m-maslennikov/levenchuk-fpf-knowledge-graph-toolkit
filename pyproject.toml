@@ -1,0 +1,9 @@
+[project]
+name = "levenchuk-fpf-knowledge-graph-toolkit"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = []
+
+[tool.uv]
+package = false
+cache-dir = ".runtime/uv-cache"

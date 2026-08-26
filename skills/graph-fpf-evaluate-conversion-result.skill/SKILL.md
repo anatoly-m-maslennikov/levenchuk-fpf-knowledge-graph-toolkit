@@ -21,9 +21,9 @@ Locate one toolkit checkout containing:
 
 Prefer the active workspace and bounded accessible project roots. Do not assume a user name, home directory, operating system, or repository parent.
 
-Use a caller-supplied current eval pack when its revision and graph paths match the current candidate. Otherwise run `<python> -X pycache_prefix=.runtime/pycache -m scripts.graph_fpf_convert_from_original.prepare_eval` from the toolkit root and capture its JSON result. Do not write an ad hoc replacement pack.
+Use a caller-supplied current eval pack when its revision and graph paths match the current candidate. Otherwise run `uv run -m scripts.graph_fpf_convert_from_original.prepare_eval` from the toolkit root and capture its JSON result. Do not write an ad hoc replacement pack.
 
-Require deterministic-suite evidence for the same current graph revision. If it is missing or stale, run `<python> -X pycache_prefix=.runtime/pycache -m scripts.graph_fpf_convert_from_original.run_tests`. A deterministic failure is evidence, not permission to repair; return it to the converter.
+Require deterministic-suite evidence for the same current graph revision. If it is missing or stale, run `uv run -m scripts.graph_fpf_convert_from_original.run_tests`. A deterministic failure is evidence, not permission to repair; return it to the converter.
 
 ## Apply the complete evaluation profile
 

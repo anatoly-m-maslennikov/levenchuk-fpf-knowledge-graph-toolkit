@@ -65,14 +65,14 @@ Multi-step reviews use one shared [review-campaign protocol](skills/fpf.skill/re
 
 This repository is the source of truth for every bundled skill. [`fpf.skill`](skills/fpf.skill/) is the one end-user methodology package; repository-service skills use a different name. The complete repo-owned package is the portable core; no provider-specific metadata is required. The `.skill` suffix is only this repository's source-folder convention; installers use `name: fpf` from `SKILL.md`.
 
-Python installers are included for Codex and Claude Code:
+The repository is a locked `uv` project pinned to Python 3.12. Run its installers for Codex and Claude Code directly through `uv`; no activated environment, explicit interpreter, or cache-prefix setting is required:
 
 ```bash
-python3 -X pycache_prefix=.runtime/pycache -m scripts.install_fpf_skills.for_codex --apply
-python3 -X pycache_prefix=.runtime/pycache -m scripts.install_fpf_skills.for_claude --apply
+uv run -m scripts.install_fpf_skills.for_codex --apply
+uv run -m scripts.install_fpf_skills.for_claude --apply
 ```
 
-The install method is read only from `[skills].install_method` in `.caprmedio/settings.toml`: `copy` creates self-contained directories and `symlink` creates live links to this checkout. The installers create an operational `.fpf-skills-install.json` receipt at the destination; it records provenance for safe updates but is not another settings authority. `CODEX_HOME` and `CLAUDE_CONFIG_DIR` are respected, and `--destination` can select an exact skills directory. On native Windows, use `py -m scripts.install_fpf_skills.for_codex --apply` and select `copy` in the control panel when symlink privileges are unavailable.
+The install method is read only from `[skills].install_method` in `.caprmedio/settings.toml`: `copy` creates self-contained directories and `symlink` creates live links to this checkout. The installers create an operational `.fpf-skills-install.json` receipt at the destination; it records provenance for safe updates but is not another settings authority. `CODEX_HOME` and `CLAUDE_CONFIG_DIR` are respected, and `--destination` can select an exact skills directory. The same `uv run -m` commands work on native Windows; select `copy` in the control panel when symlink privileges are unavailable.
 
 Both installers are read-only without `--apply`. Use `--check` to verify the single end-user `fpf` package and its receipt. Applying over the former eight-package suite removes only unmodified installer-managed legacy packages; modified or unmanaged legacy packages block migration and remain untouched. The separate conversion and conversion-result-evaluation service skills are deliberately not installed globally, while project discovery deliberately excludes the end-user `fpf` package.
 
@@ -80,14 +80,14 @@ Both installers are read-only without `--apply`. Use `--check` to verify the sin
 
 Fetch or check out the original `ailev/FPF` repository outside the active Obsidian vault and treat it as read-only input. On first use, [`scripts/init_settings/`](scripts/init_settings/) creates ignored `.caprmedio/settings.toml` from the tracked example. `[paths].fpf_original_repo` points to that repository; `[skills]` is the one control surface for portable language, output, report, and installer defaults. Existing five-setting control panels remain compatible and resolve the missing `output_language` as `auto`. Edit only this local control panel when the checkout or preferences differ. An explicit graph-builder `--source` still overrides the derived `FPF-Spec.md` path.
 
-For a new upstream HEAD, first run `python3 -X pycache_prefix=.runtime/pycache -m scripts.graph_fpf_convert_from_original --refresh-source-package`. It copies every upstream-tracked file into a package whose folder name includes the full upstream commit, applies any colocated `.patch` files in filename order, and writes digest metadata. It never makes a local source patch, commit, or push in the external checkout; fast-forwarding that checkout to upstream is the refresh precondition. Then run `--check-settings` and `--stage-sources`; both reconstruct the effective result from the recorded upstream commit and fail if a patch, metadata record, stored byte, or file inventory differs. Run the FPF converter and then `python3 -X pycache_prefix=.runtime/pycache -m scripts.graph_npf_convert_from_original`; both read only the staged effective package and preserve their current graphs as temporary `.bak` trees. Run the deterministic suite, prepare the eval pack, and execute the separate evaluator. After it writes revision- and tree-bound PASS evidence, run `--finalize-accepted`. Finalization reruns the complete suite and clears the runtime stage plus every root `*-Knowledge-Graph.bak` tree while retaining the tracked revision-named package. Failed tests, failed evaluation, or stale evidence preserve all temporary inputs and backups.
+For a new upstream HEAD, first run `uv run -m scripts.graph_fpf_convert_from_original --refresh-source-package`. It copies every upstream-tracked file into a package whose folder name includes the full upstream commit, applies any colocated `.patch` files in filename order, and writes digest metadata. It never makes a local source patch, commit, or push in the external checkout; fast-forwarding that checkout to upstream is the refresh precondition. Then run `--check-settings` and `--stage-sources`; both reconstruct the effective result from the recorded upstream commit and fail if a patch, metadata record, stored byte, or file inventory differs. Run the FPF converter and then `uv run -m scripts.graph_npf_convert_from_original`; both read only the staged effective package and preserve their current graphs as temporary `.bak` trees. Run the deterministic suite, prepare the eval pack, and execute the separate evaluator. After it writes revision- and tree-bound PASS evidence, run `--finalize-accepted`. Finalization reruns the complete suite and clears the runtime stage plus every root `*-Knowledge-Graph.bak` tree while retaining the tracked revision-named package. Failed tests, failed evaluation, or stale evidence preserve all temporary inputs and backups.
 
 The NPF projection uses the same staged checkout and reads `Narrativization-and-Narrative-Studies-Principles-Framework.md`. It writes `NPF-Knowledge-Graph`, temporarily rotates an existing projection to `NPF-Knowledge-Graph.bak`, and participates in the complete acceptance suite before cleanup.
 
 Regenerate from the repository root:
 
 ```bash
-python3 -X pycache_prefix=.runtime/pycache -m scripts.build_fpf_obsidian_graph \
+uv run -m scripts.build_fpf_obsidian_graph \
   --source-revision 563f4c8e06a319cbd375b66cdbb2df27a5f8b9ef \
   --generated-on 2026-08-26 --clean
 ```

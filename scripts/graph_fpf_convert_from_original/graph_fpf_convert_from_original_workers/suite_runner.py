@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-import os
 import subprocess
 import sys
 from pathlib import Path
@@ -22,12 +21,12 @@ def _command(parts: object) -> list[str]:
     return [item.replace("{python}", sys.executable) for item in parts]
 
 
-def _run_case(case: dict[str, object], root: Path, environment: dict[str, str]):
+def _run_case(case: dict[str, object], root: Path):
     name = case.get("name")
     if not isinstance(name, str):
         raise ValueError("every test case must have a string name")
     completed = subprocess.run(
-        _command(case.get("command")), cwd=root, env=environment,
+        _command(case.get("command")), cwd=root,
         check=False, capture_output=True, text=True,
     )
     item = dict(name=name, returncode=completed.returncode)
@@ -38,9 +37,7 @@ def _run_case(case: dict[str, object], root: Path, environment: dict[str, str]):
 
 
 def run_suite(root: Path, cases_path: Path) -> dict[str, object]:
-    environment = os.environ.copy()
-    environment["PYTHONPYCACHEPREFIX"] = str(root / ".runtime" / "pycache")
-    results = [_run_case(case, root, environment) for case in _load_cases(cases_path)]
+    results = [_run_case(case, root) for case in _load_cases(cases_path)]
     failures = [item["name"] for item in results if item["returncode"]]
     return dict(
         suite="graph-fpf-convert-from-original", cases=len(results),

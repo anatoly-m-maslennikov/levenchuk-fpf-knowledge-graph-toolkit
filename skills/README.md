@@ -36,7 +36,7 @@ When work continues from an earlier FPF report or finding set, analytical prompt
 
 An explicit user request overrides an accessible `.caprmedio/settings.toml` setting, which overrides the embedded default. `output_language = "auto"` selects Russian when the invocation or residual task contains meaningful Russian Cyrillic text and English otherwise; `ru` and `en` fix the language. Russian output loads only [`fpf-output-language-ru.md`](fpf.skill/references/fpf-output-language-ru.md); English loads no language resource. Existing five-setting control panels are read as `output_language = "auto"` for upgrade compatibility.
 
-The tracked control-panel defaults also set `output_style = "general"`, `fpf_terms_explained = "off"`, `save_report = "on"`, `report_style = "plain"`, and `install_method = "copy"`. `natural` loads no style file. `general` loads only [`fpf-output-style-general.md`](fpf.skill/references/fpf-output-style-general.md); `ste` loads only [`fpf-output-style-ste.md`](fpf.skill/references/fpf-output-style-ste.md). Prompts never preload an unselected language or style file. The generated settings block in each of the eight non-help prompt files keeps the package portable. After changing a suite setting, run `python3 -B -m scripts.sync_fpf_skill_settings --apply`, then run `--check`.
+The tracked control-panel defaults also set `output_style = "general"`, `fpf_terms_explained = "off"`, `save_report = "on"`, `report_style = "plain"`, and `install_method = "copy"`. `natural` loads no style file. `general` loads only [`fpf-output-style-general.md`](fpf.skill/references/fpf-output-style-general.md); `ste` loads only [`fpf-output-style-ste.md`](fpf.skill/references/fpf-output-style-ste.md). Prompts never preload an unselected language or style file. The generated settings block in each of the eight non-help prompt files keeps the package portable. After changing a suite setting, run `uv run -m scripts.sync_fpf_skill_settings --apply`, then run `--check`.
 
 The seven analytical nodes always return their complete Markdown artifact in chat. When saving is on, they load [`fpf-report-persistence.md`](fpf.skill/references/fpf-report-persistence.md). Plain delivery writes a non-overwriting UTF-8 copy under the active workspace's `fpf-reports/` unless the user supplies a destination. CAPRMEDIO delivery then loads the isolated [`fpf-caprmedio-report-adapter.md`](fpf.skill/references/fpf-caprmedio-report-adapter.md), selects the narrowest proven Scope Unit containing the whole analysis, handles ordered BSEED scope specially, and creates one governed non-normative Analysis Report Atom. It fails closed when topology or Atom admission rules are unresolved. `$fpf help` and `$fpf plan` never load persistence and never create reports.
 
@@ -49,7 +49,7 @@ The installers use the `name: fpf` package identity and install only `fpf.skill`
 Run package checks with:
 
 ```bash
-python3 -B skills/fpf.skill/scripts/route_fpf.py --check
-python3 -B -m unittest discover -s skills/fpf.skill/scripts/tests -p 'test_*.py'
-python3 -B -m scripts.validate_repository
+uv run skills/fpf.skill/scripts/route_fpf.py --check
+uv run -m unittest discover -s skills/fpf.skill/scripts/tests -p 'test_*.py'
+uv run -m scripts.validate_repository
 ```

@@ -65,7 +65,7 @@ In every campaign route, carry the campaign ID, frontiers, evaluation profile, p
 
 ## Maintainer evaluation
 
-`references/routing-scenarios.json` is the repository's behavioral scenario matrix. It is test evidence for maintainers, not required runtime context. When changing routing rules or the skill catalog, update the matrix and run `python3 -X pycache_prefix=.runtime/pycache -m scripts.validate_repository`.
+`references/routing-scenarios.json` is the repository's behavioral scenario matrix. It is test evidence for maintainers, not required runtime context. When changing routing rules or the skill catalog, update the matrix and run `uv run -m scripts.validate_repository`.
 
 ## Address each task
 

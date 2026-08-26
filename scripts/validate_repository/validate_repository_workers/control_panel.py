@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import sys
 from pathlib import Path
 
 from scripts.init_settings.init_settings import (
@@ -33,8 +32,22 @@ def _validate_settings_values(values: dict[str, str], errors: list[str]) -> None
         _require(values.get(key) in choices, f"invalid control-panel value: {key}", errors)
 
 
-def _contains_generated_cache(path: Path) -> bool:
-    return any(item.is_file() or item.is_symlink() for item in path.rglob("*"))
+def _validate_uv_project(root: Path, errors: list[str]) -> None:
+    try:
+        config = (root / "pyproject.toml").read_text(encoding="utf-8")
+        python_version = (root / ".python-version").read_text(encoding="utf-8").strip()
+    except OSError as exc:
+        errors.append(f"cannot read uv project configuration: {exc}")
+        return
+    fragments = (
+        'name = "levenchuk-fpf-knowledge-graph-toolkit"', 'requires-python = ">=3.12"',
+        "dependencies = []", "[tool.uv]", "package = false",
+        'cache-dir = ".runtime/uv-cache"',
+    )
+    for fragment in fragments:
+        _require(fragment in config, f"uv project configuration changed: {fragment}", errors)
+    _require(python_version == "3.12", "uv Python pin changed", errors)
+    _require((root / "uv.lock").is_file(), "missing uv.lock", errors)
 
 
 def validate_control_panel(root: Path, expected: dict[str, str]) -> list[str]:
@@ -57,8 +70,9 @@ def validate_control_panel(root: Path, expected: dict[str, str]) -> list[str]:
 
 def validate_repository_hygiene(root: Path) -> list[str]:
     errors: list[str] = []
+    _validate_uv_project(root, errors)
     gitignore = (root / ".gitignore").read_text(encoding="utf-8").splitlines()
-    for entry in ("/.runtime/", "/.caprmedio/settings.toml", "/*-Knowledge-Graph.bak/"):
+    for entry in ("/.venv/", "/.runtime/", "/.caprmedio/settings.toml", "/*-Knowledge-Graph.bak/"):
         _require(entry in gitignore, f"missing gitignore entry: {entry}", errors)
     for retired in (
         "settings.toml", "settings.toml.example", "FPF-Spec.md", "FPF-Spec",
@@ -67,12 +81,4 @@ def validate_repository_hygiene(root: Path) -> list[str]:
         _require(not (root / retired).exists(), f"retired root artifact remains: {retired}", errors)
     local_settings = list((root / "skills").rglob("fpf-settings.toml"))
     _require(not local_settings, "skill-local settings files remain", errors)
-    runtime = (root / ".runtime").resolve()
-    caches = [
-        path for path in root.rglob("__pycache__")
-        if not path.resolve().is_relative_to(runtime) and _contains_generated_cache(path)
-    ]
-    _require(not caches, f"scattered Python caches: {[str(path) for path in caches]}", errors)
-    if sys.pycache_prefix:
-        _require(Path(sys.pycache_prefix).resolve().is_relative_to(runtime), "pycache prefix is outside .runtime", errors)
     return errors
