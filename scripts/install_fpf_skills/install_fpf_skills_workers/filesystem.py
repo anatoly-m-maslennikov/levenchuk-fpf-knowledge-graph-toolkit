@@ -72,13 +72,17 @@ def replace_package(source: Path, target: Path, method: str) -> None:
 
 
 def write_receipt(path: Path, receipt: dict[str, object]) -> None:
+    text = json.dumps(receipt, ensure_ascii=False, indent=2) + "\n"
+    write_text(path, text)
+
+
+def write_text(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     descriptor, temporary_name = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
     temporary = Path(temporary_name)
     try:
         with os.fdopen(descriptor, "w", encoding="utf-8", newline="\n") as stream:
-            json.dump(receipt, stream, ensure_ascii=False, indent=2)
-            stream.write("\n")
+            stream.write(text)
         os.replace(temporary, path)
     finally:
         if temporary.exists():

@@ -15,6 +15,9 @@ def load_catalog(path: Path) -> dict[str, object]:
     skills = catalog.get("end_user_skills")
     if not isinstance(skills, list) or not all(isinstance(name, str) for name in skills):
         raise ValueError("installer catalog end_user_skills must be a string list")
+    for key in ("receipt_name", "settings_name"):
+        if not isinstance(catalog.get(key), str) or not catalog[key]:
+            raise ValueError(f"installer catalog {key} must be a non-empty string")
     return catalog
 
 

@@ -47,7 +47,7 @@
   "common_prompt_fragments": [
     "<!-- output-settings:start -->",
     "<!-- output-settings:end -->",
-    "Explicit user instruction overrides an accessible `.caprmedio/settings.toml` control-panel setting",
+    "Absence of CAPRMEDIO settings is normal and never blocks standalone FPF execution.",
     "Resolve `output_language` before output style.",
     "For output style, load at most one mode resource:",
     "Never preload an unselected resource.",
@@ -92,6 +92,8 @@
   "reference_fragments": {
     "fpf.skill/prompts/fpf-runtime.md": [
       "scripts/route_fpf.py",
+      ".fpf-runtime.toml",
+      "repository_root",
       "prompts/fpf-plan.md",
       "references/fpf-report-persistence.md",
       "references/fpf-composition.md",

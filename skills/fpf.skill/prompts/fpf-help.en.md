@@ -47,7 +47,7 @@ Use `$fpf plan` when you want the workflow but do not want any analytical prompt
 
 ## Report modes
 
-The default analytical behavior is `save_report = "on"` and `report_style = "plain"`. An accessible `.caprmedio/settings.toml` can select `report_style = "caprmedio"`; an explicit user instruction wins over project settings. CAPRMEDIO mode creates a non-normative Analysis Report Atom in the narrowest proven Scope Unit that contains the analysis scope. It fails closed when topology or Atom admission rules cannot be resolved.
+FPF works standalone by default. The installer-managed `.fpf-runtime.toml` records the absolute local toolkit-repository path and defaults to `save_report = "on"` with `report_style = "plain"`; no CAPRMEDIO installation or project is required. An optional active-project `.caprmedio/settings.toml` or an explicit user instruction can select `report_style = "caprmedio"`, with the explicit instruction taking priority. CAPRMEDIO mode creates a non-normative Analysis Report Atom in the narrowest proven Scope Unit that contains the analysis scope. It fails closed when topology or Atom admission rules cannot be resolved.
 
 ## Output language
 

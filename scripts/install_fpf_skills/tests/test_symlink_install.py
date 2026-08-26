@@ -22,6 +22,8 @@ class SymlinkInstallTests(unittest.TestCase):
                 self.assertFalse((destination / name).exists())
             receipt = json.loads((destination / ".fpf-skills-install.json").read_text())
             self.assertEqual(receipt["method"], "symlink")
+            settings = (destination / ".fpf-runtime.toml").read_text(encoding="utf-8")
+            self.assertIn(f'repository_root = "{source.parent.resolve()}"', settings)
 
     def test_apply_repairs_stale_and_broken_links(self) -> None:
         with temporary_workspace() as temporary:

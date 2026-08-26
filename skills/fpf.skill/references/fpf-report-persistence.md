@@ -2,7 +2,7 @@
 
 Load this resource only after one of the seven executable FPF skills resolves `save_report = "on"`. `$fpf plan` ignores report persistence and `report_style`: it never loads this resource and never writes a report.
 
-Resolve `report_style` only now, after report saving is on: explicit user instruction overrides an accessible local or repository suite setting, which overrides the embedded default. Accepted values are exactly `plain` and `caprmedio`. Build the complete Markdown artifact once as the complete four-section FPF artifact and always return it in chat; never return a summary, placeholder, or pointer instead.
+Resolve `report_style` only now, after report saving is on: explicit user instruction overrides an optional active-project `.caprmedio/settings.toml` setting, which overrides the installed `.fpf-runtime.toml` default, which overrides the embedded default `plain`. Absence of CAPRMEDIO settings is normal. Accepted values are exactly `plain` and `caprmedio`. Build the complete Markdown artifact once as the complete four-section FPF artifact and always return it in chat; never return a summary, placeholder, or pointer instead.
 
 ## Plain report delivery (`report_style = "plain"`)
 

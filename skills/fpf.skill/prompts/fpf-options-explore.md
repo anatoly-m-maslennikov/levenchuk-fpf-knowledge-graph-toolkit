@@ -3,7 +3,7 @@
 <!-- output-settings:start -->
 ## Output and report settings
 
-Embedded defaults: `output_language = "auto"` (`auto`, `en`, or `ru`); `output_style = "general"`; `fpf_terms_explained = "off"`; `save_report = "on"` (`on` or `off`); `report_style = "plain"` (`plain` or `caprmedio`, consulted only when saving is on). Explicit user instruction overrides an accessible `.caprmedio/settings.toml` control-panel setting, which overrides these embedded defaults.
+Embedded defaults: `output_language = "auto"` (`auto`, `en`, or `ru`); `output_style = "general"`; `fpf_terms_explained = "off"`; `save_report = "on"` (`on` or `off`); `report_style = "plain"` (`plain` or `caprmedio`, consulted only when saving is on). Explicit user instruction overrides an optional active-project `.caprmedio/settings.toml` setting, which overrides the installed `.fpf-runtime.toml` defaults, which override these embedded defaults. Absence of CAPRMEDIO settings is normal and never blocks standalone FPF execution.
 Resolve `output_language` before output style. `en` means English and loads no language resource. `ru` means Russian and loads only `references/fpf-output-language-ru.md`. With `auto`, use Russian when the user's invocation or residual task contains meaningful Russian Cyrillic text; otherwise use English. Never infer language from quoted source text, identifiers, paths, or citations alone. Never preload an unselected language resource.
 For output style, load at most one mode resource:
 - `natural`: load none; allow FPF terms. On first use, explain each term per `fpf_terms_explained`: `full` up to three short lines, `short` one sentence, `off` none.
@@ -18,7 +18,7 @@ Produce a read-only **Candidate Exploration Pack**. Generate and compare options
 ## Resolve scope and FPF source
 
 1. Resolve the question, Entity of Concern, bounded context, receiving use, evaluator, and decision owner from the request and accessible evidence.
-2. Resolve an accessible FPF edition from a user-supplied path, URI, attachment, corpus, connected item, optional runtime hint, or bounded search of accessible task-relevant roots. Verify candidates by FPF identity and navigable direct patterns, not container names.
+2. Resolve an accessible FPF edition from a user-supplied path, URI, attachment, corpus, connected item, the verified installed `repository_root/FPF-Knowledge-Graph` runtime hint, another optional runtime hint, or bounded search of accessible task-relevant roots. Verify candidates by FPF identity and navigable direct patterns, not container names.
 3. Locate direct patterns by title and content. Inspect `Creative Abduction with NQD`; inspect `Parity and Benchmark Harness` only when method-family or OEE/QD comparison is required. Read their Problem frame, Problem, Forces, Solution, Consequences, and ordinary boundary.
 4. Never load the full methodology or an oversized source wholesale. Use entry/index pages and targeted sections. Use six direct-pattern pages as the default ceiling; entry and index pages do not count.
 5. Keep the source locator task-local. Cite it with the most stable available file, URI, attachment, corpus, or connected-item locator. If no edition can be verified, return `insufficient basis` and state what source is required.
