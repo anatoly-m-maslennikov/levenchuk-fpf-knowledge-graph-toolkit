@@ -128,8 +128,8 @@ def validate_graph(graph: dict) -> list[str]:
         if covered != expected_persistent:
             errors.append("routing scenarios must cover all analytical nodes")
 
-    help_text = (SKILL_ROOT / "prompts/help.md").read_text(encoding="utf-8")
-    help_ru_text = (SKILL_ROOT / "prompts/help-ru.md").read_text(encoding="utf-8")
+    help_text = (SKILL_ROOT / "prompts/help.en.md").read_text(encoding="utf-8")
+    help_ru_text = (SKILL_ROOT / "prompts/help.ru.md").read_text(encoding="utf-8")
     for node in nodes:
         if f"$fpf {node['command']}" not in help_text:
             errors.append(f"help page omits $fpf {node['command']}")

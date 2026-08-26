@@ -13,8 +13,8 @@
       "aliases": ["?", "commands", "usage", "помощь", "справка", "команды", "как пользоваться"],
       "localized_commands": {"ru": "помощь"},
       "description": "Show the FPF command tree and usage examples.",
-      "prompt": "prompts/help.md",
-      "localized_prompts": {"ru": "prompts/help-ru.md"},
+      "prompt": "prompts/help.en.md",
+      "localized_prompts": {"ru": "prompts/help.ru.md"},
       "persist_report": false,
       "exact_only": true,
       "keywords": []

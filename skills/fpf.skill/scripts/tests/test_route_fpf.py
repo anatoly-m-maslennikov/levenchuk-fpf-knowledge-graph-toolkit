@@ -38,17 +38,17 @@ class RouteFpfTests(unittest.TestCase):
         route = self.route("$fpf помощь")
         self.assertEqual("help", route["node"])
         self.assertEqual("ru", route["language"])
-        self.assertEqual("prompts/help-ru.md", route["prompt"])
+        self.assertEqual("prompts/help.ru.md", route["prompt"])
 
     def test_explicit_russian_language_selects_russian_help_for_english_command(self) -> None:
         route = self.route("$fpf help", "ru")
         self.assertEqual("help", route["node"])
         self.assertEqual("ru", route["language"])
         self.assertEqual("explicit-or-setting", route["language_selected_by"])
-        self.assertEqual("prompts/help-ru.md", route["prompt"])
+        self.assertEqual("prompts/help.ru.md", route["prompt"])
 
     def test_every_russian_help_command_is_an_exact_routable_alias(self) -> None:
-        help_text = (ROUTER.SKILL_ROOT / "prompts/help-ru.md").read_text(encoding="utf-8")
+        help_text = (ROUTER.SKILL_ROOT / "prompts/help.ru.md").read_text(encoding="utf-8")
         for node in self.graph["nodes"]:
             command = node["localized_commands"]["ru"]
             with self.subTest(command=command):

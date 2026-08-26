@@ -36,9 +36,13 @@
     "install_method": "copy"
   },
   "fpf_skill_fragments": [
-    "name: fpf", "lazy-loaded prompt graph", "scripts/route_fpf.py", "output_language",
-    "prompts/help.md", "prompts/plan.md", "references/report-persistence.md",
-    "references/composition.md", "mode: composition"
+    "name: fpf", "do not preload graph prompts or references",
+    "prompts/help.en.md", "prompts/help.ru.md", "prompts/doer.md",
+    "Never run the router", "Never load `prompts/doer.md` for a fast Help call"
+  ],
+  "fpf_skill_max_lines": 20,
+  "fpf_skill_forbidden_fragments": [
+    "scripts/route_fpf.py", "output_language", "mode: composition"
   ],
   "common_prompt_fragments": [
     "<!-- output-settings:start -->",
@@ -86,6 +90,13 @@
     ]
   },
   "reference_fragments": {
+    "fpf.skill/prompts/doer.md": [
+      "scripts/route_fpf.py",
+      "prompts/plan.md",
+      "references/report-persistence.md",
+      "references/composition.md",
+      "mode: composition"
+    ],
     "fpf.skill/references/report-persistence.md": [
       "Resolve `report_style` only now, after report saving is on",
       "Never overwrite:",
