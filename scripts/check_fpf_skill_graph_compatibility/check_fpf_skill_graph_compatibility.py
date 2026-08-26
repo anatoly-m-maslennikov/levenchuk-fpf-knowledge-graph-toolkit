@@ -30,7 +30,7 @@ def graph_ids() -> set[str]:
 
 
 def _skill_result(name: str, identifiers: set[str]) -> tuple[dict[str, object], list[str]]:
-    path = SKILLS / "fpf.skill" / "prompts" / f"{name}.md"
+    path = SKILLS / "fpf.skill" / "prompts" / f"fpf-{name}.md"
     if not path.is_file():
         return dict(prompt=name), [f"missing methodology prompt: {path.relative_to(ROOT)}"]
     text = path.read_text(encoding="utf-8")

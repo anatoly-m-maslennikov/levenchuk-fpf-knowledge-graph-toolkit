@@ -17,5 +17,6 @@
     "graph-fpf-evaluate-conversion-result"
   ],
   "receipt_name": ".fpf-skills-install.json",
-  "schema_version": 2
+  "settings_name": ".fpf-runtime.toml",
+  "schema_version": 4
 }

@@ -18,8 +18,8 @@ class RouteFpfTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.graph = ROUTER.load_graph()
 
-    def route(self, invocation: str) -> dict:
-        return ROUTER.resolve(invocation, self.graph)
+    def route(self, invocation: str, language: str = "auto") -> dict:
+        return ROUTER.resolve(invocation, self.graph, language)
 
     def test_graph_is_valid(self) -> None:
         self.assertEqual([], ROUTER.validate_graph(self.graph))
@@ -33,6 +33,32 @@ class RouteFpfTests(unittest.TestCase):
         route = self.route("$fpf help")
         self.assertEqual("help", route["node"])
         self.assertFalse(route["persist_report"])
+
+    def test_primary_russian_help_command_selects_russian_help_page(self) -> None:
+        route = self.route("$fpf справка")
+        self.assertEqual("help", route["node"])
+        self.assertEqual("ru", route["language"])
+        self.assertEqual("prompts/fpf-help.ru.md", route["prompt"])
+
+    def test_old_russian_help_alias_remains_compatible(self) -> None:
+        self.assertEqual("help", self.route("$fpf помощь")["node"])
+
+    def test_explicit_russian_language_selects_russian_help_for_english_command(self) -> None:
+        route = self.route("$fpf help", "ru")
+        self.assertEqual("help", route["node"])
+        self.assertEqual("ru", route["language"])
+        self.assertEqual("explicit-or-setting", route["language_selected_by"])
+        self.assertEqual("prompts/fpf-help.ru.md", route["prompt"])
+
+    def test_every_russian_help_command_is_an_exact_routable_alias(self) -> None:
+        help_text = (ROUTER.SKILL_ROOT / "prompts/fpf-help.ru.md").read_text(encoding="utf-8")
+        for node in self.graph["nodes"]:
+            command = node["localized_commands"]["ru"]
+            with self.subTest(command=command):
+                route = self.route(f"$fpf {command}")
+                self.assertEqual(node["id"], route["node"])
+                self.assertEqual("exact-command", route["selected_by"])
+                self.assertIn(f"$fpf {command}", help_text)
 
     def test_plan_replaces_route_and_is_ephemeral(self) -> None:
         route = self.route("$fpf plan compare approaches")
@@ -52,6 +78,22 @@ class RouteFpfTests(unittest.TestCase):
     def test_natural_language_selects_analysis_node(self) -> None:
         route = self.route("$fpf Audit the implemented repairs for regressions")
         self.assertEqual("alignment-audit", route["node"])
+
+    def test_russian_natural_language_routes_every_analytical_node(self) -> None:
+        cases = {
+            "Какие паттерны FPF применимы к этому вопросу?": "applicability-scan",
+            "Построй актуальную карту исследований по этой области.": "sota-harvest",
+            "Сгенерируй и сравни альтернативы без выбора победителя.": "options-explore",
+            "Проведи стресс-тест архитектуры до реализации.": "design-challenge",
+            "Выбери среди уже оценённых альтернатив и оформи ADR.": "decision-synthesize",
+            "Улучши версионированный артефакт и повторно оцени качество.": "quality-improve",
+            "Проведи аудит реализованной работы на регрессии.": "alignment-audit",
+        }
+        for task, expected in cases.items():
+            with self.subTest(task=task):
+                route = self.route(f"$fpf {task}")
+                self.assertEqual(expected, route["node"])
+                self.assertEqual("ru", route["language"])
 
     def test_single_node_routing_scenarios_select_the_expected_prompt(self) -> None:
         scenarios_path = ROUTER.SKILL_ROOT / "references/routing-scenarios.json"
@@ -89,6 +131,18 @@ class RouteFpfTests(unittest.TestCase):
         self.assertEqual(["design-challenge", "quality-improve"], [
             item["node"] for item in route["nodes"]
         ])
+
+    def test_composition_accepts_russian_aliases_and_preserves_task(self) -> None:
+        route = self.route(
+            "$fpf проверка дизайна + улучшение качества + аудит согласованности "
+            "Усиль предложение и проверь исправления"
+        )
+        self.assertEqual(
+            ["design-challenge", "quality-improve", "alignment-audit"],
+            [item["node"] for item in route["nodes"]],
+        )
+        self.assertEqual("Усиль предложение и проверь исправления", route["task"])
+        self.assertEqual("ru", route["language"])
 
     def test_illegal_composition_falls_back_to_plan_with_reason(self) -> None:
         route = self.route("$fpf alignment audit + design challenge Review this")

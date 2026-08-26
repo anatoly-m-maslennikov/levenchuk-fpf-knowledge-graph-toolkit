@@ -30,7 +30,7 @@ def write_settings(root: Path, method: str) -> tuple[Path, Path]:
     control.mkdir(parents=True, exist_ok=True)
     text = (
         '[paths]\nfpf_original_repo = "../../FPF"\n\n[skills]\n'
-        'output_style = "general"\nfpf_terms_explained = "off"\n'
+        'output_language = "auto"\noutput_style = "general"\nfpf_terms_explained = "off"\n'
         'save_report = "on"\nreport_style = "plain"\n'
         f'install_method = "{method}"\n'
     )

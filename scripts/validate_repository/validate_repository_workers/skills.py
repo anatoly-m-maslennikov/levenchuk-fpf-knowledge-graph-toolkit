@@ -6,6 +6,7 @@ import json
 import re
 from pathlib import Path
 
+from .skill_entry import validate_fpf_skill_package
 
 def _missing_fragments(text: str, fragments: list[str], label: str) -> list[str]:
     return [f"{label} is missing contract text: {fragment}" for fragment in fragments if fragment not in text]
@@ -54,7 +55,6 @@ def _load_manifest(root: Path) -> tuple[dict[str, object], list[str]]:
         return {}, [f"cannot read FPF graph manifest: {exc}"]
     return manifest, []
 
-
 def _validate_package_roots(skills_root: Path, contracts: dict[str, object]) -> list[str]:
     names = list(contracts["end_user_skills"]) + list(contracts["service_skills"])
     expected = {f"{name}.skill" for name in names}
@@ -74,7 +74,10 @@ def _validate_package_roots(skills_root: Path, contracts: dict[str, object]) -> 
             contracts["service_skill_fragments"][name] if name in contracts["service_skills"]
             else contracts["fpf_skill_fragments"]
         )
-        errors.extend(_missing_fragments(path.read_text(encoding="utf-8"), fragments, name))
+        text = path.read_text(encoding="utf-8")
+        errors.extend(_missing_fragments(text, fragments, name))
+        if name == "fpf":
+            errors.extend(validate_fpf_skill_package(path.parent, text, contracts))
 
     readme = (skills_root / "README.md").read_text(encoding="utf-8")
     errors.extend(f"skills README omits {name}.skill" for name in names if f"`{name}.skill`" not in readme)
@@ -114,18 +117,26 @@ def _validate_manifest(root: Path, contracts: dict[str, object]) -> list[str]:
     composition = manifest.get("composition", {})
     if not isinstance(composition, dict) or composition.get("operator") != "+":
         errors.append("FPF graph must declare the + composition operator")
-    elif composition.get("reference") != "references/composition.md":
+    elif composition.get("reference") != "references/fpf-composition.md":
         errors.append("FPF graph composition reference is invalid")
 
     prompts_root = root / "skills/fpf.skill/prompts"
     for node in contracts["prompt_nodes"]:
-        errors.extend(_validate_prompt(prompts_root / f"{node}.md", node, contracts))
+        filename = "fpf-help.en.md" if node == "help" else f"fpf-{node}.md"
+        errors.extend(_validate_prompt(prompts_root / filename, node, contracts))
     for node in nodes:
         if not isinstance(node, dict):
             continue
-        expected_prompt = f"prompts/{node.get('id')}.md"
+        expected_prompt = (
+            "prompts/fpf-help.en.md" if node.get("id") == "help"
+            else f"prompts/fpf-{node.get('id')}.md"
+        )
         if node.get("prompt") != expected_prompt:
             errors.append(f"FPF graph prompt path mismatch: {node.get('id')}")
+        for language, localized in node.get("localized_prompts", {}).items():
+            localized_path = root / "skills/fpf.skill" / localized
+            if language not in {"en", "ru"} or not localized_path.is_file():
+                errors.append(f"FPF graph localized prompt is invalid: {node.get('id')}:{language}")
 
     return errors
 

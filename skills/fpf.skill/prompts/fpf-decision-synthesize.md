@@ -3,13 +3,14 @@
 <!-- output-settings:start -->
 ## Output and report settings
 
-Embedded defaults: `output_style = "general"`; `fpf_terms_explained = "off"`; `save_report = "on"` (`on` or `off`); `report_style = "plain"` (`plain` or `caprmedio`, consulted only when saving is on). Explicit user instruction overrides an accessible `.caprmedio/settings.toml` control-panel setting, which overrides these embedded defaults.
-For output language, load at most one mode resource:
+Embedded defaults: `output_language = "auto"` (`auto`, `en`, or `ru`); `output_style = "general"`; `fpf_terms_explained = "off"`; `save_report = "on"` (`on` or `off`); `report_style = "plain"` (`plain` or `caprmedio`, consulted only when saving is on). Explicit user instruction overrides an optional active-project `.caprmedio/settings.toml` setting, which overrides the installed `.fpf-runtime.toml` defaults, which override these embedded defaults. Absence of CAPRMEDIO settings is normal and never blocks standalone FPF execution.
+Resolve `output_language` before output style. `en` means English and loads no language resource. `ru` means Russian and loads only `references/fpf-output-language-ru.md`. With `auto`, use Russian when the user's invocation or residual task contains meaningful Russian Cyrillic text; otherwise use English. Never infer language from quoted source text, identifiers, paths, or citations alone. Never preload an unselected language resource.
+For output style, load at most one mode resource:
 - `natural`: load none; allow FPF terms. On first use, explain each term per `fpf_terms_explained`: `full` up to three short lines, `short` one sentence, `off` none.
-- `general`: load only `references/output-style-general.md`.
-- `ste`: load only `references/output-style-ste.md`.
+- `general`: load only `references/fpf-output-style-general.md`.
+- `ste`: load only `references/fpf-output-style-ste.md`.
 Never preload an unselected resource. If the selected file is missing, report it; do not substitute. Keep exact FPF locators and source paths in compact evidence or source records, not narrative prose.
-Return the complete artifact in chat. When `save_report = "on"`, consult `report_style`, then load only `references/report-persistence.md` and follow it; never replace chat delivery with a summary or pointer.
+Return the complete artifact in chat. When `save_report = "on"`, consult `report_style`, then load only `references/fpf-report-persistence.md` and follow it; never replace chat delivery with a summary or pointer.
 <!-- output-settings:end -->
 
 Produce a **Decision Package** in two ordered stages: the project decision relation, then its ADR-like publication projection. Do not let the record impersonate the decision or its authority.
@@ -17,14 +18,14 @@ Produce a **Decision Package** in two ordered stages: the project decision relat
 ## Resolve scope and FPF source
 
 1. Resolve the decision question, Entity of Concern, evaluated candidates, decision owner, authority, evidence, criteria, constraints, affected structures, receiving work, and publication audience.
-2. Resolve an accessible FPF edition from a user-supplied path, URI, attachment, corpus, connected item, optional runtime hint, or bounded search of accessible task-relevant roots. Verify candidates by FPF identity and navigable direct patterns, not container names.
+2. Resolve an accessible FPF edition from a user-supplied path, URI, attachment, corpus, connected item, the verified installed `repository_root/FPF-Knowledge-Graph` runtime hint, another optional runtime hint, or bounded search of accessible task-relevant roots. Verify candidates by FPF identity and navigable direct patterns, not container names.
 3. Locate `Project Architecture Decision After Candidate Synthesis` and `Architecture Decision Record Projection` by title and content. Inspect each pattern's Problem frame, Problem, Forces, Solution, Consequences, and ordinary boundary.
 4. Never load the full methodology or an oversized source wholesale. Use entry/index pages and targeted sections. Use six direct-pattern pages as the default ceiling; entry and index pages do not count.
 5. Keep the source locator task-local and cite stable source/evidence locators. If candidate synthesis, comparison evidence, or project authority is missing, return `insufficient basis` and the exact prerequisite; never invent a decision.
 
 ## Review campaign continuation
 
-Before resolving FPF sources or starting native work, when the task cites a prior FPF report, finding, repair, closure check, or review campaign, load `references/review-campaign.md` and preserve its campaign envelope, existing fingerprints, review budget, and stop rule. This workflow reference is not an FPF methodology source. A decision owner may move a registered finding from `OPEN` to `DECIDED` through this skill when the decision relation supplies recoverable authority and evidence; otherwise leave its state unchanged. Return the updated campaign handoff in `## Task, scope, and boundaries`.
+Before resolving FPF sources or starting native work, when the task cites a prior FPF report, finding, repair, closure check, or review campaign, load `references/fpf-review-campaign.md` and preserve its campaign envelope, existing fingerprints, review budget, and stop rule. This workflow reference is not an FPF methodology source. A decision owner may move a registered finding from `OPEN` to `DECIDED` through this skill when the decision relation supplies recoverable authority and evidence; otherwise leave its state unchanged. Return the updated campaign handoff in `## Task, scope, and boundaries`.
 
 ## Stage 1: decision relation
 

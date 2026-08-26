@@ -23,6 +23,7 @@ def read_settings(path: Path = SETTINGS_PATH) -> dict[str, str]:
     example = EXAMPLE_PATH if path == SETTINGS_PATH else path.with_name("settings.toml.example")
     values, _ = read_skill_settings(path, example)
     allowed = dict(
+        output_language={"auto", "en", "ru"},
         output_style={"natural", "general", "ste"},
         fpf_terms_explained={"full", "short", "off"},
         save_report={"on", "off"}, report_style={"plain", "caprmedio"},
@@ -38,12 +39,12 @@ def _report_contract(is_plan: bool) -> str:
     if is_plan:
         return (
             "`$fpf plan` is the exception: it remains ephemeral, ignores report persistence and `report_style`, "
-            "never creates a report file, and never loads `references/report-persistence.md`, even though "
+            "never creates a report file, and never loads `references/fpf-report-persistence.md`, even though "
             "the suite default is on."
         )
     return (
         'Return the complete artifact in chat. When `save_report = "on"`, consult `report_style`, then load '
-        "only `references/report-persistence.md` and follow it; never replace chat delivery with a summary "
+        "only `references/fpf-report-persistence.md` and follow it; never replace chat delivery with a summary "
         "or pointer."
     )
 
@@ -52,11 +53,12 @@ def render_block(settings: dict[str, str], *, is_plan: bool) -> str:
     return f'''{START}
 ## Output and report settings
 
-Embedded defaults: `output_style = "{settings["output_style"]}"`; `fpf_terms_explained = "{settings["fpf_terms_explained"]}"`; `save_report = "{settings["save_report"]}"` (`on` or `off`); `report_style = "{settings["report_style"]}"` (`plain` or `caprmedio`, consulted only when saving is on). Explicit user instruction overrides an accessible `.caprmedio/settings.toml` control-panel setting, which overrides these embedded defaults.
-For output language, load at most one mode resource:
+Embedded defaults: `output_language = "{settings["output_language"]}"` (`auto`, `en`, or `ru`); `output_style = "{settings["output_style"]}"`; `fpf_terms_explained = "{settings["fpf_terms_explained"]}"`; `save_report = "{settings["save_report"]}"` (`on` or `off`); `report_style = "{settings["report_style"]}"` (`plain` or `caprmedio`, consulted only when saving is on). Explicit user instruction overrides an optional active-project `.caprmedio/settings.toml` setting, which overrides the installed `.fpf-runtime.toml` defaults, which override these embedded defaults. Absence of CAPRMEDIO settings is normal and never blocks standalone FPF execution.
+Resolve `output_language` before output style. `en` means English and loads no language resource. `ru` means Russian and loads only `references/fpf-output-language-ru.md`. With `auto`, use Russian when the user's invocation or residual task contains meaningful Russian Cyrillic text; otherwise use English. Never infer language from quoted source text, identifiers, paths, or citations alone. Never preload an unselected language resource.
+For output style, load at most one mode resource:
 - `natural`: load none; allow FPF terms. On first use, explain each term per `fpf_terms_explained`: `full` up to three short lines, `short` one sentence, `off` none.
-- `general`: load only `references/output-style-general.md`.
-- `ste`: load only `references/output-style-ste.md`.
+- `general`: load only `references/fpf-output-style-general.md`.
+- `ste`: load only `references/fpf-output-style-ste.md`.
 Never preload an unselected resource. If the selected file is missing, report it; do not substitute. Keep exact FPF locators and source paths in compact evidence or source records, not narrative prose.
 {_report_contract(is_plan)}
 {END}
@@ -81,7 +83,7 @@ def _arguments() -> argparse.Namespace:
 
 def _sync(apply: bool) -> tuple[list[Path], list[Path]]:
     settings = read_settings(SETTINGS_PATH)
-    paths = [ROOT / "skills/fpf.skill/prompts" / f"{name}.md" for name in METHODOLOGY_PROMPTS]
+    paths = [ROOT / "skills/fpf.skill/prompts" / f"fpf-{name}.md" for name in METHODOLOGY_PROMPTS]
     missing = [path for path in paths if not path.is_file()]
     if missing:
         raise ValueError(f"missing methodology skill: {missing[0].relative_to(ROOT)}")
@@ -89,7 +91,7 @@ def _sync(apply: bool) -> tuple[list[Path], list[Path]]:
     for path in paths:
         original = path.read_text(encoding="utf-8")
         updated = replace_block(
-            original, render_block(settings, is_plan=path.stem == "plan"), path
+            original, render_block(settings, is_plan=path.stem == "fpf-plan"), path
         )
         if original != updated:
             stale.append(path)

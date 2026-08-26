@@ -7,7 +7,7 @@ import os
 from pathlib import Path
 
 
-IGNORED_NAMES = {".DS_Store", "__pycache__"}
+IGNORED_NAMES = {".DS_Store", ".fpf-runtime.toml", "__pycache__"}
 
 
 def ignored(path: Path) -> bool:

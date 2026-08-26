@@ -3,13 +3,14 @@
 <!-- output-settings:start -->
 ## Output and report settings
 
-Embedded defaults: `output_style = "general"`; `fpf_terms_explained = "off"`; `save_report = "on"` (`on` or `off`); `report_style = "plain"` (`plain` or `caprmedio`, consulted only when saving is on). Explicit user instruction overrides an accessible `.caprmedio/settings.toml` control-panel setting, which overrides these embedded defaults.
-For output language, load at most one mode resource:
+Embedded defaults: `output_language = "auto"` (`auto`, `en`, or `ru`); `output_style = "general"`; `fpf_terms_explained = "off"`; `save_report = "on"` (`on` or `off`); `report_style = "plain"` (`plain` or `caprmedio`, consulted only when saving is on). Explicit user instruction overrides an optional active-project `.caprmedio/settings.toml` setting, which overrides the installed `.fpf-runtime.toml` defaults, which override these embedded defaults. Absence of CAPRMEDIO settings is normal and never blocks standalone FPF execution.
+Resolve `output_language` before output style. `en` means English and loads no language resource. `ru` means Russian and loads only `references/fpf-output-language-ru.md`. With `auto`, use Russian when the user's invocation or residual task contains meaningful Russian Cyrillic text; otherwise use English. Never infer language from quoted source text, identifiers, paths, or citations alone. Never preload an unselected language resource.
+For output style, load at most one mode resource:
 - `natural`: load none; allow FPF terms. On first use, explain each term per `fpf_terms_explained`: `full` up to three short lines, `short` one sentence, `off` none.
-- `general`: load only `references/output-style-general.md`.
-- `ste`: load only `references/output-style-ste.md`.
+- `general`: load only `references/fpf-output-style-general.md`.
+- `ste`: load only `references/fpf-output-style-ste.md`.
 Never preload an unselected resource. If the selected file is missing, report it; do not substitute. Keep exact FPF locators and source paths in compact evidence or source records, not narrative prose.
-Return the complete artifact in chat. When `save_report = "on"`, consult `report_style`, then load only `references/report-persistence.md` and follow it; never replace chat delivery with a summary or pointer.
+Return the complete artifact in chat. When `save_report = "on"`, consult `report_style`, then load only `references/fpf-report-persistence.md` and follow it; never replace chat delivery with a summary or pointer.
 <!-- output-settings:end -->
 
 Produce a read-only **Pattern Applicability Finding**. Stop at a bounded recommendation; do not redesign the target or authorize changes.
@@ -17,7 +18,7 @@ Produce a read-only **Pattern Applicability Finding**. Stop at a bounded recomme
 ## Resolve sources
 
 1. Resolve the target and its current authority from the user request and accessible context. Do not assume a repository, Git, an artifact schema, or named layers.
-2. Resolve an accessible FPF edition in this order: a source named in the request; a path, URI, attachment, corpus, or connected item already in context; an optional environment or workspace hint; then a bounded search of accessible workspace or storage roots. Treat configuration hints as optional, never required.
+2. Resolve an accessible FPF edition in this order: a source named in the request; a path, URI, attachment, corpus, or connected item already in context; the verified installed `repository_root/FPF-Knowledge-Graph` runtime hint; an optional environment or workspace hint; then a bounded search of accessible workspace or storage roots. Treat configuration hints as optional, never required.
 3. Verify candidates by content, not container name. A usable source must identify itself as FPF and expose navigable direct patterns with the relevant Problem frame, Problem, Forces, Solution, and Consequences; practical-use cards, usage guidance, hubs, contents, and indexes are supporting landmarks.
 4. Do not require a particular environment variable, directory or repository name, application, version-control system, home-directory layout, shell, local filesystem, or operating system. Use the discovery and retrieval capabilities available in the current runtime.
 5. Search only accessible, task-relevant roots or providers; never scan an entire device, account, or network. If several editions remain plausible and the choice affects the finding, ask the user which is authoritative. If none can be verified, report what was checked and request a path, URI, attachment, corpus, or connected source.
@@ -25,7 +26,7 @@ Produce a read-only **Pattern Applicability Finding**. Stop at a bounded recomme
 
 ## Review campaign continuation
 
-Before resolving FPF sources or starting native work, when the task cites a prior FPF report, finding, repair, closure check, or review campaign, load `references/review-campaign.md` and preserve its campaign envelope, existing fingerprints, review budget, and stop rule. This workflow reference is not an FPF methodology source. Applicability evidence may update a finding's basis, but this skill does not reset the campaign or authorize a finding transition; return the updated campaign handoff in `## Task, scope, and boundaries`.
+Before resolving FPF sources or starting native work, when the task cites a prior FPF report, finding, repair, closure check, or review campaign, load `references/fpf-review-campaign.md` and preserve its campaign envelope, existing fingerprints, review budget, and stop rule. This workflow reference is not an FPF methodology source. Applicability evidence may update a finding's basis, but this skill does not reset the campaign or authorize a finding transition; return the updated campaign handoff in `## Task, scope, and boundaries`.
 
 ## Scan workflow
 

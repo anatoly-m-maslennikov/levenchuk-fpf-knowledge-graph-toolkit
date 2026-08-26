@@ -25,7 +25,7 @@ Create one envelope before running the first node and carry it through every exe
 - predecessor evidence and node handoffs;
 - permitted next transition and stop condition.
 
-When the sequence contains `design-challenge`, `quality-improve`, or `alignment-audit`, or continues an earlier review, load `references/review-campaign.md`. Use its campaign envelope as the composition envelope and preserve its review budget. A new node, report, or composition does not reset that budget.
+When the sequence contains `design-challenge`, `quality-improve`, or `alignment-audit`, or continues an earlier review, load `references/fpf-review-campaign.md`. Use its campaign envelope as the composition envelope and preserve its review budget. A new node, report, or composition does not reset that budget.
 
 ## Execute lazily and stop at gates
 
@@ -111,4 +111,4 @@ Under `## Skills used`, list every node actually executed in order. Then include
 
 Resolve output and report settings once for the whole composition. Intermediate node instructions to return and persist complete artifacts apply to their internal records; this composition contract replaces separate delivery with the one final consolidated artifact.
 
-When saving is on, load `references/report-persistence.md` once after consolidation and use report node ID `composition`. Save exactly the same Markdown returned in chat. CAPRMEDIO mode creates one Analysis Report Atom for the complete composition scope, not one Atom per node.
+When saving is on, load `references/fpf-report-persistence.md` once after consolidation and use report node ID `composition`. Save exactly the same Markdown returned in chat. CAPRMEDIO mode creates one Analysis Report Atom for the complete composition scope, not one Atom per node.

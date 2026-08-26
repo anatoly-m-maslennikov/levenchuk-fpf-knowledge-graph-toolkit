@@ -45,7 +45,7 @@ class SingleSkillMigrationTests(unittest.TestCase):
             ))
             receipt = json.loads((destination / ".fpf-skills-install.json").read_text())
             self.assertEqual(["fpf"], receipt["skills"])
-            self.assertEqual(2, receipt["schema_version"])
+            self.assertEqual(4, receipt["schema_version"])
 
     def test_modified_legacy_copy_is_preserved_and_blocks_migration(self) -> None:
         with temporary_workspace() as temporary:

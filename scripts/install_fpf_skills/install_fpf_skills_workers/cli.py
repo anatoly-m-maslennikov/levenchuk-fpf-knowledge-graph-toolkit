@@ -11,7 +11,8 @@ from scripts.filesystem_policy import logical_path_exists
 from scripts.init_settings.init_settings import EXAMPLE_PATH, SETTINGS_PATH, read_skill_settings
 from ..install_fpf_skills import Harness
 from .catalog import load_catalog, source_roots, target_roots, validate_source
-from .filesystem import remove_path, replace_package, write_receipt
+from .filesystem import remove_path, replace_package, write_receipt, write_text
+from .runtime_settings import render_runtime_settings, runtime_settings_current
 from .snapshots import same_link, suite_digest, tree_snapshot
 from .state import can_apply, classify_install, load_receipt
 
@@ -107,11 +108,18 @@ def _load_context(destination: Path):
     sources = source_roots(SOURCE_SKILLS, names)
     targets = target_roots(destination, names)
     receipt_path = destination / str(catalog["receipt_name"])
+    runtime_settings_path = targets[names[0]] / str(catalog["settings_name"])
+    legacy_runtime_settings_path = destination / str(catalog["settings_name"])
+    runtime_settings = render_runtime_settings(SOURCE_SKILLS.parent, settings)
     receipt = load_receipt(receipt_path)
     state, _ = classify_install(targets, sources, names, receipt)
     source_hash = suite_digest(sources, names)
     retired = _retired_targets(destination, catalog)
-    return method, catalog, names, sources, targets, retired, receipt_path, receipt, state, source_hash
+    return (
+        method, catalog, names, sources, targets, retired, receipt_path, receipt,
+        state, source_hash, runtime_settings_path, legacy_runtime_settings_path,
+        runtime_settings,
+    )
 
 
 def _validate_targets(
@@ -127,10 +135,17 @@ def _validate_targets(
 
 
 def _apply_install(destination: Path, context: tuple) -> None:
-    method, catalog, names, sources, targets, retired, receipt_path, _, _, source_hash = context
+    (
+        method, catalog, names, sources, targets, retired, receipt_path, _, _,
+        source_hash, runtime_settings_path, legacy_runtime_settings_path,
+        runtime_settings,
+    ) = context
     destination.mkdir(parents=True, exist_ok=True)
     _remove_retired(retired)
     _install_packages(sources, targets, names, method)
+    write_text(runtime_settings_path, runtime_settings)
+    if runtime_settings_current(legacy_runtime_settings_path, runtime_settings):
+        legacy_runtime_settings_path.unlink()
     write_receipt(
         receipt_path,
         dict(
@@ -145,7 +160,11 @@ def run_installer(harness: Harness, arguments: list[str] | None = None) -> int:
     destination = (args.destination or default_destination(harness)).expanduser().resolve()
     try:
         context = _load_context(destination)
-        method, catalog, names, sources, targets, retired, receipt_path, receipt, state, source_hash = context
+        (
+            method, catalog, names, sources, targets, retired, receipt_path, receipt,
+            state, source_hash, runtime_settings_path, legacy_runtime_settings_path,
+            runtime_settings,
+        ) = context
         retired_present = _validate_targets(destination, method, state, receipt, retired)
     except (OSError, ValueError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
@@ -154,6 +173,8 @@ def run_installer(harness: Harness, arguments: list[str] | None = None) -> int:
         not retired_present
         and state == f"{method}-current"
         and _receipt_current(receipt, method, source_hash, names, int(catalog["schema_version"]))
+        and runtime_settings_current(runtime_settings_path, runtime_settings)
+        and not runtime_settings_current(legacy_runtime_settings_path, runtime_settings)
     )
     if args.check:
         print(f"{'OK' if current else 'OUT OF DATE'}: {harness.name}: {state} at {destination}")
