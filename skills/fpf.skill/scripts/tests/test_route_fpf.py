@@ -47,6 +47,16 @@ class RouteFpfTests(unittest.TestCase):
         self.assertEqual("explicit-or-setting", route["language_selected_by"])
         self.assertEqual("prompts/help-ru.md", route["prompt"])
 
+    def test_every_russian_help_command_is_an_exact_routable_alias(self) -> None:
+        help_text = (ROUTER.SKILL_ROOT / "prompts/help-ru.md").read_text(encoding="utf-8")
+        for node in self.graph["nodes"]:
+            command = node["localized_commands"]["ru"]
+            with self.subTest(command=command):
+                route = self.route(f"$fpf {command}")
+                self.assertEqual(node["id"], route["node"])
+                self.assertEqual("exact-command", route["selected_by"])
+                self.assertIn(f"$fpf {command}", help_text)
+
     def test_plan_replaces_route_and_is_ephemeral(self) -> None:
         route = self.route("$fpf plan compare approaches")
         self.assertEqual("plan", route["node"])
@@ -121,7 +131,7 @@ class RouteFpfTests(unittest.TestCase):
 
     def test_composition_accepts_russian_aliases_and_preserves_task(self) -> None:
         route = self.route(
-            "$fpf проверка дизайна + улучшить качество + аудит согласованности "
+            "$fpf проверка дизайна + улучшение качества + аудит согласованности "
             "Усиль предложение и проверь исправления"
         )
         self.assertEqual(

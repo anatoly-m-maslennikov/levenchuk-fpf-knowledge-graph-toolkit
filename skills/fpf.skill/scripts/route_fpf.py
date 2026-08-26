@@ -74,6 +74,11 @@ def validate_graph(graph: dict) -> list[str]:
                 if not localized_prompt or not (SKILL_ROOT / localized_prompt).is_file():
                     errors.append(f"{node_id}: localized prompt does not exist: {localized_prompt}")
         aliases = [node.get("command", ""), *node.get("aliases", [])]
+        localized_commands = node.get("localized_commands", {})
+        if not isinstance(localized_commands, dict) or set(localized_commands) != {"ru"}:
+            errors.append(f"{node_id}: localized_commands must declare exactly ru")
+        elif normalize(localized_commands["ru"]) not in {normalize(alias) for alias in aliases}:
+            errors.append(f"{node_id}: Russian localized command must be an exact alias")
         for alias in aliases:
             key = normalize(alias)
             if not key:
@@ -128,8 +133,9 @@ def validate_graph(graph: dict) -> list[str]:
     for node in nodes:
         if f"$fpf {node['command']}" not in help_text:
             errors.append(f"help page omits $fpf {node['command']}")
-        if f"$fpf {node['command']}" not in help_ru_text:
-            errors.append(f"Russian help page omits $fpf {node['command']}")
+        localized_command = node.get("localized_commands", {}).get("ru", "")
+        if localized_command and f"$fpf {localized_command}" not in help_ru_text:
+            errors.append(f"Russian help page omits $fpf {localized_command}")
     return errors
 
 
