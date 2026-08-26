@@ -9,12 +9,12 @@ part: "[[00_Hubs/FPF - Preface (non-normative)]]"
 parents:
   - "[[00_Hubs/FPF - Preface (non-normative)]]"
 source_file: "FPF-Spec.md"
-source_revision: "7f7c592f4d633e54cdb202d622d6e0e05df41517"
-source_sha256: "6bdfe1a4347fde18dd50d69d16599f1513890a921627ec602d1d1b075109b48d"
-generated_on: "2026-08-24"
+source_revision: "563f4c8e06a319cbd375b66cdbb2df27a5f8b9ef"
+source_sha256: "c9551f2a4b52c9e57972a11552ab945f52a3522f433c54395221b16bef375ac7"
+generated_on: "2026-08-26"
 source_lines:
-  - 987
-  - 1005
+  - 859
+  - 877
 status: "generated"
 generated: true
 ---
@@ -28,7 +28,7 @@ The old open-world versus closed-world distinction is a useful didactic picture.
 
 FPF does not transform the open world into a closed one. It lets a project build small closed worlds for declared purposes:
 
-- the exact source, scope, model-use organization, working situation, comparison basis, or other subject-defined boundary states what is current for this decision;
+- a bounded context states which meanings and invariants are current;
 - an EntityOfConcern states what project entity the reasoning is about;
 - a description states what can be relied on and under what relation;
 - evidence and assurance state what claim is credible enough for the local use;

@@ -6,11 +6,11 @@ An Obsidian-ready, LLM-friendly usability fork of the original [First Principles
 
 This repository does not claim authority over upstream FPF. The canonical upstream source and its evolution remain in [ailev/FPF](https://github.com/ailev/FPF). This toolkit keeps a revision-bound local source package and may apply explicit repository-owned patches before graph conversion; any such patch is a toolkit change, not an upstream FPF change.
 
-The FPF graph uses upstream revision [`7f7c592`](https://github.com/ailev/FPF/commit/7f7c592f4d633e54cdb202d622d6e0e05df41517), dated **2026-08-23**. The NPF projection is packaged under the same full repository HEAD; its unchanged narrativization bytes remain traceable through the source metadata.
+The FPF graph uses upstream revision [`563f4c8`](https://github.com/ailev/FPF/commit/563f4c8e06a319cbd375b66cdbb2df27a5f8b9ef), dated **2026-08-25**. The NPF projection is packaged under the same full repository HEAD; its unchanged narrativization bytes remain traceable through the source metadata.
 
 FPF was created by **Anatoly Levenchuk, with AI-agent assistance**. It is a pattern language for making difficult engineering, research, management, governance, and human/AI work explicit and reviewable. It separates entities from descriptions, evidence, decisions, plans, and performed work; scopes claims to their intended use; and identifies the direct patterns governing a question.
 
-The effective conversion sources are in [`.fpf-original-7f7c592f4d633e54cdb202d622d6e0e05df41517/`](.fpf-original-7f7c592f4d633e54cdb202d622d6e0e05df41517/). The folder contains every file tracked by that upstream HEAD and SHA-256 metadata for upstream and effective bytes. Its patch list is currently empty because upstream now contains `F.0.2 Conceptual Synthesis across Source Ontologies`; a future repository-owned patch must live in this same revision-named folder and appear in the metadata. A script stages the verified package and generates smaller linked notes, hubs, indexes, and frontmatter. Runtime copies and graph backups are deleted after acceptance; the revision-named source package remains tracked.
+The effective conversion sources are in [`.fpf-original-563f4c8e06a319cbd375b66cdbb2df27a5f8b9ef/`](.fpf-original-563f4c8e06a319cbd375b66cdbb2df27a5f8b9ef/). The folder contains every file tracked by that upstream HEAD and SHA-256 metadata for upstream and effective bytes. Its patch list is currently empty because upstream contains `F.0.2 Conceptual Synthesis across Source Ontologies`; a future repository-owned patch must live in this same revision-named folder and appear in the metadata. A script stages the verified package and generates smaller linked notes, hubs, indexes, and frontmatter. Runtime copies and graph backups are deleted after acceptance; the revision-named source package remains tracked.
 
 ## Why this version
 
@@ -30,7 +30,7 @@ The current specification is roughly 12 MB. Loading it for every question consum
 - [`scripts/build_fpf_obsidian_graph/`](scripts/build_fpf_obsidian_graph/) — generator.
 - [`scripts/graph_npf_convert_from_original/`](scripts/graph_npf_convert_from_original/) — transactional NPF converter using the same configured original repository.
 - [`.caprmedio/settings.toml.example`](.caprmedio/settings.toml.example) — tracked template for the repository's single ignored control panel.
-- [`.fpf-original-7f7c592f4d633e54cdb202d622d6e0e05df41517/`](.fpf-original-7f7c592f4d633e54cdb202d622d6e0e05df41517/) — digest-bound full source package for upstream HEAD `7f7c592`; currently unpatched because upstream includes the required synthesis pattern.
+- [`.fpf-original-563f4c8e06a319cbd375b66cdbb2df27a5f8b9ef/`](.fpf-original-563f4c8e06a319cbd375b66cdbb2df27a5f8b9ef/) — digest-bound full source package for upstream HEAD `563f4c8`; currently unpatched because upstream includes the required synthesis pattern.
 - [`skills/`](skills/) — portable agent skills whose embedded defaults are synchronized from the control panel by [`scripts/sync_fpf_skill_settings/`](scripts/sync_fpf_skill_settings/).
 
 ## Included skills
@@ -86,8 +86,8 @@ Regenerate from the repository root:
 
 ```bash
 python3 -X pycache_prefix=.runtime/pycache -m scripts.build_fpf_obsidian_graph \
-  --source-revision 7f7c592f4d633e54cdb202d622d6e0e05df41517 \
-  --generated-on 2026-08-24 --clean
+  --source-revision 563f4c8e06a319cbd375b66cdbb2df27a5f8b9ef \
+  --generated-on 2026-08-26 --clean
 ```
 
 The report and every generated note record this revision, the SHA-256 of the exact source bytes, and the supplied generation date. Check the [`validation report`](FPF-Knowledge-Graph/00_Index/FPF%20-%20Validation%20Report.json) for zero broken links, then review the diff.
