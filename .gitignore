@@ -5,3 +5,4 @@ __pycache__/
 /.runtime/
 /.caprmedio/settings.toml
 /*-Knowledge-Graph.bak/
+/skills/fpf.skill/.fpf-runtime.toml

@@ -93,6 +93,7 @@
     "fpf.skill/prompts/fpf-runtime.md": [
       "scripts/route_fpf.py",
       ".fpf-runtime.toml",
+      "inside the logical installed skill directory",
       "repository_root",
       "prompts/fpf-plan.md",
       "references/fpf-report-persistence.md",

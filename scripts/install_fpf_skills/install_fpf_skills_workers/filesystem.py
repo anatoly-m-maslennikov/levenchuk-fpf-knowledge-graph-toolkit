@@ -27,7 +27,9 @@ def _stage_package(source: Path, temporary: Path, method: str) -> None:
     if method == "copy":
         shutil.copytree(
             source, temporary,
-            ignore=shutil.ignore_patterns(".DS_Store", "__pycache__", "*.pyc", "*.pyo"),
+            ignore=shutil.ignore_patterns(
+                ".DS_Store", ".fpf-runtime.toml", "__pycache__", "*.pyc", "*.pyo",
+            ),
         )
     else:
         temporary.symlink_to(source, target_is_directory=True)
