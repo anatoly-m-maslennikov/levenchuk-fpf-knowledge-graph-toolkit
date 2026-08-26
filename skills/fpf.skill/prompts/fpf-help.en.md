@@ -2,7 +2,7 @@
 
 `$fpf` is one skill backed by a graph of lazily loaded prompts. Give it a direct command or a natural-language task.
 
-English and Russian routing are supported. Canonical command identifiers remain English; `$fpf помощь` opens the Russian help page.
+English and Russian routing are supported. Canonical command identifiers remain English; `$fpf справка` opens the Russian help page.
 
 ## Command tree
 

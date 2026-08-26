@@ -34,11 +34,14 @@ class RouteFpfTests(unittest.TestCase):
         self.assertEqual("help", route["node"])
         self.assertFalse(route["persist_report"])
 
-    def test_russian_help_alias_selects_russian_help_page(self) -> None:
-        route = self.route("$fpf помощь")
+    def test_primary_russian_help_command_selects_russian_help_page(self) -> None:
+        route = self.route("$fpf справка")
         self.assertEqual("help", route["node"])
         self.assertEqual("ru", route["language"])
         self.assertEqual("prompts/fpf-help.ru.md", route["prompt"])
+
+    def test_old_russian_help_alias_remains_compatible(self) -> None:
+        self.assertEqual("help", self.route("$fpf помощь")["node"])
 
     def test_explicit_russian_language_selects_russian_help_for_english_command(self) -> None:
         route = self.route("$fpf help", "ru")
