@@ -6,7 +6,7 @@ import json
 import re
 from pathlib import Path
 
-from .skill_entry import validate_thin_fpf_skill
+from .skill_entry import validate_fpf_skill_package
 
 def _missing_fragments(text: str, fragments: list[str], label: str) -> list[str]:
     return [f"{label} is missing contract text: {fragment}" for fragment in fragments if fragment not in text]
@@ -77,7 +77,7 @@ def _validate_package_roots(skills_root: Path, contracts: dict[str, object]) -> 
         text = path.read_text(encoding="utf-8")
         errors.extend(_missing_fragments(text, fragments, name))
         if name == "fpf":
-            errors.extend(validate_thin_fpf_skill(text, contracts))
+            errors.extend(validate_fpf_skill_package(path.parent, text, contracts))
 
     readme = (skills_root / "README.md").read_text(encoding="utf-8")
     errors.extend(f"skills README omits {name}.skill" for name in names if f"`{name}.skill`" not in readme)
@@ -117,19 +117,19 @@ def _validate_manifest(root: Path, contracts: dict[str, object]) -> list[str]:
     composition = manifest.get("composition", {})
     if not isinstance(composition, dict) or composition.get("operator") != "+":
         errors.append("FPF graph must declare the + composition operator")
-    elif composition.get("reference") != "references/composition.md":
+    elif composition.get("reference") != "references/fpf-composition.md":
         errors.append("FPF graph composition reference is invalid")
 
     prompts_root = root / "skills/fpf.skill/prompts"
     for node in contracts["prompt_nodes"]:
-        filename = "help.en.md" if node == "help" else f"{node}.md"
+        filename = "fpf-help.en.md" if node == "help" else f"fpf-{node}.md"
         errors.extend(_validate_prompt(prompts_root / filename, node, contracts))
     for node in nodes:
         if not isinstance(node, dict):
             continue
         expected_prompt = (
-            "prompts/help.en.md" if node.get("id") == "help"
-            else f"prompts/{node.get('id')}.md"
+            "prompts/fpf-help.en.md" if node.get("id") == "help"
+            else f"prompts/fpf-{node.get('id')}.md"
         )
         if node.get("prompt") != expected_prompt:
             errors.append(f"FPF graph prompt path mismatch: {node.get('id')}")

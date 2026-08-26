@@ -4,13 +4,13 @@
 ## Output and report settings
 
 Embedded defaults: `output_language = "auto"` (`auto`, `en`, or `ru`); `output_style = "general"`; `fpf_terms_explained = "off"`; `save_report = "on"` (`on` or `off`); `report_style = "plain"` (`plain` or `caprmedio`, consulted only when saving is on). Explicit user instruction overrides an accessible `.caprmedio/settings.toml` control-panel setting, which overrides these embedded defaults.
-Resolve `output_language` before output style. `en` means English and loads no language resource. `ru` means Russian and loads only `references/output-language-ru.md`. With `auto`, use Russian when the user's invocation or residual task contains meaningful Russian Cyrillic text; otherwise use English. Never infer language from quoted source text, identifiers, paths, or citations alone. Never preload an unselected language resource.
+Resolve `output_language` before output style. `en` means English and loads no language resource. `ru` means Russian and loads only `references/fpf-output-language-ru.md`. With `auto`, use Russian when the user's invocation or residual task contains meaningful Russian Cyrillic text; otherwise use English. Never infer language from quoted source text, identifiers, paths, or citations alone. Never preload an unselected language resource.
 For output style, load at most one mode resource:
 - `natural`: load none; allow FPF terms. On first use, explain each term per `fpf_terms_explained`: `full` up to three short lines, `short` one sentence, `off` none.
-- `general`: load only `references/output-style-general.md`.
-- `ste`: load only `references/output-style-ste.md`.
+- `general`: load only `references/fpf-output-style-general.md`.
+- `ste`: load only `references/fpf-output-style-ste.md`.
 Never preload an unselected resource. If the selected file is missing, report it; do not substitute. Keep exact FPF locators and source paths in compact evidence or source records, not narrative prose.
-`$fpf plan` is the exception: it remains ephemeral, ignores report persistence and `report_style`, never creates a report file, and never loads `references/report-persistence.md`, even though the suite default is on.
+`$fpf plan` is the exception: it remains ephemeral, ignores report persistence and `report_style`, never creates a report file, and never loads `references/fpf-report-persistence.md`, even though the suite default is on.
 <!-- output-settings:end -->
 
 Produce a read-only **FPF Skill Plan** for one question. Route work among the available FPF prompt nodes; do not answer the question, inspect the FPF methodology, or execute the proposed calls.
@@ -27,7 +27,7 @@ When the router supplies an invalid explicit `+` composition, explain the reject
 
 ## Review campaign routing
 
-When the question cites a prior FPF report, finding, repair, closure check, or review campaign, load `references/review-campaign.md` before selecting calls. Treat it as routing policy, not as an FPF methodology source. Compare the semantic frontier, carrier frontier, evaluation profile, campaign phase, and finding states first.
+When the question cites a prior FPF report, finding, repair, closure check, or review campaign, load `references/fpf-review-campaign.md` before selecting calls. Treat it as routing policy, not as an FPF methodology source. Compare the semantic frontier, carrier frontier, evaluation profile, campaign phase, and finding states first.
 
 - Route a new or materially changed proposal to one full `$fpf design challenge`.
 - Route accepted and applied repairs to `$fpf alignment audit`; request `closure` mode when only registered findings and frozen regressions need verification.

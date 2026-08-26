@@ -41,15 +41,15 @@ The single end-user `$fpf` package is a lazy bilingual prompt graph with a thin 
 
 | Command | Use case | Result |
 |---|---|---|
-| [`$fpf help`](skills/fpf.skill/prompts/help.en.md) | Show the prompt tree and examples. | Help only; never saves. |
-| [`$fpf plan`](skills/fpf.skill/prompts/plan.md) | Turn one question into the right FPF workflow. | Minimal ordered calls; never executes or saves. |
-| [`$fpf applicability scan`](skills/fpf.skill/prompts/applicability-scan.md) | Decide whether FPF is useful and which patterns apply. | Smallest relevant set, basis, use, and stop boundary. |
-| [`$fpf design challenge`](skills/fpf.skill/prompts/design-challenge.md) | Challenge a proposal or not-yet-implemented decision. | Bounded finding with evidence and supported corrections. |
-| [`$fpf alignment audit`](skills/fpf.skill/prompts/alignment-audit.md) | Check implemented or accepted work. | Per-claim semantic/mechanical audit with a bounded verdict. |
-| [`$fpf sota harvest`](skills/fpf.skill/prompts/sota-harvest.md) | Map a bounded, plural state of the art. | Reconstructible corpus, claims, traditions, and disagreements. |
-| [`$fpf options explore`](skills/fpf.skill/prompts/options-explore.md) | Generate and compare diverse candidates. | Candidate set, declared-coordinate evaluation, and decision handoff. |
-| [`$fpf decision synthesize`](skills/fpf.skill/prompts/decision-synthesize.md) | Choose among evaluated alternatives. | Recoverable decision, accepted losses, reopen triggers, and optional ADR. |
-| [`$fpf quality improve`](skills/fpf.skill/prompts/quality-improve.md) | Improve a versioned target under a declared evaluation frame. | Target change, rerun comparison, trade-offs, and outcome. |
+| [`$fpf help`](skills/fpf.skill/prompts/fpf-help.en.md) | Show the prompt tree and examples. | Help only; never saves. |
+| [`$fpf plan`](skills/fpf.skill/prompts/fpf-plan.md) | Turn one question into the right FPF workflow. | Minimal ordered calls; never executes or saves. |
+| [`$fpf applicability scan`](skills/fpf.skill/prompts/fpf-applicability-scan.md) | Decide whether FPF is useful and which patterns apply. | Smallest relevant set, basis, use, and stop boundary. |
+| [`$fpf design challenge`](skills/fpf.skill/prompts/fpf-design-challenge.md) | Challenge a proposal or not-yet-implemented decision. | Bounded finding with evidence and supported corrections. |
+| [`$fpf alignment audit`](skills/fpf.skill/prompts/fpf-alignment-audit.md) | Check implemented or accepted work. | Per-claim semantic/mechanical audit with a bounded verdict. |
+| [`$fpf sota harvest`](skills/fpf.skill/prompts/fpf-sota-harvest.md) | Map a bounded, plural state of the art. | Reconstructible corpus, claims, traditions, and disagreements. |
+| [`$fpf options explore`](skills/fpf.skill/prompts/fpf-options-explore.md) | Generate and compare diverse candidates. | Candidate set, declared-coordinate evaluation, and decision handoff. |
+| [`$fpf decision synthesize`](skills/fpf.skill/prompts/fpf-decision-synthesize.md) | Choose among evaluated alternatives. | Recoverable decision, accepted losses, reopen triggers, and optional ADR. |
+| [`$fpf quality improve`](skills/fpf.skill/prompts/fpf-quality-improve.md) | Improve a versioned target under a declared evaluation frame. | Target change, rerun comparison, trade-offs, and outcome. |
 | [`graph-fpf-convert-from-original`](skills/graph-fpf-convert-from-original.skill/SKILL.md) | Convert canonical `ailev/FPF` into this repository's generated graph. | Transactional backup, deterministic tests, and repair-loop coordination. |
 | [`graph-fpf-evaluate-conversion-result`](skills/graph-fpf-evaluate-conversion-result.skill/SKILL.md) | Evaluate one generated conversion candidate. | Exhaustive mechanical coverage, bounded semantic fidelity, historical regression probes, broader graph risks, and a classified verdict. |
 
@@ -59,7 +59,7 @@ Analytical commands can be composed explicitly with spaces around `+`, for examp
 
 Russian aliases can be used for direct calls and compositions, for example `$fpf проверка дизайна + улучшение качества + аудит согласованности <общая задача>`. `output_language = "auto"` chooses Russian when the invocation or residual task contains meaningful Russian Cyrillic text and English otherwise; `ru` or `en` fixes the language. `$fpf помощь` opens the Russian help page, whose command tree uses the primary Russian aliases.
 
-Multi-step reviews use one shared [review-campaign protocol](skills/fpf.skill/references/review-campaign.md): stable finding fingerprints, explicit phases, one full challenge and one post-application audit per unchanged semantic frontier, targeted closure checks, and a hard stop when neither the frontier nor evaluation profile changed. This prevents design challenge and alignment audit from repeatedly reviewing the same unchanged target.
+Multi-step reviews use one shared [review-campaign protocol](skills/fpf.skill/references/fpf-review-campaign.md): stable finding fingerprints, explicit phases, one full challenge and one post-application audit per unchanged semantic frontier, targeted closure checks, and a hard stop when neither the frontier nor evaluation profile changed. This prevents design challenge and alignment audit from repeatedly reviewing the same unchanged target.
 
 ## Installing the skills
 

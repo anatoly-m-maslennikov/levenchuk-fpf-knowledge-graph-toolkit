@@ -3,7 +3,7 @@
   "fallback_node": "plan",
   "composition": {
     "operator": "+",
-    "reference": "references/composition.md",
+    "reference": "references/fpf-composition.md",
     "report_node": "composition"
   },
   "nodes": [
@@ -13,8 +13,8 @@
       "aliases": ["?", "commands", "usage", "помощь", "справка", "команды", "как пользоваться"],
       "localized_commands": {"ru": "помощь"},
       "description": "Show the FPF command tree and usage examples.",
-      "prompt": "prompts/help.en.md",
-      "localized_prompts": {"ru": "prompts/help.ru.md"},
+      "prompt": "prompts/fpf-help.en.md",
+      "localized_prompts": {"ru": "prompts/fpf-help.ru.md"},
       "persist_report": false,
       "exact_only": true,
       "keywords": []
@@ -25,7 +25,7 @@
       "aliases": ["planner", "route", "workflow", "which skill", "план", "планировщик", "маршрут", "рабочий процесс", "какой навык"],
       "localized_commands": {"ru": "план"},
       "description": "Return the smallest useful ordered FPF call plan without executing it.",
-      "prompt": "prompts/plan.md",
+      "prompt": "prompts/fpf-plan.md",
       "persist_report": false,
       "exact_only": false,
       "keywords": ["plan", "route", "sequence", "workflow", "which skill", "what should i use", "then", "план", "маршрут", "последовательност", "рабочий процесс", "какой навык", "что использовать", "затем"]
@@ -36,7 +36,7 @@
       "aliases": ["applicability", "scan", "relevant patterns", "скан применимости", "применимость", "релевантные паттерны", "подходящие паттерны"],
       "localized_commands": {"ru": "скан применимости"},
       "description": "Find the smallest relevant set of direct FPF patterns for a bounded question.",
-      "prompt": "prompts/applicability-scan.md",
+      "prompt": "prompts/fpf-applicability-scan.md",
       "persist_report": true,
       "exact_only": false,
       "keywords": ["apply", "applicable", "applicability", "relevant", "fpf patterns", "which patterns", "what fpf can contribute", "borrow from fpf", "применим", "релевант", "подходящ", "паттерны fpf", "какие паттерны", "что может дать fpf"]
@@ -47,7 +47,7 @@
       "aliases": ["sota", "state of the art", "research harvest", "обзор sota", "состояние области", "обзор исследований", "карта исследований"],
       "localized_commands": {"ru": "обзор исследований"},
       "description": "Build a bounded, reconstructible, plural state-of-the-art synthesis.",
-      "prompt": "prompts/sota-harvest.md",
+      "prompt": "prompts/fpf-sota-harvest.md",
       "persist_report": true,
       "exact_only": false,
       "keywords": ["sota", "state of the art", "research", "field map", "evidence map", "plural", "landscape", "current evidence", "rival traditions", "исследован", "состояние области", "карта доказательств", "карта поля", "актуальные данные", "научные школы", "ландшафт"]
@@ -58,7 +58,7 @@
       "aliases": ["options", "explore options", "alternatives", "варианты", "исследовать варианты", "альтернативы", "сравнить варианты"],
       "localized_commands": {"ru": "исследовать варианты"},
       "description": "Generate and compare diverse alternatives without selecting a winner.",
-      "prompt": "prompts/options-explore.md",
+      "prompt": "prompts/fpf-options-explore.md",
       "persist_report": true,
       "exact_only": false,
       "keywords": ["options", "alternatives", "candidates", "explore", "compare", "non-obvious", "nqd", "вариант", "альтернатив", "кандидат", "исследовать", "сравн", "генер", "неочевидн"]
@@ -69,7 +69,7 @@
       "aliases": ["challenge", "challenge design", "critique", "stress test", "проверка дизайна", "критика дизайна", "стресс тест дизайна", "оспорить дизайн"],
       "localized_commands": {"ru": "проверка дизайна"},
       "description": "Challenge one proposed or not-yet-implemented design with bounded FPF evidence.",
-      "prompt": "prompts/design-challenge.md",
+      "prompt": "prompts/fpf-design-challenge.md",
       "persist_report": true,
       "exact_only": false,
       "keywords": ["design", "proposal", "challenge", "critique", "stress test", "before implementation", "architecture", "taxonomy", "дизайн", "предложен", "критик", "стресс тест", "до реализации", "архитектур", "таксоном"]
@@ -80,7 +80,7 @@
       "aliases": ["decision", "decide", "synthesize decision", "adr", "синтез решения", "принять решение", "выбрать решение"],
       "localized_commands": {"ru": "синтез решения"},
       "description": "Turn evaluated alternatives into a recoverable decision and ADR projection.",
-      "prompt": "prompts/decision-synthesize.md",
+      "prompt": "prompts/fpf-decision-synthesize.md",
       "persist_report": true,
       "exact_only": false,
       "keywords": ["decision", "decide", "choose", "selection", "adr", "evaluated alternatives", "reopen trigger", "решени", "выбер", "оцененные альтернатив", "оценённые альтернатив", "условие пересмотра"]
@@ -91,7 +91,7 @@
       "aliases": ["improve", "quality", "improvement loop", "улучшение качества", "улучшить качество", "повысить качество", "цикл улучшения", "улучшение"],
       "localized_commands": {"ru": "улучшение качества"},
       "description": "Run a bounded change and re-evaluation loop for a versioned target.",
-      "prompt": "prompts/quality-improve.md",
+      "prompt": "prompts/fpf-quality-improve.md",
       "persist_report": true,
       "exact_only": false,
       "keywords": ["improve", "improvement", "quality", "versioned", "baseline", "re-evaluate", "evaluation frame", "улучш", "качеств", "версионирован", "базовая версия", "повторно оцен", "профиль оценки"]
@@ -102,7 +102,7 @@
       "aliases": ["audit", "alignment", "final review", "closure audit", "аудит согласованности", "проверка согласованности", "финальная проверка", "аудит закрытия"],
       "localized_commands": {"ru": "аудит согласованности"},
       "description": "Audit implemented or accepted work against relevant FPF patterns.",
-      "prompt": "prompts/alignment-audit.md",
+      "prompt": "prompts/fpf-alignment-audit.md",
       "persist_report": true,
       "exact_only": false,
       "keywords": ["audit", "alignment", "implemented", "accepted work", "final review", "closure", "regression", "verify", "аудит", "согласован", "реализован", "принятая работа", "финальная проверка", "закрыти", "регресси", "верифиц"]

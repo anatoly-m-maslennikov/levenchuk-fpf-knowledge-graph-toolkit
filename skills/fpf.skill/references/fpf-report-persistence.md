@@ -12,6 +12,6 @@ Before saving, add the final report path to `## Task, scope, and boundaries` as 
 
 ## CAPRMEDIO report delivery (`report_style = "caprmedio"`)
 
-Load only `references/caprmedio-report-adapter.md` and follow it. That adapter owns CAPRMEDIO detection, narrowest-containing-Scope-Unit selection, the BSEED special case, governed Analysis Report Atom creation, and admission validation. One composed run creates one complete Analysis Report Atom, never one Atom per intermediate node. Do not duplicate or improvise those mechanics here.
+Load only `references/fpf-caprmedio-report-adapter.md` and follow it. That adapter owns CAPRMEDIO detection, narrowest-containing-Scope-Unit selection, the BSEED special case, governed Analysis Report Atom creation, and admission validation. One composed run creates one complete Analysis Report Atom, never one Atom per intermediate node. Do not duplicate or improvise those mechanics here.
 
 Saving either style is non-normative result delivery only. It never authorizes changes to analyzed targets or CAPRMEDIO authority.

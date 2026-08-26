@@ -18,15 +18,15 @@ Canonical command identifiers remain English and canonical invocation is `$fpf`.
 
 ## Execute the resolved mode
 
-For `mode: composition`, load `references/composition.md` completely. Execute only the returned ordered `nodes`, lazily loading one prompt at a time. Share one campaign and finding registry, stop at unmet authority or evidence gates, and return and persist one consolidated artifact with every in-scope issue or weakness plus one mapped fixes and improvements list. Do not emit or save separate intermediate node reports.
+For `mode: composition`, load `references/fpf-composition.md` completely. Execute only the returned ordered `nodes`, lazily loading one prompt at a time. Share one campaign and finding registry, stop at unmet authority or evidence gates, and return and persist one consolidated artifact with every in-scope issue or weakness plus one mapped fixes and improvements list. Do not emit or save separate intermediate node reports.
 
 For a single-node result:
 
-- `help`: load the returned localized help prompt (`prompts/help.en.md` or `prompts/help.ru.md`), return its help page, and stop. Never save a report.
-- `plan`: load `prompts/plan.md`, produce only the call plan, and stop. Do not execute proposed nodes and never save a report.
+- `help`: load the returned localized help prompt (`prompts/fpf-help.en.md` or `prompts/fpf-help.ru.md`), return its help page, and stop. Never save a report.
+- `plan`: load `prompts/fpf-plan.md`, produce only the call plan, and stop. Do not execute proposed nodes and never save a report.
 - Any analytical node: load only its returned prompt, execute that contract on the residual task, and follow its output and report settings.
 
-The seven analytical prompts may refer to shared files under `references/`. Load a referenced file only when its prompt says to do so. In particular, load `references/output-language-ru.md` only for Russian output; load `references/report-persistence.md` only after report saving resolves to on; load the CAPRMEDIO adapter only when the selected report style is `caprmedio`.
+The seven analytical prompts may refer to shared files under `references/`. Load a referenced file only when its prompt says to do so. In particular, load `references/fpf-output-language-ru.md` only for Russian output; load `references/fpf-report-persistence.md` only after report saving resolves to on; load the CAPRMEDIO adapter only when the selected report style is `caprmedio`.
 
 Do not treat a graph edge as permission to execute another node. Edges are legal handoffs for `$fpf plan` and validators for an explicit `+` composition. A direct analytical call still executes one node unless the user explicitly composes commands.
 

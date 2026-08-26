@@ -4,13 +4,13 @@
 ## Output and report settings
 
 Embedded defaults: `output_language = "auto"` (`auto`, `en`, or `ru`); `output_style = "general"`; `fpf_terms_explained = "off"`; `save_report = "on"` (`on` or `off`); `report_style = "plain"` (`plain` or `caprmedio`, consulted only when saving is on). Explicit user instruction overrides an accessible `.caprmedio/settings.toml` control-panel setting, which overrides these embedded defaults.
-Resolve `output_language` before output style. `en` means English and loads no language resource. `ru` means Russian and loads only `references/output-language-ru.md`. With `auto`, use Russian when the user's invocation or residual task contains meaningful Russian Cyrillic text; otherwise use English. Never infer language from quoted source text, identifiers, paths, or citations alone. Never preload an unselected language resource.
+Resolve `output_language` before output style. `en` means English and loads no language resource. `ru` means Russian and loads only `references/fpf-output-language-ru.md`. With `auto`, use Russian when the user's invocation or residual task contains meaningful Russian Cyrillic text; otherwise use English. Never infer language from quoted source text, identifiers, paths, or citations alone. Never preload an unselected language resource.
 For output style, load at most one mode resource:
 - `natural`: load none; allow FPF terms. On first use, explain each term per `fpf_terms_explained`: `full` up to three short lines, `short` one sentence, `off` none.
-- `general`: load only `references/output-style-general.md`.
-- `ste`: load only `references/output-style-ste.md`.
+- `general`: load only `references/fpf-output-style-general.md`.
+- `ste`: load only `references/fpf-output-style-ste.md`.
 Never preload an unselected resource. If the selected file is missing, report it; do not substitute. Keep exact FPF locators and source paths in compact evidence or source records, not narrative prose.
-Return the complete artifact in chat. When `save_report = "on"`, consult `report_style`, then load only `references/report-persistence.md` and follow it; never replace chat delivery with a summary or pointer.
+Return the complete artifact in chat. When `save_report = "on"`, consult `report_style`, then load only `references/fpf-report-persistence.md` and follow it; never replace chat delivery with a summary or pointer.
 <!-- output-settings:end -->
 
 Produce a read-only **FPF Challenge Finding**. Challenge the current proposal without letting FPF impersonate the project's decision authority.
@@ -27,7 +27,7 @@ Produce a read-only **FPF Challenge Finding**. Challenge the current proposal wi
 
 ## Review campaign continuation
 
-Before resolving FPF sources or starting native work, when the task cites a prior FPF report, finding, repair, closure check, or review campaign, load `references/review-campaign.md` and follow its envelope, fingerprint, transition, late-finding, budget, and handoff rules. This workflow reference is not an FPF methodology source.
+Before resolving FPF sources or starting native work, when the task cites a prior FPF report, finding, repair, closure check, or review campaign, load `references/fpf-review-campaign.md` and follow its envelope, fingerprint, transition, late-finding, budget, and handoff rules. This workflow reference is not an FPF methodology source.
 
 Run a full challenge only for a new or materially changed proposal. If the same semantic frontier and evaluation profile already received a full challenge, return a bounded stop result with the permitted next action; do not recreate its findings. For a consequence-preserving semantic correction, use delta mode only when review is required and inspect the changed claim plus its declared affected neighborhood.
 
