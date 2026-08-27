@@ -2,6 +2,22 @@
   "schema_version": 2,
   "scenarios": [
     {
+      "id": "frame-development-problem",
+      "question": "Frame the problem, task signature, and acceptance boundary before solution work.",
+      "target_state": "ambiguous need",
+      "route_action": "calls",
+      "expected_sequence": ["problem-frame"],
+      "stop_condition": "Stop at the earliest honest problem-side result without generating options."
+    },
+    {
+      "id": "recover-current-structure",
+      "question": "Recover the current structure, relations, and boundaries as-is without redesigning them.",
+      "target_state": "existing but insufficiently described target",
+      "route_action": "calls",
+      "expected_sequence": ["structure-recover"],
+      "stop_condition": "Return the smallest supported current-state map and exact missing information."
+    },
+    {
       "id": "discover-relevant-patterns",
       "question": "Which FPF patterns directly apply to a bounded service-design question?",
       "target_state": "open question",
@@ -24,6 +40,14 @@
       "route_action": "calls",
       "expected_sequence": ["options-explore"],
       "stop_condition": "Return compared options without selecting one."
+    },
+    {
+      "id": "design-rerunnable-evaluation",
+      "question": "Design the evaluation frame, success criteria, checks, evidence, and stop rules without running it.",
+      "target_state": "target lacking an evaluation contract",
+      "route_action": "calls",
+      "expected_sequence": ["evaluation-design"],
+      "stop_condition": "Return a rerunnable evaluation design without claiming a pass or improvement."
     },
     {
       "id": "challenge-proposal",
@@ -92,6 +116,19 @@
       ],
       "expected_mode": "composition",
       "stop_condition": "Share one finding registry, stop at unmet authority gates, and return one consolidated issue list plus one mapped repair list."
+    },
+    {
+      "id": "meta-plan-research-options-challenge",
+      "question": "$fpf plan sota harvest + options explore + design challenge Assess the current proposal.",
+      "target_state": "proposed analytical composition",
+      "route_action": "calls",
+      "expected_sequence": [
+        "sota-harvest",
+        "options-explore",
+        "design-challenge"
+      ],
+      "expected_mode": "plan",
+      "stop_condition": "Validate and return the copy-ready composition without executing an analytical node or saving a report."
     },
     {
       "id": "campaign-applied-repairs-closure",

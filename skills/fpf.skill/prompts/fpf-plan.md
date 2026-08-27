@@ -25,6 +25,10 @@ Produce a read-only **FPF Skill Plan** for one question. Route work among the av
 
 When the router supplies an invalid explicit `+` composition, explain the rejected segment or handoff and return the smallest legal corrected composition or ordinary sequence. Do not execute it. Explicit composition is appropriate only when the user wants one ordered run with one shared task and consolidated result; ordinary proposed sequences remain separate calls unless the user requests stacking.
 
+When the router supplies a valid explicit meta-plan (`mode: plan`, `planned_nodes`, and `execution_disabled = true`), treat the returned ordered nodes as the requested sequence. Do not re-route from keywords, load any analytical prompt, or execute any node. Validate the declared graph handoffs, make the shared task self-contained, expose every run condition and stop gate, and return one copy-ready executable composition for a later user-authorized invocation. The `plan` prefix itself is not part of that copy-ready composition.
+
+When the router supplies `suggestions`, list the possible canonical corrections with the router's evidence and keep them explicitly unselected. A single strong suggestion may be shown as the smallest copy-ready correction, but it remains a proposed invocation: do not silently replace the user's text, execute it, or claim that fuzzy matching selected an analytical node.
+
 ## Review campaign routing
 
 When the question cites a prior FPF report, finding, repair, closure check, or review campaign, load `references/fpf-review-campaign.md` before selecting calls. Treat it as routing policy, not as an FPF methodology source. Compare the semantic frontier, carrier frontier, evaluation profile, campaign phase, and finding states first.
@@ -41,9 +45,12 @@ In every campaign route, carry the campaign ID, frontiers, evaluation profile, p
 
 | Skill | Select when the next required result is |
 |---|---|
+| `$fpf problem frame` | A bounded TaskSignature, accepted problem-side result, acceptance boundary, or honest blocker before solution work |
+| `$fpf structure recover` | A current-state map of exact entities, relations, boundaries, rules, and selected structures without redesign |
 | `$fpf applicability scan` | The smallest relevant set of direct FPF patterns for a bounded question |
 | `$fpf sota harvest` | A current, reconstructible, plural field or evidence map |
 | `$fpf options explore` | Diverse candidate options and declared-coordinate comparison without selection |
+| `$fpf evaluation design` | A rerunnable evaluation question, characteristic space, check/evidence plan, and stop rules without execution |
 | `$fpf design challenge` | A bounded challenge of a proposed or not-yet-implemented design |
 | `$fpf decision synthesize` | A recoverable choice among already evaluated alternatives and, when requested, its ADR projection |
 | `$fpf quality improve` | A versioned target-change and re-evaluation loop under declared quality coordinates |
@@ -52,9 +59,13 @@ In every campaign route, carry the campaign ID, frontiers, evaluation profile, p
 ## Sequencing rules
 
 - Order calls by evidence dependency, not by the table order.
+- Use the router's optional task profile to specialize the subject and FPF context; never let a profile term such as DDD, TDD, architecture, or skill decide analytical intent by itself.
+- Use `$fpf problem frame` when the need, subject, task family, or acceptance boundary is unresolved. Do not use it to restate an already accepted problem or smuggle in a preferred solution.
+- Use `$fpf structure recover` when the next result is descriptive current-state structure. Do not substitute proposal critique or implementation audit for recovery.
 - Use `$fpf applicability scan` first only when FPF relevance or direct-pattern selection is genuinely unresolved. Do not add it merely because the question mentions FPF.
 - Put `$fpf sota harvest` before option generation only when current external evidence or rival traditions are needed.
 - Put `$fpf options explore` before `$fpf decision synthesize`; never ask decision synthesis to invent unevaluated alternatives.
+- Use `$fpf evaluation design` before improvement, comparison-based decision, or implementation review when characteristics, checks, evidence, or stop rules are missing. It defines an evaluation but never reports a pass.
 - Put `$fpf design challenge` before a decision when a concrete unimplemented proposal needs stress-testing. Route implemented work to `$fpf alignment audit` instead.
 - Use `$fpf decision synthesize` only when alternatives, evaluation evidence, and project decision authority are recoverable. Otherwise name the missing prerequisite.
 - Use `$fpf quality improve` directly when a versioned target, baseline, evaluation frame, and allowed change surface exist. Do not prepend an alignment audit unless FPF alignment is itself a required baseline claim.
@@ -65,7 +76,7 @@ In every campaign route, carry the campaign ID, frontiers, evaluation profile, p
 
 ## Maintainer evaluation
 
-`references/routing-scenarios.json` is the repository's behavioral scenario matrix. It is test evidence for maintainers, not required runtime context. When changing routing rules or the skill catalog, update the matrix and run `uv run -m scripts.validate_repository`.
+`references/routing-scenarios.json` is the repository's behavioral scenario matrix. It is test evidence for maintainers, not required runtime context. When changing routing rules or the skill catalog, update the matrix and run `uv run -m service.validate_repository`.
 
 ## Address each task
 
