@@ -41,12 +41,10 @@ jobs:
         run: |
           cp .caprmedio/settings.toml.example .caprmedio/settings.toml
           sed -i 's#../../Repos/FPF#.runtime/original-fpf#' .caprmedio/settings.toml
-      - name: Compile scripts
-        run: uv run -m compileall -q scripts
       - name: Validate script architecture
-        run: uv run -m scripts.validate_script_architecture
+        run: uv run -m service.validate_script_architecture
       - name: Run deterministic maintenance suite
-        run: uv run -m scripts.graph_fpf_convert_from_original.run_tests
+        run: uv run -m service.tests.run_tests
 
   auto-merge-owner-pr:
     name: auto-merge owner PR

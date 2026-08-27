@@ -1,0 +1,300 @@
+schema_version: 1
+
+profiles:
+  - id: framework.problem-and-scope
+    area: framework
+    title: Framework problem and scope
+    description: Frame the recurring problem, intended users, authority, and boundary before creating framework structure.
+    aliases: ["framework problem", "framework scope"]
+    keywords: ["framework requirements", "framework boundary", "framework purpose"]
+    fpf_entrypoints: [{id: C.22, relation: profile_context}, {id: E.4.PFAD, relation: profile_context}]
+    examples:
+      - {text: "Frame the framework problem and acceptance boundary for this initiative.", expected_node: problem-frame}
+      - {text: "Challenge the proposed framework scope before authoring it.", expected_node: design-challenge}
+
+  - id: framework.concepts-and-terminology
+    area: framework
+    title: Framework concepts and terminology
+    description: Recover or improve load-bearing concepts, kinds, distinctions, and names without confusing wording with ontology.
+    aliases: ["framework terminology", "framework concepts"]
+    keywords: ["concept model", "kind boundary", "framework vocabulary", terminology]
+    fpf_entrypoints: [{id: E.10, relation: profile_context}, {id: F.18, relation: profile_context}, {id: A.7, relation: profile_context}]
+    examples:
+      - {text: "Recover the current structure of the framework terminology and kind boundaries.", expected_node: structure-recover}
+      - {text: "Improve this versioned framework terminology using its quality criteria.", expected_node: quality-improve}
+
+  - id: framework.pattern-authoring
+    area: framework
+    title: Framework pattern authoring
+    description: Design and assess framework patterns, their owning framework, applicability, and edition discipline.
+    aliases: ["pattern authoring", "framework pattern"]
+    keywords: ["author pattern", "pattern contract", "pattern framework relation"]
+    fpf_entrypoints: [{id: E.4.DPF, relation: profile_context}, {id: E.4.PFR, relation: profile_context}]
+    examples:
+      - {text: "Explore alternatives for authoring this new framework pattern.", expected_node: options-explore}
+      - {text: "Audit the implemented framework pattern against its authoring contract.", expected_node: alignment-audit}
+
+  - id: framework.architecture
+    area: framework
+    title: Framework architecture
+    description: Recover, synthesize, compare, or challenge the selected structures that make a framework usable and maintainable.
+    aliases: ["framework architecture", "framework structure"]
+    keywords: ["framework modules", "framework dependencies", "framework organization"]
+    fpf_entrypoints: [{id: E.4, relation: profile_context}, {id: C.30, relation: profile_context}, {id: C.32, relation: profile_context}]
+    examples:
+      - {text: "Map current framework architecture and dependencies as-is.", expected_node: structure-recover}
+      - {text: "Stress-test the proposed framework architecture before implementation.", expected_node: design-challenge}
+
+  - id: framework.edition-and-migration
+    area: framework
+    title: Framework edition and migration
+    description: Preserve framework identity, pattern relations, and intended use across editions, migrations, and integrations.
+    aliases: ["framework migration", "framework edition"]
+    keywords: ["edition compatibility", "framework upgrade", "framework integration"]
+    fpf_entrypoints: [{id: E.4.PFR, relation: profile_context}, {id: E.4.PFIP, relation: profile_context}, {id: C.34, relation: profile_context}]
+    examples:
+      - {text: "Design an evaluation plan for framework edition compatibility.", expected_node: evaluation-design}
+      - {text: "Audit the completed framework migration for semantic preservation.", expected_node: alignment-audit}
+
+  - id: framework.publication-and-discoverability
+    area: framework
+    title: Framework publication and discoverability
+    description: Make framework forms, practical entries, and pattern-use routes discoverable without turning examples into compulsory workflows.
+    aliases: ["framework publication", "framework discoverability"]
+    keywords: ["practical entry", "publication form", "help navigation"]
+    fpf_entrypoints: [{id: E.11.PFP, relation: profile_context}, {id: E.11.PUR, relation: profile_context}]
+    examples:
+      - {text: "Find relevant FPF patterns for framework publication discoverability.", expected_node: applicability-scan}
+      - {text: "Challenge the proposed framework help and practical-entry design.", expected_node: design-challenge}
+
+  - id: framework.quality-and-coverage
+    area: framework
+    title: Framework quality and coverage
+    description: Define and improve framework quality, structural coverage, missing information, and protected trade-offs.
+    aliases: ["framework quality", "framework coverage"]
+    keywords: ["coverage gaps", "framework completeness", "framework quality criteria"]
+    fpf_entrypoints: [{id: E.22, relation: profile_context}, {id: E.23, relation: profile_context}, {id: C.33, relation: profile_context}]
+    examples:
+      - {text: "Define the quality criteria and evaluation frame for framework coverage.", expected_node: evaluation-design}
+      - {text: "Improve the versioned framework coverage and re-evaluate it.", expected_node: quality-improve}
+
+  - id: software.ddd-bounded-contexts
+    area: software
+    title: DDD and bounded contexts
+    description: Recover exact model editions, use loci, bounded contexts, and cross-context relations before relying on DDD labels.
+    aliases: [DDD, "domain driven design", "bounded context"]
+    keywords: ["bounded contexts", "context map", "domain model", "ubiquitous language"]
+    fpf_entrypoints: [{id: A.1.1, relation: profile_context}, {id: A.22, relation: profile_context}, {id: F.9, relation: profile_context}]
+    examples:
+      - {text: "Map current DDD bounded contexts and context relations.", expected_node: structure-recover}
+      - {text: "Challenge the proposed DDD bounded-context split before implementation.", expected_node: design-challenge}
+
+  - id: software.business-logic
+    area: software
+    title: Business logic and domain behavior
+    description: Recover business rules, state transitions, transformation flows, and constraints separately from their implementation carriers.
+    aliases: ["business logic", "domain logic", "business rules"]
+    keywords: ["state transition", "domain behavior", "workflow rules", invariants]
+    fpf_entrypoints: [{id: A.3.3, relation: profile_context}, {id: E.18, relation: profile_context}, {id: A.20, relation: profile_context}]
+    examples:
+      - {text: "Recover the current business logic, rules, and state transitions.", expected_node: structure-recover}
+      - {text: "Explore alternatives for implementing this business logic rule safely.", expected_node: options-explore}
+
+  - id: software.requirements-and-acceptance
+    area: software
+    title: Requirements and acceptance
+    description: Frame software problems and decompose requirements, contracts, acceptance clauses, evidence, and action boundaries.
+    aliases: ["software requirements", "acceptance criteria", "acceptance contract"]
+    keywords: [requirements, "acceptance boundary", "acceptance clauses", specification]
+    fpf_entrypoints: [{id: C.22.2, relation: profile_context}, {id: A.6.C, relation: profile_context}, {id: G.4, relation: profile_context}]
+    examples:
+      - {text: "Frame the software problem, requirements, and acceptance boundary.", expected_node: problem-frame}
+      - {text: "Design the evaluation and acceptance tests for these requirements.", expected_node: evaluation-design}
+
+  - id: software.tdd
+    area: software
+    title: Test-driven development
+    description: Analyze a project's TDD method through explicit behavior, evaluation questions, test evidence, and stopping rules.
+    aliases: [TDD, "test driven development", "test-first"]
+    keywords: ["red green refactor", "test first", "test suite design"]
+    fpf_entrypoints: [{id: E.22, relation: profile_context}, {id: A.19.ECS, relation: profile_context}, {id: G.4, relation: profile_context}]
+    examples:
+      - {text: "Design the TDD evaluation frame and test strategy for this feature.", expected_node: evaluation-design}
+      - {text: "Improve this versioned TDD workflow and rerun its evaluation.", expected_node: quality-improve}
+
+  - id: software.code-quality
+    area: software
+    title: Code quality
+    description: Replace vague code-quality claims with exact bearers, characteristics, scales, trade-offs, and a rerunnable improvement loop.
+    aliases: ["code quality", "clean code", maintainability]
+    keywords: [readability, complexity, cohesion, coupling, "technical debt"]
+    fpf_entrypoints: [{id: C.16.Q, relation: profile_context}, {id: C.25, relation: profile_context}, {id: E.23, relation: profile_context}]
+    examples:
+      - {text: "Define measurable code-quality criteria and a verification plan.", expected_node: evaluation-design}
+      - {text: "Improve the code quality of this versioned module and re-evaluate it.", expected_node: quality-improve}
+
+  - id: software.architecture
+    area: software
+    title: Software architecture
+    description: Recover and evaluate selected software structures, candidate architectures, modularity, interfaces, and architectural decisions.
+    aliases: ["software architecture", "application architecture", "system architecture"]
+    keywords: ["architecture decision", "module architecture", "runtime architecture", "data architecture"]
+    fpf_entrypoints: [{id: C.30, relation: profile_context}, {id: C.31, relation: profile_context}, {id: C.32, relation: profile_context}]
+    examples:
+      - {text: "Recover the current software architecture and selected structures.", expected_node: structure-recover}
+      - {text: "Compare alternative software architecture candidates without selecting one.", expected_node: options-explore}
+
+  - id: software.interfaces-dependencies-and-migration
+    area: software
+    title: Interfaces, dependencies, and migration
+    description: Recover module relations, dependency direction, structural correspondence, compatibility, and migration boundaries.
+    aliases: ["dependency migration", "interface migration", "module dependency"]
+    keywords: [API, interface, dependency, migration, compatibility, substitutability]
+    fpf_entrypoints: [{id: A.6.M, relation: profile_context}, {id: B.1.1, relation: profile_context}, {id: C.34, relation: profile_context}]
+    examples:
+      - {text: "Map current module dependencies and interface migration boundaries.", expected_node: structure-recover}
+      - {text: "Challenge the proposed API migration and compatibility design.", expected_node: design-challenge}
+
+  - id: software.release-evidence
+    area: software
+    title: Release evidence and gates
+    description: Connect test and operational evidence to exact claims, assurance targets, and a separately authorized release gate.
+    aliases: ["release evidence", "release gate", "deployment gate"]
+    keywords: ["release readiness", "test evidence", assurance, deployment]
+    fpf_entrypoints: [{id: A.10, relation: profile_context}, {id: B.3, relation: profile_context}, {id: A.21, relation: profile_context}]
+    examples:
+      - {text: "Design the release-readiness evaluation, evidence, and gate checks.", expected_node: evaluation-design}
+      - {text: "Audit the implemented release evidence against the accepted gate profile.", expected_node: alignment-audit}
+
+  - id: skills.trigger-and-scope
+    area: skills
+    title: Skill trigger and scope
+    description: Frame the skill's receiving use, task family, trigger boundary, exclusions, authority, and honest fallback.
+    aliases: ["skill trigger", "skill scope", "skill task family"]
+    keywords: ["trigger description", "when to use skill", "skill boundary"]
+    fpf_entrypoints: [{id: C.22, relation: profile_context}, {id: E.11.PUR, relation: profile_context}]
+    examples:
+      - {text: "Frame the problem and skill trigger boundary for this agent skill.", expected_node: problem-frame}
+      - {text: "Audit the installed skill trigger and scope against the accepted contract.", expected_node: alignment-audit}
+
+  - id: skills.prompt-contract
+    area: skills
+    title: Skill prompt contract
+    description: Design and evaluate the reusable method description, inputs, outputs, gates, and quality contract carried by a skill prompt.
+    aliases: ["skill prompt", "prompt contract", "skill instructions"]
+    keywords: [SKILL.md, "prompt design", "instruction contract", "native result"]
+    fpf_entrypoints: [{id: A.3.2, relation: profile_context}, {id: A.15.5, relation: profile_context}, {id: E.22, relation: profile_context}]
+    examples:
+      - {text: "Challenge this proposed skill prompt contract before publishing it.", expected_node: design-challenge}
+      - {text: "Improve this versioned skill prompt and re-evaluate its contract.", expected_node: quality-improve}
+
+  - id: skills.graph-composition
+    area: skills
+    title: Skill graph and composition
+    description: Model skill nodes, order-sensitive compositions, handoffs, authority gates, and loop-prevention rules.
+    aliases: ["skill graph", "prompt graph", "skill composition"]
+    keywords: ["command graph", "skill handoff", "prompt composition", router]
+    fpf_entrypoints: [{id: B.1.5, relation: profile_context}, {id: C.24, relation: profile_context}, {id: A.20, relation: profile_context}]
+    examples:
+      - {text: "Recover the current skill graph, handoffs, and composition structure.", expected_node: structure-recover}
+      - {text: "Explore alternative skill-graph compositions without choosing one.", expected_node: options-explore}
+
+  - id: skills.tool-and-context-connector
+    area: skills
+    title: Skill tools and context connector
+    description: Design tool-call planning, interfaces, dependency boundaries, and minimal context hydration for a skill.
+    aliases: ["skill connector", "context connector", "skill tools"]
+    keywords: ["tool call", "context loading", "yaml reader", "prompt helper"]
+    fpf_entrypoints: [{id: C.24, relation: profile_context}, {id: A.6.C, relation: profile_context}, {id: B.1.1, relation: profile_context}]
+    examples:
+      - {text: "Recover the current skill connector and tool-call dependency structure.", expected_node: structure-recover}
+      - {text: "Challenge the proposed context connector before implementation.", expected_node: design-challenge}
+
+  - id: skills.evaluation-cases
+    area: skills
+    title: Skill evaluation cases
+    description: Define representative tasks, expected artifacts, counterexamples, evidence, regression cases, and pass or stop rules.
+    aliases: ["skill evaluation", "skill evals", "skill test cases"]
+    keywords: ["evaluation pack", "routing cases", "golden cases", "regression scenarios"]
+    fpf_entrypoints: [{id: G.4, relation: profile_context}, {id: A.19.ECS, relation: profile_context}, {id: A.21, relation: profile_context}]
+    examples:
+      - {text: "Design the skill evaluation cases and acceptance checks.", expected_node: evaluation-design}
+      - {text: "Audit the implemented skill against its frozen skill evaluation cases.", expected_node: alignment-audit}
+
+  - id: skills.install-portability-and-runtime
+    area: skills
+    title: Skill installation, portability, and runtime
+    description: Analyze copied or linked installation, runtime discovery, compatibility, dependency, and cross-platform boundaries.
+    aliases: ["skill installation", "skill portability", "skill runtime"]
+    keywords: [installer, installation, portability, "runtime settings", "cross platform"]
+    fpf_entrypoints: [{id: C.34, relation: profile_context}, {id: A.20, relation: profile_context}, {id: A.10, relation: profile_context}]
+    examples:
+      - {text: "Challenge the proposed skill installation and portability design.", expected_node: design-challenge}
+      - {text: "Audit the installed skill runtime and compatibility evidence.", expected_node: alignment-audit}
+
+  - id: skills.quality-regression-and-release
+    area: skills
+    title: Skill quality, regression, and release
+    description: Improve a versioned skill under stable evaluation cases and connect regression evidence to a bounded release decision.
+    aliases: ["skill quality", "skill regression", "skill release"]
+    keywords: ["skill maintenance", "skill refactor", "skill release gate"]
+    fpf_entrypoints: [{id: E.23, relation: profile_context}, {id: B.3, relation: profile_context}, {id: A.21, relation: profile_context}]
+    examples:
+      - {text: "Improve this versioned skill regression target and rerun its evaluation.", expected_node: quality-improve}
+      - {text: "Design the skill release evaluation and gate profile.", expected_node: evaluation-design}
+
+evaluation_cases:
+  - id: framework-concept-boundary-eval
+    profile: framework.concepts-and-terminology
+    node: design-challenge
+    task: Challenge a proposed framework concept split without treating wording as ontology.
+    required_facets: [exact subject, kind boundary, intended use, nearest false inference, decision owner]
+    forbidden_inference: A clearer label proves a valid ontological distinction.
+  - id: framework-edition-preservation-eval
+    profile: framework.edition-and-migration
+    node: alignment-audit
+    task: Audit a completed framework edition migration for preserved pattern identity and intended use.
+    required_facets: [source edition, target edition, correspondence basis, lost content, reopen condition]
+    forbidden_inference: Matching filenames prove semantic preservation.
+  - id: framework-coverage-eval
+    profile: framework.quality-and-coverage
+    node: evaluation-design
+    task: Define a framework coverage evaluation without collapsing coverage into page count.
+    required_facets: [coverage bearer, receiving use, characteristic, scale, missing-structure return]
+    forbidden_inference: More patterns automatically mean better coverage.
+  - id: software-ddd-eval
+    profile: software.ddd-bounded-contexts
+    node: structure-recover
+    task: Recover current bounded-model uses and context relations before proposing a DDD redesign.
+    required_facets: [model edition, use locus, applicability relation, cross-context relation, missing discriminator]
+    forbidden_inference: A named bounded context is automatically a subsystem or team boundary.
+  - id: software-tdd-eval
+    profile: software.tdd
+    node: evaluation-design
+    task: Define the TDD evaluation frame for a feature before changing code.
+    required_facets: [observable behavior, test subject, evaluation operation, evidence, stop rule]
+    forbidden_inference: Test-first activity by itself proves improved software quality.
+  - id: software-architecture-eval
+    profile: software.architecture
+    node: design-challenge
+    task: Challenge a proposed modular architecture and its claimed maintainability benefit.
+    required_facets: [architecture subject, selected structure, interface policy, quality bearer, causal boundary]
+    forbidden_inference: Low coupling by itself proves maintainability.
+  - id: skills-trigger-eval
+    profile: skills.trigger-and-scope
+    node: problem-frame
+    task: Frame one skill task family and its trigger boundary.
+    required_facets: [receiving use, task family, positive trigger, exclusion, honest fallback]
+    forbidden_inference: A broad description improves routing coverage without increasing false activation.
+  - id: skills-connector-eval
+    profile: skills.tool-and-context-connector
+    node: design-challenge
+    task: Challenge a lazy context connector and its tool-call plan.
+    required_facets: [selected input, dependency boundary, call precondition, returned context, failure path]
+    forbidden_inference: Tool availability proves the call is necessary or its result is true.
+  - id: skills-regression-eval
+    profile: skills.quality-regression-and-release
+    node: alignment-audit
+    task: Audit a changed skill against frozen routing and evaluation cases.
+    required_facets: [versioned target, frozen cases, rerun evidence, regressions, release boundary]
+    forbidden_inference: Passing deterministic tests alone proves semantic adequacy.

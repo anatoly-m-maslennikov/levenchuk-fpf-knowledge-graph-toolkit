@@ -1,0 +1,8 @@
+{
+  "service_skills": [
+    "graph-fpf-convert-from-original",
+    "graph-fpf-evaluate-conversion-result"
+  ],
+  "receipt_name": ".fpf-service-skills-install.json",
+  "schema_version": 1
+}
