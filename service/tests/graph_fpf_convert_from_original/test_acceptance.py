@@ -14,6 +14,7 @@ from service.tests.graph_fpf_convert_from_original.test_source_lifecycle import 
     FPF, _make_original, _prepare_package, _suite_result, _write_evidence,
     _write_report,
 )
+from service.tests.graph_fpf_convert_from_original.helpers import write_npf_report
 from service.tests.suite_runner import suite_contract
 
 
@@ -27,20 +28,21 @@ def _prepared(temporary: Path, verdict: str = "PASS") -> tuple[Path, Path]:
     digest = hashlib.sha256((stage_root(toolkit) / FPF).read_bytes()).hexdigest()
     _write_report(toolkit / "FPF-Knowledge-Graph", revision, digest)
     _write_report(toolkit / "FPF-Knowledge-Graph.bak", "previous")
+    write_npf_report(toolkit / "NPF-Knowledge-Graph", revision)
+    write_npf_report(toolkit / "NPF-Knowledge-Graph.bak", "previous")
     return toolkit, _write_evidence(toolkit, revision, "previous", verdict=verdict)
 
 
 class AcceptedCleanupTests(unittest.TestCase):
-    def test_finalization_clears_stage_and_all_graph_backups(self) -> None:
+    def test_finalization_clears_only_manifest_bound_graph_backups(self) -> None:
         with temporary_workspace() as name:
             toolkit, evidence = _prepared(Path(name))
-            (toolkit / "NPF-Knowledge-Graph.bak").mkdir()
             (toolkit / "Future-Knowledge-Graph.bak").mkdir()
             accepted = finalize_accepted(toolkit, evidence, lambda root, _: _suite_result(root))
             self.assertFalse(logical_path_exists(stage_root(toolkit)))
             self.assertFalse(logical_path_exists(toolkit / "FPF-Knowledge-Graph.bak"))
             self.assertFalse(logical_path_exists(toolkit / "NPF-Knowledge-Graph.bak"))
-            self.assertFalse(logical_path_exists(toolkit / "Future-Knowledge-Graph.bak"))
+            self.assertTrue((toolkit / "Future-Knowledge-Graph.bak").is_dir())
             self.assertEqual(accepted["deterministic_cases"], len(
                 suite_contract(toolkit / CASES_RELATIVE)["case_names"]
             ))
@@ -64,8 +66,9 @@ def _mutations():
     return (
         ("schema", lambda data: data.__setitem__("schema_version", 1)),
         ("evaluator", lambda data: data.__setitem__("evaluator", "other")),
-        ("revision", lambda data: data.__setitem__("current_revision", "wrong")),
-        ("tree", lambda data: data.__setitem__("current_tree_sha256", "0" * 64)),
+        ("revision", lambda data: data.__setitem__("source_revision", "wrong")),
+        ("tree", lambda data: data["projection_manifest"]["fpf"].__setitem__("current_tree_sha256", "0" * 64)),
+        ("npf-tree", lambda data: data["projection_manifest"]["npf"].__setitem__("current_tree_sha256", "0" * 64)),
         ("eval-pack", lambda data: data.__setitem__("eval_pack_sha256", "0" * 64)),
         ("families", lambda data: data["issue_family_verdicts"].pop(ISSUE_FAMILIES[0])),
         ("probes", lambda data: data["historical_regression_probes"].pop(HISTORICAL_PROBES[0])),

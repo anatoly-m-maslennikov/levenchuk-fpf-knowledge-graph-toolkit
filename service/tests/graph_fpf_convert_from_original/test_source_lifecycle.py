@@ -13,8 +13,8 @@ from service.scripts.graph_fpf_convert_from_original.graph_fpf_convert_from_orig
     HISTORICAL_PROBES,
     ISSUE_FAMILIES,
     finalize_accepted,
-    tree_sha256,
 )
+from service.tests.graph_fpf_convert_from_original.helpers import projection_evidence
 from service.scripts.graph_fpf_convert_from_original.graph_fpf_convert_from_original_workers.eval_pack import build_eval_pack
 from service.tests.suite_runner import suite_contract
 from service.scripts.graph_fpf_convert_from_original.graph_fpf_convert_from_original_workers.source_stage import (
@@ -92,10 +92,9 @@ def _write_evidence(root: Path, current: str, backup: str, verdict: str = "PASS"
     path = root / ".runtime" / "evaluation.json"
     path.write_text(
         json.dumps(dict(
-            schema_version=2, evaluator="graph-fpf-evaluate-conversion-result",
-            verdict=verdict, current_revision=current, backup_revision=backup,
-            current_tree_sha256=tree_sha256(root / "FPF-Knowledge-Graph"),
-            backup_tree_sha256=tree_sha256(root / "FPF-Knowledge-Graph.bak"),
+            schema_version=3, evaluator="graph-fpf-evaluate-conversion-result",
+            verdict=verdict, source_revision=current,
+            projection_manifest=projection_evidence(root, current, backup),
             eval_pack_sha256=pack["eval_pack_sha256"],
             issue_family_verdicts={name: "PASS" for name in ISSUE_FAMILIES},
             historical_regression_probes={name: "PASS" for name in HISTORICAL_PROBES},

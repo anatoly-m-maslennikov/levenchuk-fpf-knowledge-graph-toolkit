@@ -12,6 +12,7 @@ from service.scripts.build_fpf_obsidian_graph.build_fpf_obsidian_graph_workers.m
 from .source_package import source_identity
 from .source_stage import stage_root
 from .eval_pack import build_eval_pack
+from .projection_manifest import PROJECTION_PROFILES, projection_manifest, tree_sha256
 from service.tests.suite_runner import run_suite, suite_contract
 
 
@@ -45,23 +46,10 @@ def _read_json(path: Path, label: str) -> dict[str, object]:
     return value
 
 
-def tree_sha256(root: Path) -> str:
-    digest = hashlib.sha256()
-    entries = sorted(root.rglob("*"), key=lambda item: item.relative_to(root).as_posix())
-    for path in entries:
-        if path.is_symlink():
-            raise ValueError(f"accepted graph contains a symlink: {path}")
-        if not path.is_file() or path.name == ".DS_Store":
-            continue
-        relative = path.relative_to(root).as_posix().encode("utf-8")
-        digest.update(relative + b"\0" + path.read_bytes() + b"\0")
-    return digest.hexdigest()
-
-
 def _evidence_fields() -> set[str]:
     return {
-        "schema_version", "evaluator", "verdict", "current_revision",
-        "backup_revision", "current_tree_sha256", "backup_tree_sha256",
+        "schema_version", "evaluator", "verdict", "source_revision",
+        "projection_manifest",
         "eval_pack_sha256", "issue_family_verdicts",
         "historical_regression_probes", "syntax_risk_strata",
         "semantic_selection", "deterministic_suite_manifest_sha256",
@@ -71,34 +59,23 @@ def _evidence_fields() -> set[str]:
 
 def _verify_evidence_identity(root: Path, evidence: dict[str, object]) -> tuple[str, Path, Path]:
     if set(evidence) != _evidence_fields():
-        raise ValueError("evaluation evidence fields do not match schema 2")
-    if evidence.get("schema_version") != 2:
-        raise ValueError("evaluation evidence schema_version must be 2")
+        raise ValueError("evaluation evidence fields do not match schema 3")
+    if evidence.get("schema_version") != 3:
+        raise ValueError("evaluation evidence schema_version must be 3")
     if evidence.get("evaluator") != "graph-fpf-evaluate-conversion-result":
         raise ValueError("evaluation evidence names the wrong evaluator")
     if evidence.get("verdict") != "PASS":
         raise ValueError("evaluation verdict is not PASS")
-    revision = evidence.get("current_revision")
+    revision = evidence.get("source_revision")
     if not isinstance(revision, str) or not revision:
-        raise ValueError("evaluation evidence has no current_revision")
-    current = _read_json(
-        root / FPF_PROFILE.default_output / "00_Index" / "FPF - Validation Report.json",
-        "current graph report",
-    )
-    backup = _read_json(
-        root / f"{FPF_PROFILE.default_output}.bak" / "00_Index" /
-        "FPF - Validation Report.json", "backup graph report",
-    )
-    if current.get("source_revision") != revision:
-        raise ValueError("evaluation revision does not match the current graph")
-    if backup.get("source_revision") != evidence.get("backup_revision"):
-        raise ValueError("evaluation backup revision does not match the backup graph")
+        raise ValueError("evaluation evidence has no source_revision")
+    manifest = projection_manifest(root)
+    if evidence.get("projection_manifest") != manifest:
+        raise ValueError("evaluation projection manifest does not match graph bytes")
+    if any(item.get("current_revision") != revision for item in manifest.values()):
+        raise ValueError("projection revisions do not match the evaluated source revision")
     current_root = root / FPF_PROFILE.default_output
     backup_root = root / f"{FPF_PROFILE.default_output}.bak"
-    if evidence.get("current_tree_sha256") != tree_sha256(current_root):
-        raise ValueError("evaluation evidence does not match the current graph bytes")
-    if evidence.get("backup_tree_sha256") != tree_sha256(backup_root):
-        raise ValueError("evaluation evidence does not match the backup graph bytes")
     return revision, current_root, backup_root
 
 
@@ -162,13 +139,15 @@ def _verify_stage(root: Path, revision: str) -> None:
         raise ValueError("staged source bytes do not match the current graph")
 
 
-def _cleanup_targets(root: Path) -> list[Path]:
+def _cleanup_targets(root: Path, evidence: dict[str, object]) -> list[Path]:
     targets = [stage_root(root)]
-    for path in sorted(root.iterdir()):
-        if path.name.endswith("-Knowledge-Graph.bak"):
-            if path.is_symlink() or not path.is_dir():
-                raise ValueError(f"backup cleanup target must be a real directory: {path}")
-            targets.append(path)
+    manifest = evidence["projection_manifest"]
+    for profile in PROJECTION_PROFILES:
+        relative = manifest[profile.key]["backup_path"]
+        path = root / relative
+        if path.is_symlink() or not path.is_dir():
+            raise ValueError(f"backup cleanup target must be a real directory: {path}")
+        targets.append(path)
     return targets
 
 
@@ -177,6 +156,7 @@ def finalize_accepted(
     suite_runner: SuiteRunner = run_suite,
 ) -> dict[str, object]:
     evidence = evidence_path or root / EVIDENCE_RELATIVE
+    evidence_data = _read_json(evidence, "evaluation evidence")
     revision = _verify_evidence(root, evidence)
     _verify_stage(root, revision)
     suite = suite_runner(root, root / CASES_RELATIVE)
@@ -188,7 +168,7 @@ def finalize_accepted(
         raise ValueError("final deterministic suite used the wrong manifest")
     if suite.get("case_names") != contract["case_names"]:
         raise ValueError("final deterministic suite omitted required cases")
-    targets = _cleanup_targets(root)
+    targets = _cleanup_targets(root, evidence_data)
     for target in targets:
         remove_directory(target)
     return dict(
