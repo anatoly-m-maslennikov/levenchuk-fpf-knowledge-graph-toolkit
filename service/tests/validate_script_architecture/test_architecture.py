@@ -7,6 +7,7 @@ from service.scripts.validate_script_architecture.validate_script_architecture_w
 from service.scripts.validate_script_architecture.validate_script_architecture_workers.layout import (
     check_cache_placement,
     check_service_boundary,
+    check_test_placement,
 )
 
 
@@ -42,6 +43,23 @@ class ArchitectureBoundaryTests(unittest.TestCase):
             expected.parent.mkdir(parents=True)
             expected.write_bytes(b"cache")
             self.assertEqual(len(check_cache_placement(root)), 1)
+
+    def test_runtime_and_environment_tests_are_not_repository_tests(self) -> None:
+        with temporary_workspace() as temporary:
+            root = Path(temporary)
+            tests = root / "service/tests"
+            tests.mkdir(parents=True)
+            for boundary in (root / ".runtime", root / ".venv"):
+                path = boundary / "plugin/tests/test_external.py"
+                path.parent.mkdir(parents=True)
+                path.write_text("", encoding="utf-8")
+            misplaced = root / "package/test_misplaced.py"
+            misplaced.parent.mkdir()
+            misplaced.write_text("", encoding="utf-8")
+            self.assertEqual(
+                [f"test file must live under service/tests: {misplaced}"],
+                check_test_placement(root, tests),
+            )
 
 
 class ArchitectureRuleTests(unittest.TestCase):

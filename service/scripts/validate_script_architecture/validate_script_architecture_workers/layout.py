@@ -73,9 +73,12 @@ def check_layout(tool: Path) -> list[str]:
 
 
 def check_test_placement(root: Path, tests: Path) -> list[str]:
+    ignored = (root / ".runtime", root / ".venv")
     return [
         f"test file must live under service/tests: {path}"
-        for path in root.rglob("test_*.py") if not path.is_relative_to(tests)
+        for path in root.rglob("test_*.py")
+        if not path.is_relative_to(tests)
+        and not any(path.is_relative_to(boundary) for boundary in ignored)
     ]
 
 
