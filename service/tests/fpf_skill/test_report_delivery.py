@@ -16,6 +16,18 @@ class ReportDeliveryContractTests(unittest.TestCase):
         self.assertIn("UTF-8", text)
         self.assertNotIn("plan_fpf_report", text)
 
+    def test_plain_delivery_fails_closed_and_verifies_exact_content(self) -> None:
+        text = (SKILL_ROOT / "references/fpf-report-persistence.md").read_text(encoding="utf-8")
+        for requirement in (
+            "host-native file operation that guarantees create-if-absent",
+            "STOPPED_UNSAVED: NO_EXCLUSIVE_CREATE",
+            "read the created file back",
+            "compare its complete text with the chat artifact",
+            "FAILED_VERIFICATION",
+            "a hash is supplemental evidence, not a runtime requirement",
+        ):
+            self.assertIn(requirement, text)
+
     def test_caprmedio_delivery_keeps_scope_and_bseed_rules(self) -> None:
         text = (SKILL_ROOT / "references/fpf-caprmedio-report-adapter.md").read_text(encoding="utf-8")
         for requirement in ("narrowest structural Scope Unit", "BSEED special case", "project-native Atom creation operation", "stop unsaved"):

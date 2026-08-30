@@ -140,7 +140,11 @@
       "Never overwrite:",
       "## Plain report delivery",
       "## CAPRMEDIO report delivery",
-      "references/fpf-caprmedio-report-adapter.md"
+      "references/fpf-caprmedio-report-adapter.md",
+      "host-native file operation that guarantees create-if-absent",
+      "STOPPED_UNSAVED: NO_EXCLUSIVE_CREATE",
+      "FAILED_VERIFICATION",
+      "a hash is supplemental evidence, not a runtime requirement"
     ],
     "skills/fpf.skill/references/fpf-caprmedio-report-adapter.md": [
       "narrowest structural Scope Unit",
