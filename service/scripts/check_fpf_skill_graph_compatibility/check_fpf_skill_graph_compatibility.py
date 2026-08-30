@@ -6,7 +6,9 @@ import json
 import re
 from pathlib import Path
 
-import yaml
+from service.scripts.validate_repository.validate_repository_workers.fpf_markdown import (
+    load_markdown_graph,
+)
 
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -29,7 +31,7 @@ def graph_ids() -> set[str]:
 
 
 def methodology_prompts() -> list[tuple[str, Path]]:
-    graph = yaml.safe_load((SKILL_ROOT / "graph.yaml").read_text(encoding="utf-8"))
+    graph = load_markdown_graph(ROOT)
     if not isinstance(graph, dict) or not isinstance(graph.get("nodes"), list):
         raise ValueError("FPF skill graph has no node list")
     return [

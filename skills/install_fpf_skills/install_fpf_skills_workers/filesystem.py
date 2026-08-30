@@ -13,11 +13,23 @@ from service.scripts.filesystem_policy import (
     clear_directory,
     is_system_temporary_path,
     remove_directory,
-    replace_directory_contents,
 )
 
 
 IGNORED_PACKAGE_NAMES = {".DS_Store", ".fpf-runtime.toml", "__pycache__"}
+
+
+def _installable(path: Path) -> bool:
+    if path.name in IGNORED_PACKAGE_NAMES or path.suffix in {".pyc", ".pyo"}:
+        return False
+    if path.is_file() or path.is_symlink():
+        return True
+    return any(_installable(child) for child in path.iterdir())
+
+
+def _copy_ignored(directory: str, names: list[str]) -> set[str]:
+    root = Path(directory)
+    return {name for name in names if not _installable(root / name)}
 
 
 def remove_path(path: Path) -> None:
@@ -29,7 +41,7 @@ def remove_path(path: Path) -> None:
 
 def _link_package_entries(source: Path, target: Path) -> None:
     for child in source.iterdir():
-        if child.name in IGNORED_PACKAGE_NAMES or child.suffix in {".pyc", ".pyo"}:
+        if not _installable(child):
             continue
         destination = target / child.name
         if destination.exists() and destination.is_dir() and not destination.is_symlink():
@@ -49,9 +61,7 @@ def _stage_package(
     if method == "copy":
         shutil.copytree(
             source, temporary,
-            ignore=shutil.ignore_patterns(
-                ".DS_Store", ".fpf-runtime.toml", "__pycache__", "*.pyc", "*.pyo",
-            ),
+            ignore=_copy_ignored,
         )
     elif wrapper_symlink:
         temporary.mkdir()
@@ -64,7 +74,13 @@ def _replace_temporary_package(
     source: Path, target: Path, method: str, wrapper_symlink: bool,
 ) -> None:
     if method == "copy":
-        replace_directory_contents(source, target)
+        if target.exists():
+            clear_directory(target)
+        else:
+            target.mkdir(parents=True)
+        shutil.copytree(
+            source, target, dirs_exist_ok=True, symlinks=True, ignore=_copy_ignored,
+        )
         return
     if not wrapper_symlink:
         if target.is_symlink() or target.is_file():

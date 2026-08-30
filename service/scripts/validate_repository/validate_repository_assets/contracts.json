@@ -42,6 +42,7 @@
   },
   "fpf_skill_fragments": [
     "name: fpf", "do not preload graph prompts or references",
+    "installed end-user runtime is Markdown-only",
     "prompts/help/en/fpf-help.md", "prompts/help/ru/fpf-help.md", "prompts/fpf-runtime.md",
     "prompts/help/en/fpf-help-<area>.md", "prompts/help/ru/fpf-help-<area>.md",
     "Never run the router", "Never load `prompts/fpf-runtime.md` for a fast Help call"
@@ -99,17 +100,16 @@
   },
   "reference_fragments": {
     "skills/fpf.skill/prompts/fpf-runtime.md": [
-      "scripts/route_fpf.py",
-      "scripts/prepare_fpf_context.py",
-      "graph.yaml",
+      "Never run Python, uv, a shell command",
+      "references/fpf-command-graph.md",
+      "Markdown/plain-text file access",
       ".fpf-runtime.toml",
       "inside the logical installed skill directory",
       "repository_root",
       "prompts/fpf-plan.md",
-      "task_profile",
       "references/fpf-report-persistence.md",
       "references/fpf-composition.md",
-      "mode: composition"
+      "CAPRMEDIO is optional"
     ],
     "skills/fpf.skill/references/fpf-analysis-contract.md": [
       "<!-- output-settings:start -->",
@@ -117,7 +117,7 @@
       "Resolve the FPF edition and declared entrypoints",
       "repository_root",
       "references/fpf-context-connector.md",
-      "complete = false",
+      "bounded subsection",
       "references/fpf-review-campaign.md",
       "## Task, scope, and boundaries",
       "## Issues, weak points, and improvements",
@@ -132,13 +132,12 @@
       "#### FPF sources consulted ("
     ],
     "skills/fpf.skill/references/fpf-context-connector.md": [
-      "Two-part connector",
-      "scripts/read_fpf_graph.py",
-      "scripts/prepare_fpf_context.py",
-      "task-profile ID",
-      "skipped_conditionals",
-      "missing_core_sections",
-      "complete = false",
+      "Direct Markdown resolution",
+      "references/fpf-command-graph.md",
+      "FPF context",
+      "FPF - Index.md",
+      "conditional_method",
+      "bounded-retrieval limitation",
       "methodology context, not a finding"
     ],
     "skills/fpf.skill/references/fpf-report-persistence.md": [

@@ -14,6 +14,14 @@ def ignored(path: Path) -> bool:
     return path.name in IGNORED_NAMES or path.suffix in {".pyc", ".pyo"}
 
 
+def installable(path: Path) -> bool:
+    if ignored(path):
+        return False
+    if path.is_file() or path.is_symlink():
+        return True
+    return any(installable(child) for child in path.iterdir())
+
+
 def tree_snapshot(root: Path) -> dict[str, str]:
     if not root.is_dir() or root.is_symlink():
         raise ValueError(f"expected a real package directory: {root}")
@@ -55,10 +63,10 @@ def symlink_wrapper_current(target: Path, source: Path) -> bool:
     if not target.is_dir() or target.is_symlink() or not source.is_dir():
         return False
     expected = {
-        child.name: child for child in source.iterdir() if not ignored(child)
+        child.name: child for child in source.iterdir() if installable(child)
     }
     actual = {
-        child.name: child for child in target.iterdir() if not ignored(child)
+        child.name: child for child in target.iterdir() if installable(child)
     }
     if set(actual) != set(expected):
         return False

@@ -1,6 +1,6 @@
 # FPF command composition
 
-Load this resource only when the router returns `mode: composition`. It governs ordered execution, shared state, consolidation, and persistence for the selected analytical nodes. It does not authorize target mutation, project decisions, or execution past a missing authority gate.
+Load this resource only when the Markdown command graph admits an explicit composition. It governs ordered execution, shared state, consolidation, and persistence for the selected analytical nodes. It does not authorize target mutation, project decisions, or execution past a missing authority gate.
 
 ## Invocation contract
 
@@ -8,9 +8,9 @@ The explicit syntax is:
 
 `$fpf <command> + <command> [ + <command> ... ] <shared task>`
 
-Spaces around `+` are mandatory. Every segment must start with an exact analytical command or alias. Task text is permitted only after the last command and becomes the shared task for the entire composition. `help` and `plan` cannot be composed. Execute only the ordered nodes returned by the router; never infer another node from keywords.
+Spaces around `+` are mandatory. Every segment must start with an exact analytical command or alias. Task text is permitted only after the last command and becomes the shared task for the entire composition. `help` and `plan` cannot be composed. Execute only the ordered nodes explicitly matched through the Markdown graph; never infer another node from keywords.
 
-The router admits only adjacent pairs declared as graph edges. An admitted edge proves only that a handoff is structurally legal. It does not prove that required evidence, target state, owner disposition, or mutation authority exists.
+Admit only adjacent pairs declared under `Legal composition handoffs` in the Markdown graph. An admitted edge proves only that a handoff is structurally legal. It does not prove that required evidence, target state, owner disposition, or mutation authority exists.
 
 ## One composition envelope
 

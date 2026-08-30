@@ -1,6 +1,6 @@
 # FPF Analytical Contract
 
-Apply this contract to every analytical node declared in `graph.yaml`. Load it once for a single-node call and once for an explicit composition, even when several nodes declare it.
+Apply this contract to every analytical node declared in `references/fpf-command-graph.md`. Load it once for a single-node call and once for an explicit composition.
 
 <!-- output-settings:start -->
 ## Output and report settings
@@ -18,11 +18,11 @@ Return the complete artifact in chat. When `save_report = "on"`, consult `report
 ## Resolve the FPF edition and declared entrypoints
 
 1. Resolve an accessible FPF edition in this order: a source named in the request; a path, URI, attachment, corpus, or connected item already in context; the verified installed `repository_root/FPF-Knowledge-Graph` runtime hint; another optional environment or workspace hint; then a bounded search of accessible task-relevant roots or providers. A source explicitly named by the user overrides the installed hint.
-2. Use the verified bundle produced under `references/fpf-context-connector.md`. `primary_method` is the node's direct method; `result_projection` defines an expected projection; `routing_method` or `routing_entrypoint` starts task-dependent pattern discovery; `conditional_method` is present only when its declared condition holds.
-3. Treat hydrated core sections as real FPF source content with exact repository paths and line ranges. When a Solution record has `complete = false`, open only the exact subsection needed for the current claim; never treat the excerpt as the complete pattern.
+2. Use the verified direct-page selection produced under `references/fpf-context-connector.md`. `primary_method` is the node's direct method; `result_projection` defines an expected projection; `routing_method` or `routing_entrypoint` starts task-dependent pattern discovery; `conditional_method` is present only when its declared condition holds.
+3. Treat directly inspected core sections as real FPF source content with exact repository paths or stable locators. When only a bounded subsection was inspected, record that limit and never treat it as the complete pattern.
 4. For another FPF edition, resolve the same stable ID through that edition's index or native locator. Do not force a repository path onto a non-file-backed source. If the ID cannot be resolved, report the stale or incompatible binding and request the exact missing source rather than silently substituting a nearby pattern.
 5. Use practical-use cards, usage guidance, hubs, contents, and term or relation indexes only to route to direct patterns. Inspect the relevant Problem frame, Problem, Forces, Solution, Consequences, and ordinary boundary of every direct pattern materially used.
-6. Never load a monolithic or explicitly unsafe or oversized FPF source wholesale. Use the connector bundle, targeted graph pages, or exact sections within the node's retrieval budget. Budget exhaustion produces `insufficient basis`, never a semantic pass. Keep discovered source locations task-local; never persist a user-specific path into this reusable package.
+6. Never load a monolithic or explicitly unsafe or oversized FPF source wholesale. Use targeted graph pages or exact sections within the node's retrieval budget. Budget exhaustion produces `insufficient basis`, never a semantic pass. Keep discovered source locations task-local; never persist a user-specific path into this reusable package.
 7. Search only accessible, task-relevant roots or providers. Never scan an entire device, account, or network. If several editions remain plausible and the choice affects the result, ask which is authoritative. If none can be verified, report what was checked and request a path, URI, attachment, corpus, or connected source.
 
 ## Review campaign continuation

@@ -76,7 +76,7 @@ In every campaign route, carry the campaign ID, frontiers, evaluation profile, p
 
 ## Maintainer evaluation
 
-`references/routing-scenarios.json` is the repository's behavioral scenario matrix. It is test evidence for maintainers, not required runtime context. When changing routing rules or the skill catalog, update the matrix and run `uv run -m service.scripts.validate_repository`.
+`references/fpf-routing-scenarios.md` is the repository's behavioral scenario matrix. It is Markdown test evidence for maintainers, not required runtime context. When changing routing rules or the skill catalog, update that matrix and run the repository's deterministic maintenance suite outside the installed skill.
 
 ## Address each task
 

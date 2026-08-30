@@ -4,7 +4,7 @@ This directory is the end-user boundary. It contains the portable `$fpf` package
 
 ## `$fpf` prompt graph
 
-[`fpf.skill`](fpf.skill/SKILL.md) is the single end-user package. Its root `SKILL.md` is only a thin dispatch gate: exact general and area-specific English/Russian Help calls load one matching page directly, while every other call lazily loads [`fpf-runtime.md`](fpf.skill/prompts/fpf-runtime.md). General Help exposes only framework, software, and skills. The runtime owns routing and execution; [`graph.yaml`](fpf.skill/graph.yaml) declares analytical commands, areas, legal handoffs, shared contracts, and one stable FPF-node path catalog, while [`profiles.yaml`](fpf.skill/profiles.yaml) declares 22 reusable task profiles and exactly one executable routing/context evaluation case per profile. The two-part [`fpf-context-connector.md`](fpf.skill/references/fpf-context-connector.md) contract selects only active YAML command/profile nodes and hydrates only their verified FPF sections. Shared analytical behavior lives once in [`fpf-analysis-contract.md`](fpf.skill/references/fpf-analysis-contract.md); node-specific judgment remains under [`prompts/`](fpf.skill/prompts/).
+[`fpf.skill`](fpf.skill/SKILL.md) is the single end-user package. Its root `SKILL.md` is only a thin dispatch gate: exact general and area-specific English/Russian Help calls load one matching page directly, while every other call lazily loads [`fpf-runtime.md`](fpf.skill/prompts/fpf-runtime.md). General Help exposes only framework, software, and skills. The installed package is Markdown-only and contains no executable, YAML, JSON, interpreter, dependency, or runtime-cache requirement. [`fpf-command-graph.md`](fpf.skill/references/fpf-command-graph.md) declares commands, aliases, routing precedence, areas, legal handoffs, and stable FPF bindings. Three area profile files under [`profiles/`](fpf.skill/profiles/) declare 22 reusable task profiles and one evaluation case per profile. [`fpf-context-connector.md`](fpf.skill/references/fpf-context-connector.md) resolves only selected stable IDs directly through the configured FPF Markdown index. Shared analytical behavior lives once in [`fpf-analysis-contract.md`](fpf.skill/references/fpf-analysis-contract.md); node-specific judgment remains under [`prompts/`](fpf.skill/prompts/).
 
 Canonical Codex invocation is `$fpf`:
 
@@ -61,6 +61,5 @@ This is the local release-quality gate: five isolated read-only subject runs plu
 ```bash
 uv run -m skills.install_fpf_skills.for_codex --check
 uv run -m skills.install_fpf_skills.for_claude --check
-uv run skills/fpf.skill/scripts/route_fpf.py --check
 uv run -m service.tests.run_tests
 ```

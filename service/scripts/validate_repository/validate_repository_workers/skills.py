@@ -2,11 +2,8 @@
 
 from __future__ import annotations
 
-import json
 import re
 from pathlib import Path
-
-import yaml
 
 from skills.install_fpf_skills.install_fpf_skills_workers.snapshots import (
     same_link, suite_digest, symlink_wrapper_current,
@@ -15,6 +12,7 @@ from skills.install_fpf_skills.install_fpf_skills_workers.state import load_rece
 
 from .contract_fragments import missing_fragments, present_forbidden_fragments
 from .fpf_graph import validate_fpf_manifest
+from .fpf_markdown import load_markdown_graph, load_routing_scenarios
 from .skill_entry import validate_fpf_skill_package
 
 def _validate_frontmatter(path: Path, expected_name: str) -> list[str]:
@@ -162,9 +160,9 @@ def _validate_scenario(
         errors.append(f"empty call route: {scenario_id}")
     if action in {"stop", "external_action"} and sequence:
         errors.append(f"non-empty stop route: {scenario_id}")
-    if expected_mode not in {None, "composition", "plan", "closure", "full"}:
+    if expected_mode not in {"single", "sequence", "composition", "plan", "closure", "stop", "external", "full"}:
         errors.append(f"invalid expected routing mode: {scenario_id}")
-    if expected_mode in {"composition", "plan"}:
+    if expected_mode in {"sequence", "composition", "plan"}:
         pairs = zip(sequence, sequence[1:])
         if len(sequence) < 2 or any(pair not in edges for pair in pairs):
             errors.append(f"illegal stacked routing sequence: {scenario_id}")
@@ -174,15 +172,13 @@ def _validate_scenario(
 
 
 def validate_routing_scenarios(root: Path, _end_user_names: list[str]) -> list[str]:
-    path = root / "skills/fpf.skill/references/routing-scenarios.json"
     try:
-        fixture = json.loads(path.read_text(encoding="utf-8"))
-        manifest = yaml.safe_load((root / "skills/fpf.skill/graph.yaml").read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError, yaml.YAMLError) as exc:
+        scenarios = load_routing_scenarios(root)
+        manifest = load_markdown_graph(root)
+    except (OSError, ValueError) as exc:
         return [f"cannot read routing scenarios: {exc}"]
-    scenarios = fixture.get("scenarios", [])
-    if fixture.get("schema_version") != 2 or not isinstance(scenarios, list) or not scenarios:
-        return ["routing scenarios must use schema 2 and a non-empty list"]
+    if not scenarios:
+        return ["Markdown routing scenarios must be a non-empty table"]
     routable = {node["id"] for node in manifest["nodes"] if node.get("persist_report")}
     covered: set[str] = set()
     ids: list[str] = []

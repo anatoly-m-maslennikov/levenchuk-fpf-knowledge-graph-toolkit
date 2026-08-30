@@ -1,0 +1,80 @@
+# FPF Markdown Command Graph
+
+This file is the complete runtime routing index. It is Markdown data, not an instruction to execute another program. Load it for every non-fast-Help invocation, select one command or one explicit legal composition, then load only the selected prompt and optional area profile file.
+
+## Routing precedence
+
+1. Strip one leading `$fpf` or textual `/fpf` marker and preserve the remaining original text.
+2. Recognize `plan <command> + ...` before executable composition. It proposes a stack and never executes it.
+3. Treat spaced ` + ` as composition only when every segment before the shared task starts with a complete canonical command or alias. Otherwise `+` is ordinary task text.
+4. Prefer the longest complete command or alias at the beginning of the invocation. Preserve every character after that matched span as the task.
+5. Without an explicit command, use routing cues only when one analytical node is clearly stronger than every alternative. Match complete words or phrases; never match substrings such as `API` inside `capital`.
+6. When intent is ambiguous, select `plan`. A correction suggestion is never an executed route.
+7. Select at most one task profile after selecting the command. A profile specializes context and never changes analytical intent.
+
+Canonical command identifiers remain English. Russian commands and aliases select the same nodes. `help` and `plan` never save reports; the ten analytical nodes may save one final report.
+
+## Areas and profile files
+
+| Area | English cues | Russian cues | Profile file |
+|---|---|---|---|
+| `framework` | `framework`, `frameworks`, `framework development` | `фреймворк`, `фреймворки`, `разработка фреймворков` | [framework profiles](../profiles/fpf-profiles-framework.md) |
+| `software` | `software`, `software development`, `code` | `софт`, `ПО`, `разработка ПО`, `программирование` | [software profiles](../profiles/fpf-profiles-software.md) |
+| `skills` | `skill`, `skills`, `skill development` | `навык`, `навыки`, `разработка навыков` | [skills profiles](../profiles/fpf-profiles-skills.md) |
+
+Load no profile file when the area is absent or ambiguous. Load only the selected area's file and select at most one profile by complete alias or routing-cue match.
+
+## Command nodes
+
+| ID | Command | Russian command | Aliases | Routing cues | Prompt | Saves report | FPF bindings |
+|---|---|---|---|---|---|---|---|
+| `help` | `help` | `справка` | `?`<br>`commands`<br>`usage`<br>`справка`<br>`помощь`<br>`команды`<br>`как пользоваться` | — | [Help](../prompts/help/en/fpf-help.md) | no | — |
+| `plan` | `plan` | `план` | `planner`<br>`route`<br>`workflow`<br>`which skill`<br>`план`<br>`планировщик`<br>`маршрут`<br>`рабочий процесс`<br>`какой навык` | `plan`<br>`route`<br>`sequence`<br>`workflow`<br>`which skill`<br>`what should i use`<br>`then`<br>`план`<br>`маршрут`<br>`последовательност`<br>`рабочий процесс`<br>`какой навык`<br>`что использовать`<br>`затем` | [Plan](../prompts/fpf-plan.md) | no | — |
+| `problem-frame` | `problem frame` | `рамка проблемы` | `frame problem`<br>`task frame`<br>`problem shaping`<br>`рамка проблемы`<br>`сформулировать проблему`<br>`постановка задачи` | `problem frame`<br>`task frame`<br>`problem statement`<br>`acceptance boundary`<br>`task signature`<br>`problem`<br>`requirements`<br>`clarify`<br>`рамка проблемы`<br>`постановка задачи`<br>`требования`<br>`уточнить` | [Problem frame](../prompts/fpf-problem-frame.md) | yes | `C.22.2@primary_method`<br>`C.22@routing_method` |
+| `structure-recover` | `structure recover` | `восстановить структуру` | `recover structure`<br>`current structure`<br>`as-is map`<br>`map current`<br>`восстановить структуру`<br>`текущая структура`<br>`карта текущего состояния` | `structure recover`<br>`recover structure`<br>`map current`<br>`current structure`<br>`as is`<br>`current state`<br>`recover`<br>`восстановить структуру`<br>`текущая структура`<br>`текущее состояние` | [Structure recover](../prompts/fpf-structure-recover.md) | yes | `A.22@primary_method`<br>`C.33@result_projection` |
+| `applicability-scan` | `applicability scan` | `скан применимости` | `applicability`<br>`scan`<br>`relevant patterns`<br>`скан применимости`<br>`применимость`<br>`релевантные паттерны`<br>`подходящие паттерны` | `apply`<br>`applicable`<br>`applicability`<br>`relevant`<br>`fpf patterns`<br>`which patterns`<br>`what fpf can contribute`<br>`применим`<br>`релевант`<br>`подходящ`<br>`паттерны fpf` | [Applicability scan](../prompts/fpf-applicability-scan.md) | yes | `E.11.PUR@routing_method` |
+| `sota-harvest` | `sota harvest` | `обзор исследований` | `sota`<br>`state of the art`<br>`research harvest`<br>`обзор sota`<br>`состояние области`<br>`обзор исследований`<br>`карта исследований` | `sota`<br>`state of the art`<br>`research`<br>`field map`<br>`evidence map`<br>`landscape`<br>`current evidence`<br>`исследован`<br>`состояние области`<br>`актуальные данные` | [SOTA harvest](../prompts/fpf-sota-harvest.md) | yes | `G.2@primary_method` |
+| `options-explore` | `options explore` | `исследовать варианты` | `options`<br>`explore options`<br>`alternatives`<br>`варианты`<br>`исследовать варианты`<br>`альтернативы`<br>`сравнить варианты` | `options`<br>`alternatives`<br>`candidates`<br>`explore`<br>`compare`<br>`non-obvious`<br>`вариант`<br>`альтернатив`<br>`кандидат`<br>`сравн` | [Options explore](../prompts/fpf-options-explore.md) | yes | `B.5.2.1@primary_method`<br>`G.9@conditional_method` when alternatives require benchmark or parity comparison |
+| `evaluation-design` | `evaluation design` | `дизайн оценки` | `design evaluation`<br>`evaluation frame`<br>`test strategy`<br>`test plan`<br>`verification plan`<br>`дизайн оценки`<br>`план тестирования`<br>`стратегия тестирования`<br>`план проверки` | `evaluation design`<br>`evaluation frame`<br>`evaluation plan`<br>`gate profile`<br>`test strategy`<br>`verification plan`<br>`success criteria`<br>`acceptance tests`<br>`quality criteria`<br>`дизайн оценки`<br>`критерии качества` | [Evaluation design](../prompts/fpf-evaluation-design.md) | yes | `E.22@primary_method`<br>`A.19.ECS@result_projection` |
+| `design-challenge` | `design challenge` | `проверка дизайна` | `challenge`<br>`challenge design`<br>`critique`<br>`stress test`<br>`проверка дизайна`<br>`критика дизайна`<br>`стресс тест дизайна`<br>`оспорить дизайн` | `design`<br>`proposal`<br>`challenge`<br>`critique`<br>`stress test`<br>`before implementation`<br>`architecture`<br>`taxonomy`<br>`дизайн`<br>`до реализации` | [Design challenge](../prompts/fpf-design-challenge.md) | yes | `E.11.PUA@routing_entrypoint` |
+| `decision-synthesize` | `decision synthesize` | `синтез решения` | `decision`<br>`decide`<br>`synthesize decision`<br>`adr`<br>`синтез решения`<br>`принять решение`<br>`выбрать решение` | `decision`<br>`decide`<br>`choose`<br>`selection`<br>`adr`<br>`evaluated alternatives`<br>`reopen trigger`<br>`решени`<br>`выбер` | [Decision synthesize](../prompts/fpf-decision-synthesize.md) | yes | `C.32.PAD@primary_method`<br>`C.32.ADR@result_projection` |
+| `quality-improve` | `quality improve` | `улучшение качества` | `improve`<br>`quality`<br>`improvement loop`<br>`улучшение качества`<br>`улучшить качество`<br>`повысить качество`<br>`цикл улучшения`<br>`улучшение` | `improve`<br>`improvement`<br>`quality`<br>`versioned`<br>`baseline`<br>`re-evaluate`<br>`evaluation frame`<br>`улучш`<br>`качеств`<br>`повторно оцен` | [Quality improve](../prompts/fpf-quality-improve.md) | yes | `E.23@primary_method` |
+| `alignment-audit` | `alignment audit` | `аудит согласованности` | `audit`<br>`alignment`<br>`final review`<br>`closure audit`<br>`аудит согласованности`<br>`проверка согласованности`<br>`финальная проверка`<br>`аудит закрытия` | `audit`<br>`alignment`<br>`implemented`<br>`accepted work`<br>`final review`<br>`closure`<br>`regression`<br>`verify`<br>`аудит`<br>`согласован`<br>`реализован`<br>`регресси` | [Alignment audit](../prompts/fpf-alignment-audit.md) | yes | `E.11.PUA@routing_entrypoint` |
+
+## Legal composition handoffs
+
+An edge permits only an explicit user-requested stack. It never authorizes automatic execution.
+
+| From | To | Required handoff |
+|---|---|---|
+| `problem-frame` | `structure-recover` | bounds current-state recovery |
+| `problem-frame` | `applicability-scan` | supplies a bounded question |
+| `problem-frame` | `sota-harvest` | supplies a bounded research question |
+| `problem-frame` | `options-explore` | supplies an accepted problem-side result |
+| `problem-frame` | `evaluation-design` | supplies target and receiving use |
+| `applicability-scan` | `structure-recover` | may identify structures to recover |
+| `applicability-scan` | `sota-harvest` | may clarify research frame |
+| `applicability-scan` | `options-explore` | may supply applicable patterns |
+| `applicability-scan` | `evaluation-design` | may supply governing evaluation patterns |
+| `sota-harvest` | `options-explore` | supplies current evidence |
+| `sota-harvest` | `evaluation-design` | may supply current evaluation practices |
+| `structure-recover` | `options-explore` | supplies the current-state structure |
+| `structure-recover` | `evaluation-design` | supplies exact bearers and boundaries |
+| `structure-recover` | `design-challenge` | supplies the recovered current state |
+| `options-explore` | `evaluation-design` | supplies candidates and comparison needs |
+| `options-explore` | `design-challenge` | supplies a candidate proposal |
+| `options-explore` | `decision-synthesize` | supplies evaluated alternatives |
+| `evaluation-design` | `design-challenge` | supplies declared criteria and tests |
+| `evaluation-design` | `decision-synthesize` | supplies comparable evaluation evidence |
+| `evaluation-design` | `quality-improve` | supplies a rerunnable evaluation frame |
+| `design-challenge` | `decision-synthesize` | supplies challenge evidence |
+| `design-challenge` | `quality-improve` | accepted findings may define a bounded improvement target |
+| `decision-synthesize` | `quality-improve` | may authorize a bounded improvement |
+| `quality-improve` | `alignment-audit` | supplies changed target and rerun evidence |
+| `design-challenge` | `alignment-audit` | applied repairs may enter closure audit |
+
+## FPF source resolution
+
+Each binding is `<stable-id>@<relation>`. Resolve each selected command/profile stable ID through the exact ID row in `<repository_root>/FPF-Knowledge-Graph/00_Index/FPF - Index.md`, follow that row's page link, and verify the page frontmatter contains the same `fpf_id`. Load no unselected page. A `conditional_method` is loaded only when its stated condition is true.
+
+From each selected page, inspect only the available Problem frame, Problem, Forces, Solution, and Consequences sections needed for the task. If a required section is absent or a needed section is too large to inspect completely, report that limitation instead of inventing content.
