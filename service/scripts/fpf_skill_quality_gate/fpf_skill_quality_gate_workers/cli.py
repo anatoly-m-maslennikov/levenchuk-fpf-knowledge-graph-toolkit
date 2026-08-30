@@ -58,13 +58,18 @@ def _run_subjects(
     responses: dict[str, object] = {}
     outputs: dict[str, Path] = {}
     schema = ASSETS / "subject-output.schema.json"
-    for case in cases:
+    for index, case in enumerate(cases, start=1):
         case_id = str(case["id"])
+        print(f"RUN subject {index}/{len(cases)}: {case_id}", flush=True)
         output = run / "subjects" / f"{case_id}.json"
-        response = run_codex(
-            subject_prompt(ASSETS / "subject-prompt.md", case), schema, output, ROOT,
-            executable=args.codex, model=args.model, timeout=args.timeout,
-        )
+        try:
+            response = run_codex(
+                subject_prompt(ASSETS / "subject-prompt.md", case), schema, output, ROOT,
+                executable=args.codex, model=args.model, timeout=args.timeout,
+                state_home=run / "codex-home",
+            )
+        except RuntimeError as exc:
+            raise RuntimeError(f"subject case {case_id} failed: {exc}") from exc
         if response.get("output_contract") != case.get("output_contract"):
             raise RuntimeError(
                 f"subject output contract does not match case: {case_id}"
@@ -78,10 +83,12 @@ def _run_evaluator(
     cases: list[dict[str, object]], responses: dict[str, object], run: Path,
     args: argparse.Namespace,
 ) -> dict[str, object]:
+    print(f"RUN evaluator for {len(cases)} subject results", flush=True)
     return run_codex(
         evaluator_prompt(ASSETS / "evaluator-prompt.md", cases, responses),
         ASSETS / "evaluation-output.schema.json", run / "evaluation.json", ROOT,
         executable=args.codex, model=args.model, timeout=args.timeout,
+        state_home=run / "codex-home",
     )
 
 

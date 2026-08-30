@@ -165,16 +165,22 @@ class CodexRunnerContractTests(unittest.TestCase):
 
             with patch("shutil.which", return_value="/opt/codex"), patch(
                 "subprocess.run", side_effect=complete,
-            ):
+            ), patch.dict("os.environ", {"CODEX_HOME": str(root / "source-home")}):
+                (root / "source-home").mkdir()
+                (root / "source-home/auth.json").write_text("{}", encoding="utf-8")
                 result = run_codex(
                     "prompt", root / "schema.json", output, root,
                     executable="codex", model=None, timeout=30,
+                    state_home=root / ".runtime/codex-home",
                 )
 
             self.assertEqual({"result": "ok"}, result)
             self.assertEqual(["/opt/codex", "-a", "never", "exec"], captured[:4])
             for required in ("--ephemeral", "--ignore-user-config", "--ignore-rules", "read-only", "--output-schema"):
                 self.assertIn(required, captured)
+            auth_link = root / ".runtime/codex-home/auth.json"
+            self.assertTrue(auth_link.is_symlink())
+            self.assertEqual((root / "source-home/auth.json").resolve(), auth_link.resolve())
 
 
 if __name__ == "__main__":
