@@ -84,3 +84,14 @@ Assign confidence to each material claim, issue, and fix as required above, and 
 - **Below 90%:** materially uncertain.
 
 Never round up to 95%, hide conflicting, unsupported, or insufficient-basis results, or omit a lower-confidence issue. Lower confidence changes neither an issue's place in the registry nor its required disposition. In section 3, for each actual evidence gap or unanswered question, give a stable gap ID, linked issue or fix IDs when applicable, the best current answer, missing evidence or input, consequence, and exact next evidence or action. A high-confidence determination that the basis is insufficient remains an issue in section 2; the missing evidence that prevents resolution belongs in section 3. If no evidence gaps remain, keep section 3 and write `None identified within the declared scope`.
+
+## Final conformance gate
+
+Immediately before returning, verify the complete artifact and repair it if any check fails:
+
+- The only top-level `##` headings are the four required analytical headings, in the required order. Native node headings are nested below section 2.
+- Every stated defect, weakness, risk, decision gap, or opportunity appears once in the issue registry with every required issue field and one or more mapped fix IDs or an explicit disposition.
+- Every fix appears once in the ordered fix register and explicitly includes: addressed issue IDs, relationship, independent fix confidence and basis, expected result, trade-offs, owner/authority, dependencies/order, verification, recommendation, and state.
+- `## Skills used` lists only canonical analytical commands that actually executed. A proposed, stopped-before-execution, or unexecuted suffix command is not used.
+- The source trace lists only FPF methodology pages actually opened and distinguishes `used` from `screened only`; skill prompts, Help pages, routing files, project evidence, and tools are not FPF methodology sources.
+- A persistence failure or other stop state is recorded inside the complete envelope. It never replaces the analysis with a short stop notice.

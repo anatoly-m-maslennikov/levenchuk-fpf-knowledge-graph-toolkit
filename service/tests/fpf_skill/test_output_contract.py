@@ -50,6 +50,8 @@ class OutputContractTests(unittest.TestCase):
             "relationship: `alternative`, `complementary`, or `required prerequisite`",
             "Every issue must map to one or more fix IDs or an explicit disposition",
             "deduplicated, ordered fix and improvement register",
+            "## Final conformance gate",
+            "A persistence failure or other stop state",
         ):
             self.assertIn(requirement, analytical)
 
@@ -63,6 +65,7 @@ class OutputContractTests(unittest.TestCase):
             "#### Composition receipt",
             "one outcome per typed edge",
             "semantic execution record",
+            "A node appears under `## Skills used` only if its native analysis actually executed",
         ):
             self.assertIn(requirement, composition)
 
@@ -81,6 +84,9 @@ class OutputContractTests(unittest.TestCase):
             "Section 3 contains only genuine missing evidence or unanswered routing questions",
             "FPF methodology sources:** not applicable",
             "Execution boundary",
+            "## Final conformance gate",
+            "include one copy-ready composition",
+            "lists exactly `$fpf plan`",
         ):
             self.assertIn(requirement, plan)
 

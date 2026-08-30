@@ -143,3 +143,14 @@ Preserve these native artifact requirements:
 4. **Inputs, handoffs, independent calls, required join artifacts, and run conditions**
 5. **Skipped skills and why**
 6. **Execution boundary** — state that no proposed skill was executed
+
+## Final conformance gate
+
+Immediately before returning, verify the result mechanically and repair it if any check fails:
+
+- The only top-level `##` headings are the four required Plan headings, in the required order.
+- `## Skills used` lists exactly `$fpf plan`; every downstream command is proposed, not used.
+- Every proposed command is copied exactly from the command graph. Normalize a complete alias to its canonical command, but never invent a command name. Keep a typo as an explicit correction proposal; for a meta-plan, use the corrected command only when the correction is uniquely supported.
+- Every proposed call has routing confidence, concrete routing evidence, prerequisites, handoff, expected artifact, and run/stop/authority conditions.
+- When two or more nodes form one requested stack, include one copy-ready composition in the form `$fpf <canonical command> + <canonical command> ... <shared task>`. Do not substitute a list of separate calls for this composition.
+- The original residual task, exclusions, and order are preserved; no analytical node ran, no FPF methodology source was consulted, and no report was saved.

@@ -150,6 +150,18 @@ class QualityGateContractTests(unittest.TestCase):
         self.assertNotIn("fpf_skill_quality_gate", ci)
         self.assertNotIn("codex exec", ci)
 
+    def test_subject_and_evaluator_define_metadata_boundaries(self) -> None:
+        subject = (ASSETS / "subject-prompt.md").read_text(encoding="utf-8")
+        evaluator = (ASSETS / "evaluator-prompt.md").read_text(encoding="utf-8")
+        for text in (subject, evaluator):
+            self.assertIn("commands_executed", text)
+            self.assertIn("methodology_sources_used", text)
+            self.assertIn("Help", text)
+            self.assertIn("Plan", text)
+        self.assertIn('Plan uses only `["$fpf plan"]`', subject)
+        self.assertIn("stopped before native execution", subject)
+        self.assertIn("not methodology sources", subject)
+
 
 class CodexRunnerContractTests(unittest.TestCase):
     def test_runner_is_ephemeral_read_only_structured_and_noninteractive(self) -> None:

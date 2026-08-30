@@ -117,3 +117,12 @@ Under `## Task, scope, and boundaries`, include a compact `#### Composition rece
 Resolve output and report settings once for the whole composition. Intermediate node instructions to return and persist complete artifacts apply to their internal records; this composition contract replaces separate delivery with the one final consolidated artifact.
 
 When saving is on, load `references/fpf-report-persistence.md` once after consolidation and use report node ID `composition`. Save exactly the same Markdown returned in chat. CAPRMEDIO mode creates one Analysis Report Atom for the complete composition scope, not one Atom per node.
+
+## Final conformance gate
+
+Immediately before returning, apply the analytical contract's final conformance gate to the consolidated artifact, then verify the composition-specific facts:
+
+- The composition receipt contains the exact requested sequence, executed prefix, unexecuted suffix, every typed-edge outcome, and the exact final `STOP_*` state or `COMPLETE`.
+- A node appears under `## Skills used` only if its native analysis actually executed. Evaluating a handoff and stopping before the consumer runs does not make that consumer a used skill.
+- One complete consolidated issue registry and one complete consolidated fix register cover all executed-node findings; no short stop response or separate node report replaces them.
+- Every issue maps to a fix or disposition, and every fix includes expected result, trade-offs, verification, and recommendation in addition to the other analytical-contract fields.

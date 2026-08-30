@@ -28,6 +28,8 @@ For a single node:
 - `plan`: load `prompts/fpf-plan.md`, return only the call plan, and stop. Never execute proposed nodes or save a report.
 - Any analytical node: load `references/fpf-analysis-contract.md`, `references/fpf-context-connector.md`, and exactly the selected prompt from the command graph. Pass the residual task, optional selected profile, and directly inspected FPF pages as methodology context.
 
+Before returning, run the final conformance gate at the end of the selected Plan, analytical, or composition contract. The selected node's native sections belong inside that contract envelope and never replace it. A stop, missing input, unavailable report write, or unexecuted composition suffix changes the recorded state; it never permits a shorter response envelope.
+
 Load `references/fpf-output-language-ru.md` only for Russian output. Load one selected output-style reference at most. Load `references/fpf-report-persistence.md` only after report saving resolves to on; load the CAPRMEDIO adapter only when report style is `caprmedio`.
 
 An edge in the Markdown graph validates only an explicit `+` handoff. It never authorizes another node automatically. A direct analytical call executes one node.

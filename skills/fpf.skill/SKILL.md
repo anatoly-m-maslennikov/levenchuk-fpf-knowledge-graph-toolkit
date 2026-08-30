@@ -8,10 +8,10 @@ description: Route and run one command or an explicit + composition in English o
 Use the complete invocation, but do not preload graph prompts or references. The installed end-user runtime is Markdown-only: never run Python, uv, a shell command, or another executable to route or execute `$fpf`.
 Treat the textual `/fpf` prefix like `$fpf` in the exact checks below.
 
-- For empty `$fpf`, exact `$fpf help`, `$fpf ?`, `$fpf commands`, or `$fpf usage`, load `prompts/help/en/fpf-help.md`, return it, and stop. Never run the router or save a report.
-- For exact `$fpf справка`, `$fpf помощь`, `$fpf команды`, or `$fpf как пользоваться`, load `prompts/help/ru/fpf-help.md`, return it, and stop. Never run the router or save a report.
-- For exact English area Help (`help framework`, `help software`, or `help skills`), load the matching `prompts/help/en/fpf-help-<area>.md`, return it, and stop.
-- For exact Russian area Help (`справка фреймворки`, `справка ПО`, or `справка навыки`), load the matching `prompts/help/ru/fpf-help-<area>.md`, return it, and stop.
+- For empty `$fpf`, exact `$fpf help`, `$fpf ?`, `$fpf commands`, or `$fpf usage`, load `prompts/help/en/fpf-help.md`, return it, and stop. Never run the router or save a report. Help pages are interface copy, not FPF methodology sources.
+- For exact `$fpf справка`, `$fpf помощь`, `$fpf команды`, or `$fpf как пользоваться`, load `prompts/help/ru/fpf-help.md`, return it, and stop. Never run the router or save a report. Help pages are interface copy, not FPF methodology sources.
+- For exact English area Help (`help framework`, `help software`, or `help skills`), load the matching `prompts/help/en/fpf-help-<area>.md`, return it, and stop. Treat that Help page as interface copy, not an FPF methodology source.
+- For exact Russian area Help (`справка фреймворки`, `справка ПО`, or `справка навыки`), load the matching `prompts/help/ru/fpf-help-<area>.md`, return it, and stop. Treat that Help page as interface copy, not an FPF methodology source.
 - For every other invocation, load `prompts/fpf-runtime.md` completely and follow it with the complete invocation. That runtime reads the Markdown command graph and only the selected Markdown prompt, profile, and source pages.
 
 Never load `prompts/fpf-runtime.md` for a fast Help call. Never load either Help file for a non-Help call unless the runtime routes there.
