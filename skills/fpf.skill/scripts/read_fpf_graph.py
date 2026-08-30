@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 
 
-SKILL_ROOT = Path(__file__).resolve().parent.parent
+SKILL_ROOT = Path(__file__).absolute().parent.parent
 previous_bytecode_policy = sys.dont_write_bytecode
 sys.dont_write_bytecode = True
 from fpf_runtime_cache import configure_runtime_cache

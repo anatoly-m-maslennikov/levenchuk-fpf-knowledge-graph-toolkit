@@ -1,11 +1,19 @@
-"""Identify and remove only repo-owned leftovers from older FPF installers."""
+"""Identify and quarantine leftovers from older FPF installers."""
 
 from __future__ import annotations
 
+from datetime import datetime, timezone
 from pathlib import Path
+import shutil
 
-from service.filesystem_policy import logical_path_exists
-from .filesystem import remove_path
+from service.scripts.filesystem_policy import (
+    clear_directory,
+    is_system_temporary_path,
+    logical_path_exists,
+)
+
+
+QUARANTINE_DIRECTORY = ".fpf-skills-quarantine"
 
 
 def _owned_names(catalog: dict[str, object]) -> list[str]:
@@ -39,6 +47,37 @@ def present_leftovers(destination: Path, catalog: dict[str, object]) -> list[Pat
     return sorted((path for path in candidates if logical_path_exists(path)), key=lambda path: path.name)
 
 
-def remove_leftovers(destination: Path, catalog: dict[str, object]) -> None:
-    for path in present_leftovers(destination, catalog):
-        remove_path(path)
+def _quarantine_root(destination: Path) -> Path:
+    timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    parent = destination.parent / QUARANTINE_DIRECTORY
+    candidate = parent / timestamp
+    suffix = 2
+    while candidate.exists():
+        candidate = parent / f"{timestamp}-{suffix}"
+        suffix += 1
+    return candidate
+
+
+def _move_intact(source: Path, target: Path) -> None:
+    if source.is_dir() and not source.is_symlink() and is_system_temporary_path(source):
+        shutil.copytree(source, target, symlinks=True)
+        clear_directory(source)
+        return
+    source.rename(target)
+
+
+def quarantine_leftovers(
+    destination: Path, catalog: dict[str, object],
+) -> tuple[Path | None, list[Path]]:
+    """Move every named legacy candidate intact, without treating its name as ownership proof."""
+    leftovers = present_leftovers(destination, catalog)
+    if not leftovers:
+        return None, []
+    quarantine = _quarantine_root(destination)
+    quarantine.mkdir(parents=True)
+    moved: list[Path] = []
+    for source in leftovers:
+        target = quarantine / source.name
+        _move_intact(source, target)
+        moved.append(target)
+    return quarantine, moved

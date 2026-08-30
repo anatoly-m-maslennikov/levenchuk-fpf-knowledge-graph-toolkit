@@ -13,8 +13,10 @@ htmlcov/
 /.venv/
 /.runtime/
 /.fpf-source/
-/.caprmedio/settings.toml
-/.caprmedio/settings.*.toml
+# Former settings locations; live settings are external and the installer migrates these.
+/skills/settings.toml
+/skills/settings.*.toml
+/.caprmedio/
 *.bak/
 /skills/fpf.skill/.fpf-runtime.toml
 /.agents/.fpf-service-skills-install.json

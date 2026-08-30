@@ -5,7 +5,7 @@ Apply this contract to every analytical node declared in `graph.yaml`. Load it o
 <!-- output-settings:start -->
 ## Output and report settings
 
-Embedded defaults: `output_language = "auto"` (`auto`, `en`, or `ru`); `output_style = "general"`; `fpf_terms_explained = "off"`; `save_report = "on"` (`on` or `off`); `report_style = "plain"` (`plain` or `caprmedio`, consulted only when saving is on). Explicit user instruction overrides an optional active-project `.caprmedio/settings.toml` setting, which overrides the installed `.fpf-runtime.toml` defaults, which override these embedded defaults. Absence of CAPRMEDIO settings is normal and never blocks standalone FPF execution.
+Embedded defaults: `output_language = "auto"` (`auto`, `en`, or `ru`); `output_style = "general"`; `fpf_terms_explained = "off"`; `save_report = "on"` (`on` or `off`); `report_style = "plain"` (`plain` or `caprmedio`, consulted only when saving is on). Explicit user instruction overrides the installed `.fpf-runtime.toml` defaults, which override these embedded defaults. Skill preferences are never read from a target repository's `.caprmedio/settings.toml`; CAPRMEDIO remains an optional report adapter selected by the external skill setting.
 Resolve `output_language` before output style. `en` means English and loads no language resource. `ru` means Russian and loads only `references/fpf-output-language-ru.md`. With `auto`, use Russian when the user's invocation or residual task contains meaningful Russian Cyrillic text; otherwise use English. Never infer language from quoted source text, identifiers, paths, or citations alone. Never preload an unselected language resource.
 For output style, load at most one mode resource:
 - `natural`: load none; allow FPF terms. On first use, explain each term per `fpf_terms_explained`: `full` up to three short lines, `short` one sentence, `off` none.
@@ -40,11 +40,31 @@ Return the complete native artifact with every required section and evidence rec
 Organize it under exactly these four top-level Markdown headings, in this order:
 
 1. `## Task, scope, and boundaries`
-2. `## High-confidence results (>=95%)`
-3. `## Open questions (confidence <95%)`
+2. `## Issues, weak points, and improvements`
+3. `## Unresolved evidence gaps`
 4. `## Skills used`
 
-In section 1, state the task and receiving use, target and current state, scope and exclusions, inputs, sources and evidence, authority, dependencies, and stop condition. In sections 2 and 3, preserve every native result requirement from the selected node prompt as a subsection or item; do not omit, merge away, or summarize it.
+In section 1, state the task and receiving use, target and current state, scope and exclusions, inputs, sources and evidence, authority, dependencies, and stop condition. In section 2, preserve every native result requirement from the selected node prompt as a subsection or item; do not omit, merge away, or summarize it. Section 3 contains only actual missing evidence or unanswered questions; it is not a confidence bucket.
+
+Organize the material result in section 2 as one issue-centered registry plus one deduplicated ordered fix and improvement register. An issue may be a defect, weakness, risk, decision gap, or improvement opportunity within the declared scope. For every issue record, provide:
+
+- a stable issue ID and concise issue or weak point;
+- evidence, consequence, and affected target or bounded context;
+- issue confidence and its evidence basis;
+- coverage limit or uncertainty; and
+- lifecycle state: `OPEN`, `DECIDED`, `APPLIED`, `VERIFIED`, `DEFERRED`, `REJECTED`, or `SUPERSEDED`.
+
+Every issue must map to one or more fix IDs or an explicit disposition explaining why no fix will be taken. For every fix or improvement variant, provide:
+
+- a stable fix ID, exact change, and every issue ID it addresses;
+- relationship: `alternative`, `complementary`, or `required prerequisite`;
+- fix confidence and its own evidence basis; do not inherit or restate the issue confidence as fix confidence;
+- expected result, trade-offs, owner and required authority, dependencies and execution order;
+- deterministic or semantic verification criterion;
+- recommendation: `preferred`, `acceptable`, or `rejected`; and
+- state: `PROPOSED`, `AUTHORIZED`, `APPLIED`, `VERIFIED`, `DEFERRED`, or `REJECTED`.
+
+Consolidate a duplicate fix that solves the same change predicate, even when it addresses several issues; retain all of its issue IDs. After the issue records, include one deduplicated, ordered fix and improvement register that references the same fix IDs and covers every unresolved issue or explicit disposition. Do not present an already applied or verified fix as open work.
 
 In section 4, list every skill actually executed for this result in execution order, using its exact canonical `$fpf <command>` invocation from the router, and state each skill's role in one concise sentence. Do not list tools, the base model, or merely proposed or recommended downstream skills as used. For a single-node result, list only that executed analytical command.
 
@@ -57,9 +77,10 @@ Immediately after the skill list, add this compact Markdown subsection:
 
 List every FPF source document actually opened exactly once. **Used** means it materially supports a result; **screened only** means it was read but not relied on. Do not list merely discovered-but-unopened files, project evidence, tools, or absolute machine paths. Prefer repository-root-relative `FPF-Knowledge-Graph/...` paths; for a non-file-backed edition, use a stable URI or item identifier.
 
-Assign confidence to each material result and state its evidence basis. Confidence is claim-level epistemic confidence under the available evidence, not a statistical probability, artifact-wide score, importance, severity, authorization, acceptance, assurance, or gate result. Use these bands inside section 3:
+Assign confidence to each material claim, issue, and fix as required above, and state its evidence basis. Confidence is claim-level epistemic confidence under the available evidence, not a statistical probability, artifact-wide score, importance, severity, authorization, acceptance, assurance, or gate result. Use these bands within the relevant issue or fix record:
 
+- **95% or above:** well-supported under the declared evidence, while still bounded by stated coverage.
 - **90–94%:** probable answer, but confirmation is still needed.
 - **Below 90%:** materially uncertain.
 
-Never round up to 95%, hide conflicting, unsupported, or insufficient-basis results, or omit a lower-confidence finding. For each open question include the best current answer, confidence band or value, missing evidence or input, consequence, and exact next evidence or action. A high-confidence determination that the basis is insufficient belongs in section 2; the unresolved substantive question belongs in section 3. If no open questions remain, keep section 3 and write `None identified within the declared scope`.
+Never round up to 95%, hide conflicting, unsupported, or insufficient-basis results, or omit a lower-confidence issue. Lower confidence changes neither an issue's place in the registry nor its required disposition. In section 3, for each actual evidence gap or unanswered question, give a stable gap ID, linked issue or fix IDs when applicable, the best current answer, missing evidence or input, consequence, and exact next evidence or action. A high-confidence determination that the basis is insufficient remains an issue in section 2; the missing evidence that prevents resolution belongs in section 3. If no evidence gaps remain, keep section 3 and write `None identified within the declared scope`.

@@ -2,19 +2,24 @@
 
 from __future__ import annotations
 
-import argparse
 import os
 import sys
 from pathlib import Path
 
-from service.filesystem_policy import logical_path_exists
-from service.init_settings.init_settings import EXAMPLE_PATH, SETTINGS_PATH, migrate_settings
+from service.scripts.filesystem_policy import logical_path_exists
+from service.scripts.init_settings.init_settings import (
+    EXAMPLE_PATH,
+    SETTINGS_PATH,
+    migrate_settings,
+    read_legacy_runtime_preferences,
+)
 from ..install_fpf_skills import Harness
+from .arguments import arguments as parse_arguments
 from .catalog import load_catalog, source_roots, target_roots, validate_source
-from .cleanup import present_leftovers, remove_leftovers
+from .cleanup import present_leftovers, quarantine_leftovers
 from .filesystem import remove_path, replace_package, write_receipt, write_text
 from .runtime_settings import render_runtime_settings, runtime_settings_current
-from .snapshots import same_link, suite_digest, tree_snapshot
+from .snapshots import suite_digest, symlink_wrapper_current, tree_snapshot
 from .state import can_apply, classify_install, load_receipt
 
 
@@ -30,15 +35,6 @@ def default_destination(harness: Harness) -> Path:
     return home / "skills"
 
 
-def _arguments(harness: Harness, arguments: list[str] | None) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description=f"Install end-user FPF skills for {harness.name}.")
-    mode = parser.add_mutually_exclusive_group()
-    mode.add_argument("--apply", action="store_true", help="install or update packages")
-    mode.add_argument("--check", action="store_true", help="verify without writing")
-    parser.add_argument("--destination", type=Path, help="exact harness skills directory")
-    return parser.parse_args(arguments)
-
-
 def _receipt_current(
     receipt: dict[str, object], method: str, source_hash: str, names: list[str], schema_version: int,
 ) -> bool:
@@ -52,7 +48,7 @@ def _receipt_current(
 
 def _target_current(source: Path, target: Path, method: str) -> bool:
     if method == "symlink":
-        return same_link(target, source)
+        return symlink_wrapper_current(target, source)
     if not target.is_dir() or target.is_symlink():
         return False
     try:
@@ -66,7 +62,9 @@ def _install_packages(
 ) -> None:
     for name in names:
         if not _target_current(sources[name], targets[name], method):
-            replace_package(sources[name], targets[name], method)
+            replace_package(
+                sources[name], targets[name], method, wrapper_symlink=method == "symlink",
+            )
 
 
 def _load_context(destination: Path, control_panel: dict[str, dict[str, str]]):
@@ -102,16 +100,19 @@ def _validate_targets(
     return present_leftovers(destination, catalog)
 
 
-def _apply_install(destination: Path, context: tuple) -> None:
+def _apply_install(destination: Path, context: tuple) -> tuple[Path | None, list[Path]]:
     (
         method, catalog, names, sources, targets, receipt_path, _, _,
         source_hash, runtime_settings_path, legacy_runtime_settings_path,
         runtime_settings,
     ) = context
     destination.mkdir(parents=True, exist_ok=True)
-    remove_leftovers(destination, catalog)
+    quarantine, moved = quarantine_leftovers(destination, catalog)
     _install_packages(sources, targets, names, method)
     write_text(runtime_settings_path, runtime_settings)
+    source_runtime_settings = sources[names[0]] / str(catalog["settings_name"])
+    if source_runtime_settings.is_file() and not source_runtime_settings.is_symlink():
+        source_runtime_settings.unlink()
     if logical_path_exists(legacy_runtime_settings_path):
         remove_path(legacy_runtime_settings_path)
     write_receipt(
@@ -121,16 +122,23 @@ def _apply_install(destination: Path, context: tuple) -> None:
             source_hash=source_hash, skills=names,
         ),
     )
+    return quarantine, moved
 
 
-def _prepare_run(destination: Path, apply: bool) -> tuple[tuple, list[Path], bool]:
+def _prepare_run(
+    destination: Path, apply: bool, overwrite: bool,
+) -> tuple[tuple, list[Path], bool, int]:
+    catalog = load_catalog(CATALOG_PATH)
+    legacy_runtime = destination / str(catalog["settings_name"])
+    overrides = read_legacy_runtime_preferences(legacy_runtime) if overwrite else {}
     control_panel, _, migration_needed = migrate_settings(
-        SETTINGS_PATH, EXAMPLE_PATH, apply=apply,
+        SETTINGS_PATH, EXAMPLE_PATH, apply=apply, create_if_missing=apply,
+        skill_overrides=overrides,
     )
     context = _load_context(destination, control_panel)
     method, catalog, _, _, _, _, receipt, state, *_ = context
     leftovers = _validate_targets(destination, method, state, receipt, catalog)
-    return context, leftovers, migration_needed
+    return context, leftovers, migration_needed, len(overrides)
 
 
 def _current_install(context: tuple, leftovers: list[Path], migration_needed: bool) -> bool:
@@ -147,10 +155,12 @@ def _current_install(context: tuple, leftovers: list[Path], migration_needed: bo
 
 
 def run_installer(harness: Harness, arguments: list[str] | None = None) -> int:
-    args = _arguments(harness, arguments)
+    args = parse_arguments(harness, arguments)
     destination = (args.destination or default_destination(harness)).expanduser().resolve()
     try:
-        context, leftovers, settings_migration_needed = _prepare_run(destination, args.apply)
+        context, leftovers, settings_migration_needed, override_count = _prepare_run(
+            destination, args.apply, args.overwrite,
+        )
     except (OSError, ValueError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1
@@ -163,14 +173,19 @@ def run_installer(harness: Harness, arguments: list[str] | None = None) -> int:
         print(
             f"DRY RUN: {harness.name}: state={state}; method={method}; "
             f"leftovers={len(leftovers)}; settings_migration={settings_migration_needed}; "
+            f"runtime_overrides={override_count}; "
             f"destination={destination}"
         )
         return 0
     try:
-        _apply_install(destination, context)
+        quarantine, moved = _apply_install(destination, context)
     except OSError as exc:
-        guidance = " Use copy mode in .caprmedio/settings.toml." if method == "symlink" and os.name == "nt" else ""
+        guidance = f" Use copy mode in {SETTINGS_PATH}." if method == "symlink" and os.name == "nt" else ""
         print(f"ERROR: installation failed: {exc}.{guidance}", file=sys.stderr)
         return 1
     print(f"INSTALLED: {harness.name}: {len(names)} end-user skills by {method} at {destination}")
+    if quarantine is not None:
+        print(f"QUARANTINED: {len(moved)} legacy items at {quarantine}")
+    if override_count:
+        print(f"OVERWROTE: {override_count} external preferences from legacy runtime settings")
     return 0

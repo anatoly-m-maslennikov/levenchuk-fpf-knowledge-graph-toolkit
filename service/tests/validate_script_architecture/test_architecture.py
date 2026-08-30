@@ -1,18 +1,47 @@
 import unittest
 from pathlib import Path
 
-from service.filesystem_policy import temporary_workspace
-from service.validate_script_architecture.validate_script_architecture_workers.ast_rules import check_file
-from service.validate_script_architecture.validate_script_architecture_workers.assets import load_policy
+from service.scripts.filesystem_policy import temporary_workspace
+from service.scripts.validate_script_architecture.validate_script_architecture_workers.ast_rules import check_file
+from service.scripts.validate_script_architecture.validate_script_architecture_workers.assets import load_policy
+from service.scripts.validate_script_architecture.validate_script_architecture_workers.layout import (
+    check_cache_placement,
+    check_service_boundary,
+)
 
 
 POLICY_PATH = (
     Path(__file__).resolve().parents[3]
     / "service"
+    / "scripts"
     / "validate_script_architecture"
     / "validate_script_architecture_assets"
     / "policy.json"
 )
+
+
+class ArchitectureBoundaryTests(unittest.TestCase):
+    def test_service_content_outside_three_boundaries_fails(self) -> None:
+        with temporary_workspace() as temporary:
+            service = Path(temporary) / "service"
+            (service / "scripts").mkdir(parents=True)
+            (service / "tests").mkdir()
+            (service / "skills").mkdir()
+            legacy = service / "legacy_tool"
+            legacy.mkdir()
+            (legacy / "tool.py").write_text("VALUE = 1\n", encoding="utf-8")
+            self.assertTrue(check_service_boundary(service))
+
+    def test_bytecode_outside_runtime_fails(self) -> None:
+        with temporary_workspace() as temporary:
+            root = Path(temporary)
+            misplaced = root / "service" / "__pycache__" / "tool.pyc"
+            misplaced.parent.mkdir(parents=True)
+            misplaced.write_bytes(b"cache")
+            expected = root / ".runtime" / "pycache" / "tool.pyc"
+            expected.parent.mkdir(parents=True)
+            expected.write_bytes(b"cache")
+            self.assertEqual(len(check_cache_placement(root)), 1)
 
 
 class ArchitectureRuleTests(unittest.TestCase):

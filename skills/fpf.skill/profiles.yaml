@@ -244,10 +244,16 @@ profiles:
       - {text: "Design the skill release evaluation and gate profile.", expected_node: evaluation-design}
 
 evaluation_cases:
+  - id: framework-problem-scope-eval
+    profile: framework.problem-and-scope
+    node: problem-frame
+    task: Frame the framework problem, receiving use, authority, and acceptance boundary.
+    required_facets: [recurring problem, receiving use, authority, scope boundary, acceptance boundary]
+    forbidden_inference: A broad framework purpose is an executable requirement.
   - id: framework-concept-boundary-eval
     profile: framework.concepts-and-terminology
     node: design-challenge
-    task: Challenge a proposed framework concept split without treating wording as ontology.
+    task: Challenge proposed framework terminology and a concept split without treating wording as ontology.
     required_facets: [exact subject, kind boundary, intended use, nearest false inference, decision owner]
     forbidden_inference: A clearer label proves a valid ontological distinction.
   - id: framework-edition-preservation-eval
@@ -256,6 +262,24 @@ evaluation_cases:
     task: Audit a completed framework edition migration for preserved pattern identity and intended use.
     required_facets: [source edition, target edition, correspondence basis, lost content, reopen condition]
     forbidden_inference: Matching filenames prove semantic preservation.
+  - id: framework-pattern-authoring-eval
+    profile: framework.pattern-authoring
+    node: design-challenge
+    task: Challenge a framework pattern authoring proposal and its applicability contract.
+    required_facets: [owning framework, recurring problem, applicability, pattern contract, edition discipline]
+    forbidden_inference: One successful example proves a reusable framework pattern.
+  - id: framework-architecture-eval
+    profile: framework.architecture
+    node: structure-recover
+    task: Recover the current framework architecture, modules, and dependencies before redesign.
+    required_facets: [selected structure, module boundary, dependency, receiving use, unknown relation]
+    forbidden_inference: Folder structure is automatically framework architecture.
+  - id: framework-publication-eval
+    profile: framework.publication-and-discoverability
+    node: design-challenge
+    task: Challenge framework publication and discoverability through its help navigation.
+    required_facets: [audience, practical entry, navigation route, optional example, false prescription risk]
+    forbidden_inference: A published example is a compulsory workflow.
   - id: framework-coverage-eval
     profile: framework.quality-and-coverage
     node: evaluation-design
@@ -268,6 +292,18 @@ evaluation_cases:
     task: Recover current bounded-model uses and context relations before proposing a DDD redesign.
     required_facets: [model edition, use locus, applicability relation, cross-context relation, missing discriminator]
     forbidden_inference: A named bounded context is automatically a subsystem or team boundary.
+  - id: software-business-logic-eval
+    profile: software.business-logic
+    node: structure-recover
+    task: Recover the business logic, domain rules, state transitions, and implementation carriers.
+    required_facets: [business rule, state transition, invariant, carrier, unresolved behavior]
+    forbidden_inference: Existing code structure is identical to the business logic model.
+  - id: software-requirements-eval
+    profile: software.requirements-and-acceptance
+    node: evaluation-design
+    task: Design acceptance tests for software requirements and their acceptance clauses.
+    required_facets: [requirement bearer, acceptance clause, observable result, evidence, stop rule]
+    forbidden_inference: A written requirement is testable without an observable acceptance clause.
   - id: software-tdd-eval
     profile: software.tdd
     node: evaluation-design
@@ -277,24 +313,66 @@ evaluation_cases:
   - id: software-architecture-eval
     profile: software.architecture
     node: design-challenge
-    task: Challenge a proposed modular architecture and its claimed maintainability benefit.
+    task: Challenge a proposed software architecture and its claimed maintainability benefit.
     required_facets: [architecture subject, selected structure, interface policy, quality bearer, causal boundary]
     forbidden_inference: Low coupling by itself proves maintainability.
+  - id: software-code-quality-eval
+    profile: software.code-quality
+    node: evaluation-design
+    task: Define code quality criteria for maintainability, cohesion, coupling, and complexity.
+    required_facets: [quality bearer, characteristic, scale, trade-off, verification operation]
+    forbidden_inference: A clean-code label proves measurable code quality.
+  - id: software-interface-migration-eval
+    profile: software.interfaces-dependencies-and-migration
+    node: design-challenge
+    task: Challenge an API interface migration and its dependency compatibility claim.
+    required_facets: [interface contract, dependency direction, compatibility bearer, migration boundary, rollback condition]
+    forbidden_inference: Matching method names prove substitutability.
+  - id: software-release-evidence-eval
+    profile: software.release-evidence
+    node: alignment-audit
+    task: Audit release evidence against the accepted release gate and assurance target.
+    required_facets: [release claim, evidence, assurance target, gate owner, residual risk]
+    forbidden_inference: A green test suite authorizes release.
   - id: skills-trigger-eval
     profile: skills.trigger-and-scope
     node: problem-frame
     task: Frame one skill task family and its trigger boundary.
     required_facets: [receiving use, task family, positive trigger, exclusion, honest fallback]
     forbidden_inference: A broad description improves routing coverage without increasing false activation.
+  - id: skills-prompt-contract-eval
+    profile: skills.prompt-contract
+    node: design-challenge
+    task: Challenge a skill prompt contract, its inputs, outputs, gates, and authority.
+    required_facets: [task family, required input, native result, authority gate, honest fallback]
+    forbidden_inference: More instructions automatically improve skill behavior.
+  - id: skills-graph-composition-eval
+    profile: skills.graph-composition
+    node: design-challenge
+    task: Challenge a skill graph composition, its handoffs, authority gates, and loop prevention.
+    required_facets: [node authority, legal handoff, shared state, stop condition, loop budget]
+    forbidden_inference: A graph edge authorizes automatic execution.
   - id: skills-connector-eval
     profile: skills.tool-and-context-connector
     node: design-challenge
     task: Challenge a lazy context connector and its tool-call plan.
     required_facets: [selected input, dependency boundary, call precondition, returned context, failure path]
     forbidden_inference: Tool availability proves the call is necessary or its result is true.
+  - id: skills-evaluation-cases-eval
+    profile: skills.evaluation-cases
+    node: evaluation-design
+    task: Design skill evaluation cases with routing examples, counterexamples, evidence, and stop rules.
+    required_facets: [representative task, counterexample, expected artifact, evidence, pass or stop rule]
+    forbidden_inference: Structural validation proves semantic prompt quality.
+  - id: skills-install-runtime-eval
+    profile: skills.install-portability-and-runtime
+    node: alignment-audit
+    task: Audit skill installation, portability, runtime settings, and cross-platform behavior.
+    required_facets: [copy install, linked install, runtime discovery, settings ownership, platform boundary]
+    forbidden_inference: A successful source-level test proves the installed skill works.
   - id: skills-regression-eval
     profile: skills.quality-regression-and-release
     node: alignment-audit
-    task: Audit a changed skill against frozen routing and evaluation cases.
+    task: Audit a changed skill regression target against frozen routing and evaluation cases.
     required_facets: [versioned target, frozen cases, rerun evidence, regressions, release boundary]
     forbidden_inference: Passing deterministic tests alone proves semantic adequacy.

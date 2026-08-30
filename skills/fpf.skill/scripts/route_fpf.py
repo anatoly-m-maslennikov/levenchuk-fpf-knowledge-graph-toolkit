@@ -10,10 +10,10 @@ import sys
 from pathlib import Path
 
 
-SKILL_ROOT = Path(__file__).resolve().parent.parent
+SKILL_ROOT = Path(__file__).absolute().parent.parent
 GRAPH_PATH = SKILL_ROOT / "graph.yaml"
 SUPPORTED_LANGUAGES = {"auto", "en", "ru"}
-SCRIPT_ROOT = Path(__file__).resolve().parent
+SCRIPT_ROOT = Path(__file__).absolute().parent
 if str(SCRIPT_ROOT) not in sys.path:
     sys.path.insert(0, str(SCRIPT_ROOT))
 previous_bytecode_policy = sys.dont_write_bytecode
@@ -34,6 +34,43 @@ def normalize(value: str) -> str:
     value = value.casefold().replace("-", " ").replace("_", " ")
     value = re.sub(r"[^\w\s?]", " ", value)
     return " ".join(value.split())
+
+
+def _tokens(value: str) -> list[str]:
+    """Return normalized word tokens without allowing substring matches."""
+    return re.findall(r"\w+", value.casefold().replace("-", " ").replace("_", " "))
+
+
+def _contains_key(text: str, key: str) -> bool:
+    """Match complete tokens; Russian stem keywords may match token prefixes."""
+    text_tokens = _tokens(text)
+    key_tokens = _tokens(key)
+    if not key_tokens or len(key_tokens) > len(text_tokens):
+        return False
+    for start in range(len(text_tokens) - len(key_tokens) + 1):
+        candidate = text_tokens[start:start + len(key_tokens)]
+        if candidate == key_tokens:
+            return True
+        if (
+            len(key_tokens) == 1
+            and len(key_tokens[0]) >= 4
+            and re.search(r"[\u0400-\u04ff]", key_tokens[0])
+            and candidate[0].startswith(key_tokens[0])
+        ):
+            return True
+    return False
+
+
+def _command_residual(text: str, alias: str) -> str | None:
+    """Return text after an alias matched by normalized token span."""
+    transformed = text.casefold().replace("-", " ").replace("_", " ")
+    matches = list(re.finditer(r"\w+", transformed))
+    alias_tokens = _tokens(alias)
+    if not alias_tokens or [item.group(0) for item in matches[:len(alias_tokens)]] != alias_tokens:
+        return None
+    if len(matches) < len(alias_tokens):
+        return None
+    return text[matches[len(alias_tokens) - 1].end():].strip()
 
 
 def strip_invocation(value: str) -> str:
@@ -67,11 +104,11 @@ def resolve_task_profile(text: str, graph: dict) -> dict | None:
                 continue
             if normalized_text == key:
                 score += 10
-            elif key in normalized_text:
+            elif _contains_key(text, alias):
                 score += 6 if " " in key else 4
         for keyword in profile.get("keywords", []):
             key = normalize(keyword)
-            if key and key in normalized_text:
+            if key and _contains_key(text, keyword):
                 score += 3 if " " in key else 1
         scores.append((score, profile))
     best = max((score for score, _ in scores), default=0)
@@ -139,7 +176,7 @@ def validate_graph(graph: dict) -> list[str]:
     if not isinstance(composition, dict) or composition.get("operator") != "+" or not (SKILL_ROOT / reference).is_file():
         errors.append("composition must declare + and an existing reference")
     connector = graph.get("connector", {})
-    connector_paths = ("reader", "context_builder", "prompt_helper")
+    connector_paths = ("reader", "context_builder", "prompt_helper", "report_planner")
     if not isinstance(connector, dict):
         errors.append("connector must be an object")
     else:
@@ -295,8 +332,18 @@ def validate_graph(graph: dict) -> list[str]:
                 errors.append(f"{profile_id}: invalid generated routing example")
 
     evaluation_cases = graph.get("evaluation_cases", [])
-    if not isinstance(evaluation_cases, list) or len(evaluation_cases) < 9:
-        errors.append("profile catalog must declare at least nine evaluation cases")
+    case_profiles = [
+        case.get("profile") for case in evaluation_cases
+        if isinstance(case, dict)
+    ] if isinstance(evaluation_cases, list) else []
+    case_ids = [
+        case.get("id") for case in evaluation_cases
+        if isinstance(case, dict)
+    ] if isinstance(evaluation_cases, list) else []
+    if sorted(case_profiles) != sorted(profile_ids):
+        errors.append("profile catalog must declare exactly one evaluation case per profile")
+    if len(case_ids) != len(set(case_ids)) or not all(case_ids):
+        errors.append("profile evaluation case IDs must be unique and non-empty")
     for case in evaluation_cases if isinstance(evaluation_cases, list) else []:
         if (
             case.get("profile") not in profile_ids
@@ -355,13 +402,11 @@ def resolve(invocation: str, graph: dict, language: str = "auto") -> dict:
     for node in nodes:
         for alias in [node["command"], *node.get("aliases", [])]:
             normalized_alias = normalize(alias)
-            if normalized_task == normalized_alias or normalized_task.startswith(normalized_alias + " "):
-                exact_candidates.append((len(normalized_alias), node, normalized_alias))
+            residual = _command_residual(task, alias)
+            if residual is not None:
+                exact_candidates.append((len(normalized_alias), node, residual))
     if exact_candidates:
-        _, node, alias = max(exact_candidates, key=lambda item: item[0])
-        residual_words = task.split()
-        alias_words = len(alias.split())
-        residual = " ".join(residual_words[alias_words:]).strip()
+        _, node, residual = max(exact_candidates, key=lambda item: item[0])
         return attach_task_profile(
             result(node, residual, "exact-command", 100, resolved_language, language_selected_by),
             residual, graph,
@@ -374,7 +419,7 @@ def resolve(invocation: str, graph: dict, language: str = "auto") -> dict:
         score = 0
         for keyword in node.get("keywords", []):
             normalized_keyword = normalize(keyword)
-            if normalized_keyword and normalized_keyword in normalized_task:
+            if normalized_keyword and _contains_key(task, keyword):
                 score += 3 if " " in normalized_keyword else 1
         scores.append((score, node))
 

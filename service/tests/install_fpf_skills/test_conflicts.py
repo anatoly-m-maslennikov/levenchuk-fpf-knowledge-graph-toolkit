@@ -1,7 +1,7 @@
 import unittest
 from pathlib import Path
 
-from service.filesystem_policy import temporary_workspace
+from service.scripts.filesystem_policy import temporary_workspace
 from service.tests.install_fpf_skills.helpers import END_USER_SKILLS, make_source, run_installer
 
 

@@ -17,18 +17,29 @@ def _normalize(value: str) -> str:
     return " ".join(value.split())
 
 
+def _residual_after_alias(segment: str, alias: str) -> str | None:
+    transformed = segment.casefold().replace("-", " ").replace("_", " ")
+    matches = list(re.finditer(r"\w+", transformed))
+    alias_words = _normalize(alias).split()
+    if not alias_words or len(matches) < len(alias_words):
+        return None
+    if [item.group(0) for item in matches[:len(alias_words)]] != alias_words:
+        return None
+    return segment[matches[len(alias_words) - 1].end():].strip()
+
+
 def _match(segment: str, nodes: list[dict]) -> tuple[dict, str] | None:
     normalized = _normalize(segment)
     candidates: list[tuple[int, dict, str]] = []
     for node in nodes:
         for alias in [node["command"], *node.get("aliases", [])]:
             key = _normalize(alias)
-            if normalized == key or normalized.startswith(key + " "):
-                candidates.append((len(key), node, key))
+            residual = _residual_after_alias(segment, alias)
+            if residual is not None:
+                candidates.append((len(key), node, residual))
     if not candidates:
         return None
-    _, node, alias = max(candidates, key=lambda item: item[0])
-    residual = " ".join(segment.split()[len(alias.split()):]).strip()
+    _, node, residual = max(candidates, key=lambda item: item[0])
     return node, residual
 
 
@@ -148,6 +159,14 @@ def resolve_composition(task: str, graph: dict) -> dict[str, object] | None:
     segments = OPERATOR_RE.split(task)
     if len(segments) < 2 or any(not item.strip() for item in segments):
         return _invalid(graph, task, "composition contains an empty command")
+    first_match = _match(segments[0].strip(), graph["nodes"])
+    if first_match is None:
+        return None
+    if first_match[1] and not any(
+        _match(segment.strip(), graph["nodes"]) is not None
+        for segment in segments[1:]
+    ):
+        return None
     matches: list[tuple[dict, str]] = []
     for index, segment in enumerate(segments):
         suggestions = command_suggestions(segment.strip(), graph["nodes"])

@@ -9,10 +9,10 @@ import subprocess
 import sys
 from pathlib import Path
 
-from service.filesystem_policy import temporary_workspace
+from service.scripts.filesystem_policy import temporary_workspace
 
 ROOT = Path(__file__).resolve().parents[3]
-GENERATOR_MODULE = "service.build_fpf_obsidian_graph"
+GENERATOR_MODULE = "service.scripts.build_fpf_obsidian_graph"
 SOURCE = "# Part A - Example\n\n## A.1 - First page\n\nA.2 links here.\n\n## A.2 - Second page\n"
 RISK_SOURCE = '''# Part A - Example
 

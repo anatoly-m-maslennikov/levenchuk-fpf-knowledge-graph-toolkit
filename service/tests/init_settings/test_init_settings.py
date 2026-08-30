@@ -6,8 +6,8 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
-from service.filesystem_policy import temporary_workspace
-from service.init_settings.init_settings import (
+from service.scripts.filesystem_policy import temporary_workspace
+from service.scripts.init_settings.init_settings import (
     ensure_settings,
     migrate_settings,
     read_fpf_source,
@@ -36,8 +36,8 @@ class SettingsInitializationTests(unittest.TestCase):
     def test_first_run_copies_example_and_resolves_relative_source(self) -> None:
         with temporary_workspace() as temp:
             root = Path(temp)
-            settings = root / ".caprmedio/settings.toml"
-            example = root / ".caprmedio/settings.toml.example"
+            settings = root / "skills/settings.toml"
+            example = root / "skills/settings.toml.example"
             source = root / "original-fpf" / "FPF-Spec.md"
             source.parent.mkdir()
             source.write_text("# FPF\n", encoding="utf-8")
@@ -50,11 +50,13 @@ class SettingsInitializationTests(unittest.TestCase):
             self.assertEqual(settings.read_bytes(), example.read_bytes())
             self.assertEqual(resolved, source.resolve())
 
+
+class ExistingSettingsTests(unittest.TestCase):
     def test_existing_settings_are_preserved(self) -> None:
         with temporary_workspace() as temp:
             root = Path(temp)
-            settings = root / ".caprmedio/settings.toml"
-            example = root / ".caprmedio/settings.toml.example"
+            settings = root / "skills/settings.toml"
+            example = root / "skills/settings.toml.example"
             settings.parent.mkdir()
             settings.write_text('[paths]\nfpf_original_repo = "custom"\n' + SKILLS, encoding="utf-8")
             example.write_text(PACKAGE + '[paths]\nfpf_original_repo = "example"\n' + SKILLS, encoding="utf-8")
@@ -64,20 +66,18 @@ class SettingsInitializationTests(unittest.TestCase):
             self.assertFalse(created)
             self.assertEqual(settings.read_text(encoding="utf-8"), '[paths]\nfpf_original_repo = "custom"\n' + SKILLS)
 
-
-
 class LegacySettingsCompatibilityTests(unittest.TestCase):
     def test_legacy_five_setting_panel_defaults_output_language_to_auto(self) -> None:
         with temporary_workspace() as temp:
             root = Path(temp)
-            settings = root / ".caprmedio/settings.toml"
-            example = root / ".caprmedio/settings.toml.example"
+            settings = root / "skills/settings.toml"
+            example = root / "skills/settings.toml.example"
             settings.parent.mkdir()
             legacy = SKILLS.replace('output_language = "auto"\n', "")
             settings.write_text('[paths]\nfpf_original_repo = "FPF"\n' + legacy, encoding="utf-8")
             example.write_text(PACKAGE + '[paths]\nfpf_original_repo = "FPF"\n' + SKILLS, encoding="utf-8")
 
-            from service.init_settings.init_settings import read_skill_settings
+            from service.scripts.init_settings.init_settings import read_skill_settings
 
             values, created = read_skill_settings(settings, example)
 
@@ -89,8 +89,8 @@ class SettingsSchemaMigrationTests(unittest.TestCase):
     def test_apply_migrates_the_file_and_preserves_existing_values(self) -> None:
         with temporary_workspace() as temp:
             root = Path(temp)
-            settings = root / ".caprmedio/settings.toml"
-            example = root / ".caprmedio/settings.toml.example"
+            settings = root / "skills/settings.toml"
+            example = root / "skills/settings.toml.example"
             settings.parent.mkdir()
             legacy = SKILLS.replace('output_language = "auto"\n', "").replace(
                 'output_style = "general"', 'output_style = "ste"'
@@ -119,8 +119,8 @@ class SettingsSnapshotCollisionTests(unittest.TestCase):
     def test_migration_never_overwrites_an_existing_version_snapshot(self) -> None:
         with temporary_workspace() as temp:
             root = Path(temp)
-            settings = root / ".caprmedio/settings.toml"
-            example = root / ".caprmedio/settings.toml.example"
+            settings = root / "skills/settings.toml"
+            example = root / "skills/settings.toml.example"
             settings.parent.mkdir()
             legacy = '[paths]\nfpf_original_repo = "old"\n' + SKILLS.replace(
                 'output_language = "auto"\n', ""
@@ -143,8 +143,8 @@ class SettingsVersionUpdateTests(unittest.TestCase):
     def test_version_update_archives_under_the_declared_old_version(self) -> None:
         with temporary_workspace() as temp:
             root = Path(temp)
-            settings = root / ".caprmedio/settings.toml"
-            example = root / ".caprmedio/settings.toml.example"
+            settings = root / "skills/settings.toml"
+            example = root / "skills/settings.toml.example"
             settings.parent.mkdir()
             old_version = "0.0.9"
             old_package = PACKAGE.replace(CURRENT_VERSION, old_version)
@@ -167,8 +167,8 @@ class SettingsResolutionTests(unittest.TestCase):
     def test_npf_source_uses_the_same_original_repository_setting(self) -> None:
         with temporary_workspace() as temp:
             root = Path(temp)
-            settings = root / ".caprmedio/settings.toml"
-            example = root / ".caprmedio/settings.toml.example"
+            settings = root / "skills/settings.toml"
+            example = root / "skills/settings.toml.example"
             settings.parent.mkdir()
             settings.write_text('[paths]\nfpf_original_repo = "original-fpf"\n' + SKILLS, encoding="utf-8")
             example.write_text(PACKAGE + '[paths]\nfpf_original_repo = "example"\n' + SKILLS, encoding="utf-8")
@@ -184,8 +184,8 @@ class SettingsResolutionTests(unittest.TestCase):
     def test_only_control_panel_sections_are_allowed(self) -> None:
         with temporary_workspace() as temp:
             root = Path(temp)
-            settings = root / ".caprmedio/settings.toml"
-            example = root / ".caprmedio/settings.toml.example"
+            settings = root / "skills/settings.toml"
+            example = root / "skills/settings.toml.example"
             settings.parent.mkdir()
             settings.write_text('[paths]\nfpf_original_repo = "FPF"\nextra = "no"\n' + SKILLS, encoding="utf-8")
             example.write_text(PACKAGE + '[paths]\nfpf_original_repo = "FPF"\n' + SKILLS, encoding="utf-8")

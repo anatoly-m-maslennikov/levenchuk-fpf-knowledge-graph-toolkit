@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from .snapshots import same_link, suite_digest
+from .snapshots import is_symlink_wrapper, same_link, suite_digest, symlink_wrapper_current
 
 
 def load_receipt(path: Path) -> dict[str, object]:
@@ -34,6 +34,25 @@ def _symlink_state(targets: dict[str, Path], sources: dict[str, Path]) -> str | 
     return "symlink-stale"
 
 
+def _symlink_wrapper_state(targets: dict[str, Path], sources: dict[str, Path]) -> str | None:
+    wrappers = {
+        name: path for name, path in targets.items() if is_symlink_wrapper(path)
+    }
+    if not wrappers:
+        return None
+    existing = [path for path in targets.values() if path.exists() or path.is_symlink()]
+    if len(wrappers) != len(existing):
+        return "symlink-stale"
+    current = sum(
+        symlink_wrapper_current(targets[name], sources[name]) for name in wrappers
+    )
+    if current == len(targets):
+        return "symlink-current"
+    if current == len(existing) and len(existing) < len(targets):
+        return "symlink-partial"
+    return "symlink-stale"
+
+
 def classify_install(
     targets: dict[str, Path], sources: dict[str, Path],
     names: list[str], receipt: dict[str, object],
@@ -41,6 +60,9 @@ def classify_install(
     symlink_state = _symlink_state(targets, sources)
     if symlink_state:
         return symlink_state, None
+    wrapper_state = _symlink_wrapper_state(targets, sources)
+    if wrapper_state:
+        return wrapper_state, None
     existing = [path for path in targets.values() if path.exists() or path.is_symlink()]
     real = {name: path for name, path in targets.items() if path.is_dir() and not path.is_symlink()}
     if len(real) != len(existing) or len(real) != len(targets):

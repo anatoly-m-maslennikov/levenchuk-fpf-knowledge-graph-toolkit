@@ -48,3 +48,34 @@ def same_link(target: Path, source: Path) -> bool:
         return resolved.resolve() == source.resolve()
     except OSError:
         return False
+
+
+def symlink_wrapper_current(target: Path, source: Path) -> bool:
+    """Return whether a real install directory links each package entry to source."""
+    if not target.is_dir() or target.is_symlink() or not source.is_dir():
+        return False
+    expected = {
+        child.name: child for child in source.iterdir() if not ignored(child)
+    }
+    actual = {
+        child.name: child for child in target.iterdir() if not ignored(child)
+    }
+    if set(actual) != set(expected):
+        return False
+    return all(
+        same_link(actual[name], expected[name])
+        or (
+            expected[name].is_dir()
+            and actual[name].is_dir()
+            and not actual[name].is_symlink()
+            and symlink_wrapper_current(actual[name], expected[name])
+        )
+        for name in expected
+    )
+
+
+def is_symlink_wrapper(target: Path) -> bool:
+    return (
+        target.is_dir() and not target.is_symlink()
+        and any(path.is_symlink() for path in target.rglob("*") if not ignored(path))
+    )

@@ -6,11 +6,11 @@ Treat this package as a lazy-loaded prompt graph. Do not preload every prompt.
 
 For every non-fast-Help invocation, look for the installer-managed `.fpf-runtime.toml` inside the logical installed skill directory. It is machine-local runtime configuration, not a CAPRMEDIO file and not part of the reusable package. Read its absolute `repository_root` and `[defaults]` values when present. Verify `<repository_root>/FPF-Knowledge-Graph` by content before using it as the default FPF edition; a source explicitly named by the user overrides this hint. Pass the verified graph root to an analytical node as its optional runtime hint.
 
-The installed defaults are standalone: `report_style = "plain"` and no CAPRMEDIO installation or project is required. An active project's `.caprmedio/settings.toml` is optional and may override output or report defaults only when it is accessible; its absence is normal. Explicit user instructions override both project and installed settings. If installed settings are missing or the repository path is stale, Help and routing still work from embedded defaults, but report the stale installation before methodology analysis unless the user supplied another verified FPF edition.
+The installed defaults are standalone: `report_style = "plain"` and no CAPRMEDIO installation or project is required. Skill preferences are never read from an active project's `.caprmedio/settings.toml`; all live skill settings belong to the external installed skill configuration. Explicit user instructions override installed settings. If installed settings are missing or the repository path is stale, Help and routing still work from embedded defaults, but report the stale installation before methodology analysis unless the user supplied another verified FPF edition.
 
 ## Resolve the node or composition
 
-1. Resolve `output_language`: explicit user instruction overrides an optional active-project `.caprmedio/settings.toml` value, which overrides the installed default, which overrides the embedded default `auto`. Accepted values are `auto`, `en`, and `ru`.
+1. Resolve `output_language`: explicit user instruction overrides the installed default, which overrides the embedded default `auto`. Accepted values are `auto`, `en`, and `ru`.
 2. Pass the complete invocation text and resolved language setting to `scripts/route_fpf.py`. When the verified repository root and `uv` are available, use the repository project so the YAML dependency and cache remain project-managed:
 
    `uv --project <repository-root> run python <this-skill-directory>/scripts/route_fpf.py --language "<auto|en|ru>" --text "<complete invocation>"`

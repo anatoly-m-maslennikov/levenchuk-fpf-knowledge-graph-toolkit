@@ -1,8 +1,8 @@
 import subprocess
 from pathlib import Path
 
-from service.build_fpf_obsidian_graph.build_fpf_obsidian_graph import build
-from service.build_fpf_obsidian_graph.build_fpf_obsidian_graph_workers.models import NPF_PROFILE
+from service.scripts.build_fpf_obsidian_graph.build_fpf_obsidian_graph import build
+from service.scripts.build_fpf_obsidian_graph.build_fpf_obsidian_graph_workers.models import NPF_PROFILE
 
 
 SOURCE_NAME = "Narrativization-and-Narrative-Studies-Principles-Framework.md"

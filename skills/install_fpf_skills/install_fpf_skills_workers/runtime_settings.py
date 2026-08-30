@@ -5,11 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-
-RUNTIME_KEYS = (
-    "output_language", "output_style", "fpf_terms_explained",
-    "save_report", "report_style",
-)
+from service.scripts.init_settings.init_settings_workers.schema import RUNTIME_SKILL_KEYS
 
 
 def render_runtime_settings(
@@ -23,7 +19,7 @@ def render_runtime_settings(
         "[defaults]",
     ]
     lines.extend(
-        f"{key} = {json.dumps(settings[key], ensure_ascii=False)}" for key in RUNTIME_KEYS
+        f"{key} = {json.dumps(settings[key], ensure_ascii=False)}" for key in RUNTIME_SKILL_KEYS
     )
     return "\n".join(lines) + "\n"
 

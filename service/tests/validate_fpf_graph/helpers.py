@@ -1,7 +1,7 @@
 import subprocess
 from pathlib import Path
 
-from service.build_fpf_obsidian_graph.build_fpf_obsidian_graph import build
+from service.scripts.build_fpf_obsidian_graph.build_fpf_obsidian_graph import build
 
 
 SOURCE = "# Part A - Example\n\n## A.1 - First page\n\nA.2 links here.\n\n## A.2 - Second page\n"

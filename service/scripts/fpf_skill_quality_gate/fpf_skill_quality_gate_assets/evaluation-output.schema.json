@@ -1,0 +1,49 @@
+{
+  "type": "object",
+  "properties": {
+    "verdict": {"type": "string", "enum": ["PASS", "FAIL"]},
+    "case_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "case_id": {"type": "string"},
+          "verdict": {"type": "string", "enum": ["PASS", "FAIL"]},
+          "criteria": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "criterion_id": {"type": "string"},
+                "verdict": {"type": "string", "enum": ["PASS", "FAIL"]},
+                "evidence": {"type": "string"}
+              },
+              "required": ["criterion_id", "verdict", "evidence"],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": ["case_id", "verdict", "criteria"],
+        "additionalProperties": false
+      }
+    },
+    "output_contract_checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "case_id": {"type": "string"},
+          "output_contract": {"type": "string", "enum": ["help", "plan", "analysis"]},
+          "verdict": {"type": "string", "enum": ["PASS", "FAIL"]},
+          "evidence": {"type": "string"}
+        },
+        "required": ["case_id", "output_contract", "verdict", "evidence"],
+        "additionalProperties": false
+      }
+    },
+    "weaknesses": {"type": "array", "items": {"type": "string"}},
+    "consolidated_fixes": {"type": "array", "items": {"type": "string"}}
+  },
+  "required": ["verdict", "case_results", "output_contract_checks", "weaknesses", "consolidated_fixes"],
+  "additionalProperties": false
+}

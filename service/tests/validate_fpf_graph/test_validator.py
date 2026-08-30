@@ -6,10 +6,10 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
-from service.build_fpf_obsidian_graph.build_fpf_obsidian_graph_workers.models import Heading, Page
-from service.build_fpf_obsidian_graph.build_fpf_obsidian_graph_workers.relations import normalize_relation_targets
-from service.filesystem_policy import temporary_workspace
-from service.validate_fpf_graph.validate_fpf_graph import validate_graph
+from service.scripts.build_fpf_obsidian_graph.build_fpf_obsidian_graph_workers.models import Heading, Page
+from service.scripts.build_fpf_obsidian_graph.build_fpf_obsidian_graph_workers.relations import normalize_relation_targets
+from service.scripts.filesystem_policy import temporary_workspace
+from service.scripts.validate_fpf_graph.validate_fpf_graph import validate_graph
 from service.tests.validate_fpf_graph.helpers import make_graph
 
 

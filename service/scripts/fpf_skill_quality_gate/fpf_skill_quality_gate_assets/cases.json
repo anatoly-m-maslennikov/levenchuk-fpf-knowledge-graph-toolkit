@@ -1,0 +1,59 @@
+[
+  {
+    "id": "help-en-fast-path",
+    "area": "general",
+    "output_contract": "help",
+    "invocation": "$fpf help",
+    "criteria": [
+      {"id": "three-area-selector", "requirement": "Shows only framework, software, and skills as the top-level area choices, plus concise general usage."},
+      {"id": "fast-path-boundary", "requirement": "Does not execute an analytical command, claim FPF methodology inspection, or save a report."}
+    ]
+  },
+  {
+    "id": "help-ru-skills-fast-path",
+    "area": "skills",
+    "output_contract": "help",
+    "invocation": "$fpf справка навыки",
+    "criteria": [
+      {"id": "russian-localization", "requirement": "Returns clear Russian help for skill development while preserving canonical command identifiers."},
+      {"id": "area-specific-boundary", "requirement": "Describes relevant skill-development profiles and commands without running analysis or saving a report."}
+    ]
+  },
+  {
+    "id": "plan-composed-research",
+    "area": "software",
+    "output_contract": "plan",
+    "invocation": "$fpf plan sota harvest + options explore + design challenge Build a local quality gate for an analytical software-development skill. Do not save a report.",
+    "criteria": [
+      {"id": "plan-only", "requirement": "Returns a plan and copy-ready composition without executing downstream analytical nodes or consulting FPF methodology sources."},
+      {"id": "legal-handoffs", "requirement": "Preserves the requested legal order and states evidence, authority, and stop gates between calls."},
+      {"id": "bounded-task", "requirement": "Carries one self-contained shared task and explicit exclusions into the proposed composition."},
+      {"id": "plan-output-contract", "requirement": "Uses the Plan headings Task, scope, and boundaries; Routing decisions and recommendations; Unresolved evidence gaps; and Skills used. Each proposed call has routing confidence and a concrete routing-evidence basis; it neither emits an issue/fix registry nor moves merely lower-confidence routing decisions into evidence gaps."}
+    ]
+  },
+  {
+    "id": "software-review-convergence",
+    "area": "software",
+    "output_contract": "analysis",
+    "invocation": "$fpf design challenge + quality improve + alignment audit Review and improve version 1 of this design: a Python service puts business rules, persistence calls, HTTP mapping, and retry policy in one handler; tests assert only status 200; the team may revise the design text but may not change product behavior. Return one consolidated issue list and one fix list. Do not save a report.",
+    "criteria": [
+      {"id": "substantive-analysis", "requirement": "Finds concrete business-logic, architecture, testing, and failure-policy weaknesses with evidence and consequences."},
+      {"id": "one-issue-registry", "requirement": "Uses the analytical four-heading envelope and deduplicates issues across nodes into one stable issue registry rather than repeating reviews. Each issue has evidence, consequence, affected context, issue confidence plus evidence basis, uncertainty, lifecycle, and a mapped fix or explicit disposition; lower-confidence issues remain in that registry."},
+      {"id": "one-mapped-fix-register", "requirement": "Returns one deduplicated ordered fix register that maps every stated weakness to a fix or disposition. Each fix variant states addressed issue IDs, alternative/complementary/required-prerequisite relationship, its own confidence and evidence basis, trade-offs, authority, dependencies/order, verification, recommendation, and state."},
+      {"id": "bounded-convergence", "requirement": "Uses one challenge, bounded improvement, and one closure audit or explains a stopped suffix; it does not restart an autonomous loop."},
+      {"id": "fpf-grounding", "requirement": "Uses bounded relevant FPF sources and distinguishes methodology context from findings."}
+    ]
+  },
+  {
+    "id": "framework-skill-analysis",
+    "area": "framework",
+    "output_contract": "analysis",
+    "invocation": "$fpf applicability scan + options explore + design challenge Evaluate a proposed framework for authoring analytical agent skills: YAML routes commands to Markdown prompts, every result is saved automatically, and one shared evaluator checks all skill types. Identify applicable patterns, alternatives, and weaknesses without selecting or implementing a winner. Do not save a report.",
+    "criteria": [
+      {"id": "smallest-applicable-set", "requirement": "Selects a bounded relevant FPF pattern set rather than treating the whole graph as evidence."},
+      {"id": "diverse-options", "requirement": "Produces materially distinct architecture and evaluation alternatives without silently selecting a winner."},
+      {"id": "cross-boundary-challenge", "requirement": "Challenges routing, persistence defaults, evaluator specialization, provenance, and failure boundaries."},
+      {"id": "complete-consolidation", "requirement": "Returns all stated weaknesses in the issue-centered analytical envelope and one deduplicated mapped, ordered improvement register with residual risks. It keeps issue confidence separate from fix confidence and uses unresolved evidence gaps only for missing evidence or unanswered questions."}
+    ]
+  }
+]

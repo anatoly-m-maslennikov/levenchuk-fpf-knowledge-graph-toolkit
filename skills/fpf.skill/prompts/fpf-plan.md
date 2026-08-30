@@ -3,7 +3,7 @@
 <!-- output-settings:start -->
 ## Output and report settings
 
-Embedded defaults: `output_language = "auto"` (`auto`, `en`, or `ru`); `output_style = "general"`; `fpf_terms_explained = "off"`; `save_report = "on"` (`on` or `off`); `report_style = "plain"` (`plain` or `caprmedio`, consulted only when saving is on). Explicit user instruction overrides an optional active-project `.caprmedio/settings.toml` setting, which overrides the installed `.fpf-runtime.toml` defaults, which override these embedded defaults. Absence of CAPRMEDIO settings is normal and never blocks standalone FPF execution.
+Embedded defaults: `output_language = "auto"` (`auto`, `en`, or `ru`); `output_style = "general"`; `fpf_terms_explained = "off"`; `save_report = "on"` (`on` or `off`); `report_style = "plain"` (`plain` or `caprmedio`, consulted only when saving is on). Explicit user instruction overrides the installed `.fpf-runtime.toml` defaults, which override these embedded defaults. Skill preferences are never read from a target repository's `.caprmedio/settings.toml`; CAPRMEDIO remains an optional report adapter selected by the external skill setting.
 Resolve `output_language` before output style. `en` means English and loads no language resource. `ru` means Russian and loads only `references/fpf-output-language-ru.md`. With `auto`, use Russian when the user's invocation or residual task contains meaningful Russian Cyrillic text; otherwise use English. Never infer language from quoted source text, identifiers, paths, or citations alone. Never preload an unselected language resource.
 For output style, load at most one mode resource:
 - `natural`: load none; allow FPF terms. On first use, explain each term per `fpf_terms_explained`: `full` up to three short lines, `short` one sentence, `off` none.
@@ -76,7 +76,7 @@ In every campaign route, carry the campaign ID, frontiers, evaluation profile, p
 
 ## Maintainer evaluation
 
-`references/routing-scenarios.json` is the repository's behavioral scenario matrix. It is test evidence for maintainers, not required runtime context. When changing routing rules or the skill catalog, update the matrix and run `uv run -m service.validate_repository`.
+`references/routing-scenarios.json` is the repository's behavioral scenario matrix. It is test evidence for maintainers, not required runtime context. When changing routing rules or the skill catalog, update the matrix and run `uv run -m service.scripts.validate_repository`.
 
 ## Address each task
 
@@ -102,11 +102,25 @@ Use ordinary Markdown headings and lists. Do not wrap the artifact or any sectio
 Organize the complete native artifact under exactly these four top-level Markdown headings, in this order:
 
 1. `## Task, scope, and boundaries`
-2. `## High-confidence results (>=95%)`
-3. `## Open questions (confidence <95%)`
+2. `## Routing decisions and recommendations`
+3. `## Unresolved evidence gaps`
 4. `## Skills used`
 
-In section 1, state the task and receiving use, target and current state, scope and exclusions, inputs, sources and evidence, authority, dependencies, and stop condition. In sections 2 and 3, keep every native requirement below as a subsection or item; do not omit, merge away, or summarize it.
+In section 1, state the task and receiving use, target and current state, scope and exclusions, inputs, routing evidence, authority, dependencies, and stop condition.
+
+In section 2, keep every native requirement below as a subsection or item; do not omit, merge away, or summarize it. For every proposed analytical call or handoff, record:
+
+- its exact canonical `$fpf <command>` invocation;
+- the target and purpose;
+- prerequisites, available inputs, and required prior-step handoff;
+- the expected native artifact and any required join artifact;
+- why this route was selected and why skipped alternatives do not apply;
+- **Routing confidence** and its concrete routing-evidence basis;
+- the run, stop, and authorization condition.
+
+Routing confidence is confidence that this call is the appropriate next route under the available task facts. It is not issue confidence, fix confidence, a statistical probability, a quality score, an authorization, or a claim that an analytical result will be correct. Keep lower-confidence routing decisions in section 2 with their basis and a confirmation condition; do not move them to section 3 merely because they are below a numeric threshold.
+
+Section 3 contains only genuine missing evidence or unanswered routing questions that could materially change routing. For each, state the question or gap, consequence, exact evidence or decision needed, owner when known, and the affected proposed call(s). If none exist, write `None identified within the declared scope`.
 
 In section 4, list every skill actually executed for this result in execution order, using its exact canonical `$fpf <command>` invocation, and state each skill's role in one concise sentence. Do not list tools, the base model, or merely proposed or recommended downstream skills as used. If no other skill was executed, list only `$fpf plan`; skills in the proposed sequence remain recommendations, not executed skills.
 
@@ -119,12 +133,7 @@ Immediately after the skill list in section 4, add this compact Markdown subsect
 
 Do not present an empty or zero-count FPF source trace: source accounting is not applicable to a router that makes no methodology claims. This exception applies only to `$fpf plan`; every executed downstream FPF skill must list the methodology sources it actually opened and distinguish **used** from **screened only**.
 
-Assign confidence to each material result and state its evidence basis. Confidence is the reviewer's claim-level epistemic confidence under the available evidence, not a statistical probability, artifact-wide score, importance, severity, authorization, acceptance, assurance, or gate result. Use these bands inside section 3:
-
-- **90–94%:** probable answer, but confirmation is still needed.
-- **Below 90%:** materially uncertain.
-
-Never round up to 95%, hide conflicting, unsupported, or insufficient-basis results, or omit a lower-confidence finding. For each open question include the best current answer, confidence band or value, missing evidence or input, consequence, and exact next evidence or action. A high-confidence determination that the basis is insufficient belongs in section 2; the unresolved substantive question belongs in section 3. If no open questions remain, keep section 3 and write `None identified within the declared scope`.
+Never hide a routing decision because its confidence is lower, or round a routing confidence upward. Record the uncertainty in that decision's routing-evidence basis and confirmation condition. Use section 3 only where the evidence needed to make or confirm a routing decision is genuinely absent.
 
 Preserve these native artifact requirements:
 

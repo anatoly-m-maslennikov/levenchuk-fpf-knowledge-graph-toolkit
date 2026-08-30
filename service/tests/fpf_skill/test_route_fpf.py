@@ -12,6 +12,7 @@ SPEC = importlib.util.spec_from_file_location("route_fpf", SCRIPT_PATH)
 assert SPEC and SPEC.loader
 ROUTER = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(ROUTER)
+from route_fpf_workers.context import build_context
 
 
 class RouteFpfTests(unittest.TestCase):
@@ -24,6 +25,16 @@ class RouteFpfTests(unittest.TestCase):
 
     def test_graph_is_valid(self) -> None:
         self.assertEqual([], ROUTER.validate_graph(self.graph))
+
+    def test_compatibility_scan_covers_every_analytical_prompt(self) -> None:
+        from service.scripts.check_fpf_skill_graph_compatibility.check_fpf_skill_graph_compatibility import methodology_prompts
+
+        scanned = {name for name, _path in methodology_prompts()}
+        expected = {
+            node["id"] for node in self.graph["nodes"]
+            if node["persist_report"]
+        } | {"plan"}
+        self.assertEqual(expected, scanned)
 
     def test_yaml_graph_declares_shared_contracts_and_resolvable_fpf_bindings(self) -> None:
         self.assertEqual("graph.yaml", ROUTER.GRAPH_PATH.name)
@@ -111,6 +122,11 @@ class RouteFpfTests(unittest.TestCase):
         )
         self.assertEqual("E.11.PUA", route["fpf_entrypoints"][0]["id"])
 
+    def test_normalized_alias_preserves_original_residual_span(self) -> None:
+        route = self.route("$fpf as-is map architecture dependencies")
+        self.assertEqual("structure-recover", route["node"])
+        self.assertEqual("architecture dependencies", route["task"])
+
     def test_natural_language_selects_analysis_node(self) -> None:
         route = self.route("$fpf Audit the implemented repairs for regressions")
         self.assertEqual("alignment-audit", route["node"])
@@ -165,16 +181,30 @@ class RouteFpfTests(unittest.TestCase):
             recovered["task_profile"]["id"], challenged["task_profile"]["id"]
         )
 
-    def test_evaluation_cases_reference_valid_profiles_and_nodes(self) -> None:
+    def test_every_profile_evaluation_case_executes_routing_and_context(self) -> None:
         profiles = {item["id"] for item in self.graph["task_profiles"]}
         nodes = {item["id"] for item in self.graph["nodes"] if item["persist_report"]}
-        self.assertGreaterEqual(len(self.graph["evaluation_cases"]), 9)
+        self.assertEqual(profiles, {case["profile"] for case in self.graph["evaluation_cases"]})
         for case in self.graph["evaluation_cases"]:
             with self.subTest(case=case["id"]):
                 self.assertIn(case["profile"], profiles)
                 self.assertIn(case["node"], nodes)
                 self.assertTrue(case["required_facets"])
                 self.assertTrue(case["forbidden_inference"])
+                command = next(
+                    node["command"] for node in self.graph["nodes"]
+                    if node["id"] == case["node"]
+                )
+                route = self.route(f"$fpf {command} {case['task']}")
+                self.assertEqual(case["node"], route["node"])
+                self.assertEqual(case["profile"], route["task_profile"]["id"])
+                context = build_context(
+                    self.graph, ROUTER.SKILL_ROOT, REPOSITORY_ROOT,
+                    [case["node"]], profile_ids=[case["profile"]],
+                )
+                self.assertEqual(case["node"], context["nodes"][0]["id"])
+                self.assertEqual(case["profile"], context["task_profiles"][0]["id"])
+                self.assertTrue(context["patterns"])
 
     def test_meta_plan_routing_scenario_is_non_executing(self) -> None:
         scenarios_path = ROUTER.SKILL_ROOT / "references/routing-scenarios.json"
@@ -321,6 +351,24 @@ class RouteFpfTests(unittest.TestCase):
         route = self.route("$fpf plan Compare A+B")
         self.assertEqual("plan", route["node"])
         self.assertEqual("Compare A+B", route["task"])
+
+    def test_literal_spaced_plus_in_direct_task_is_not_a_composition(self) -> None:
+        route = self.route(
+            "$fpf design challenge Evaluate speed + safety tradeoffs"
+        )
+        self.assertEqual("design-challenge", route["node"])
+        self.assertNotIn("mode", route)
+        self.assertEqual("Evaluate speed + safety tradeoffs", route["task"])
+
+    def test_literal_spaced_plus_in_plan_task_is_not_a_composition(self) -> None:
+        route = self.route("$fpf plan Compare speed + safety")
+        self.assertEqual("plan", route["node"])
+        self.assertNotIn("mode", route)
+        self.assertEqual("Compare speed + safety", route["task"])
+
+    def test_profile_keywords_do_not_match_inside_other_words(self) -> None:
+        route = self.route("$fpf plan Review capital allocation")
+        self.assertNotIn("task_profile", route)
 
 
 if __name__ == "__main__":

@@ -4,8 +4,8 @@ import json
 import unittest
 from pathlib import Path
 
-from service.filesystem_policy import temporary_workspace
-from service.graph_fpf_convert_from_original.graph_fpf_convert_from_original_workers.eval_pack import (
+from service.scripts.filesystem_policy import temporary_workspace
+from service.scripts.graph_fpf_convert_from_original.graph_fpf_convert_from_original_workers.eval_pack import (
     build_eval_pack,
 )
 
@@ -43,11 +43,12 @@ class EvalPackTests(unittest.TestCase):
 
             self.assertEqual(result["backup_revision"], "old")
             self.assertEqual(result["current_revision"], "new")
-            self.assertEqual(result["added_ids"], ["B.1"])
+            self.assertEqual(result["delta"]["added"], ["B.1"])
             self.assertEqual(result["counts"]["moved_ids"], 1)
             self.assertEqual(result["counts"]["retitled_ids"], 1)
             self.assertEqual(result["builder_integrity"]["broken_links"], 0)
-
+            self.assertEqual(2, result["schema_version"])
+            self.assertEqual(64, len(result["eval_pack_sha256"]))
 
 if __name__ == "__main__":
     unittest.main()

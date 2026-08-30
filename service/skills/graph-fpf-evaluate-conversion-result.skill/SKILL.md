@@ -14,14 +14,14 @@ This evaluator lives under `service/skills/` beside `graph-fpf-convert-from-orig
 Locate one toolkit checkout containing:
 
 - `FPF-Knowledge-Graph/` and `FPF-Knowledge-Graph.bak/`;
-- `service/graph_fpf_convert_from_original/prepare_eval.py`;
+- `service/scripts/graph_fpf_convert_from_original/prepare_eval.py`;
 - `service/tests/run_tests.py`;
-- `service/validate_fpf_graph/`;
+- `service/scripts/validate_fpf_graph/`;
 - `.runtime/original-fpf-sources/FPF-Spec.md` in the staged, manifest-verified patched package.
 
 Prefer the active workspace and bounded accessible project roots. Do not assume a user name, home directory, operating system, or repository parent.
 
-Use a caller-supplied current eval pack when its revision and graph paths match the current candidate. Otherwise run `uv run -m service.graph_fpf_convert_from_original.prepare_eval` from the toolkit root and capture its JSON result. Do not write an ad hoc replacement pack.
+Use a caller-supplied current eval pack when its revision and graph paths match the current candidate. Otherwise run `uv run -m service.scripts.graph_fpf_convert_from_original.prepare_eval` from the toolkit root and capture its JSON result. Do not write an ad hoc replacement pack.
 
 Require deterministic-suite evidence for the same current graph revision. If it is missing or stale, run `uv run -m service.tests.run_tests`. A deterministic failure is evidence, not permission to repair; return it to the converter.
 
@@ -61,7 +61,7 @@ For every tooling defect, provide a stable finding ID, affected FPF IDs and path
 
 For every upstream-source condition, including one reported alongside PASS, cite the bounded upstream/effective source range as applicable, state its effect separately from conversion quality, and explain why generated output is faithful. Never patch generated notes to conceal the condition, invent missing content, or modify the external source repository. Treat an explicit repository-owned source patch as part of the evaluated effective source, with its provenance verified separately.
 
-For `PASS` only, write `.runtime/fpf-conversion-evaluation.json` as a JSON object containing exactly `schema_version: 1`, `evaluator: "graph-fpf-evaluate-conversion-result"`, `verdict: "PASS"`, `current_revision`, `backup_revision`, `current_tree_sha256`, and `backup_tree_sha256`. Compute each tree digest over every regular file in sorted relative-path order as `relative_path + NUL + bytes + NUL`, excluding `.DS_Store`; reject symlinks. Do not write this file for `FAIL`, `UPSTREAM CONDITION`, or `INSUFFICIENT EVIDENCE`. A stale evidence file is not part of the new result and the converter finalizer must reject it when revisions or tree bytes differ.
+For `PASS` only, write `.runtime/fpf-conversion-evaluation.json` using schema 2. It contains exactly: `schema_version: 2`; `evaluator: "graph-fpf-evaluate-conversion-result"`; `verdict: "PASS"`; `current_revision`; `backup_revision`; `current_tree_sha256`; `backup_tree_sha256`; `eval_pack_sha256`; `issue_family_verdicts`; `historical_regression_probes`; `syntax_risk_strata`; `semantic_selection`; `deterministic_suite_manifest_sha256`; and `deterministic_suite_case_names`. Use the canonical machine IDs enforced by `acceptance.py`; all fourteen family and eight historical-probe values must be `PASS`. For every eval-pack syntax stratum use `PASS` when populated and `NOT_PRESENT` only when the pack records `not present in candidate`. Copy the selection policy and selected/omitted counts and the deterministic manifest identity exactly from the current pack and suite result. Compute each tree digest over every regular file in sorted relative-path order as `relative_path + NUL + bytes + NUL`, excluding `.DS_Store`; reject symlinks. Do not write this file for `FAIL`, `UPSTREAM CONDITION`, or `INSUFFICIENT EVIDENCE`. A stale evidence file is not part of the new result and the converter finalizer rejects any mismatched field.
 
 ## Result
 

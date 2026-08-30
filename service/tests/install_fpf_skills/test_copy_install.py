@@ -1,8 +1,8 @@
 import unittest
 from pathlib import Path
 
-from service.filesystem_policy import temporary_workspace
-from service.init_settings.init_settings import read_skill_version
+from service.scripts.filesystem_policy import temporary_workspace
+from service.scripts.init_settings.init_settings import read_skill_version
 from service.tests.install_fpf_skills.helpers import END_USER_SKILLS, make_source, run_with_method
 
 
@@ -71,3 +71,57 @@ class CopyRuntimeSettingsTests(unittest.TestCase):
             self.assertTrue(inside.is_file())
             self.assertIn(f'repository_root = "{source.parent.resolve()}"', inside.read_text())
             self.assertIn('output_style = "general"', inside.read_text())
+
+
+class ExplicitRuntimeOverwriteTests(unittest.TestCase):
+    def test_overwrite_explicitly_imports_legacy_runtime_preferences(self) -> None:
+        with temporary_workspace() as temporary:
+            root = Path(temporary)
+            source = make_source(root / "source")
+            destination = root / "installed"
+            destination.mkdir()
+            legacy = destination / ".fpf-runtime.toml"
+            legacy.write_text(
+                'schema_version = 0\nrepository_root = "/obsolete"\n\n'
+                '[defaults]\noutput_style = "natural"\nsave_report = "off"\n',
+                encoding="utf-8",
+            )
+            apply = ["--apply", "--overwrite", "--destination", str(destination)]
+
+            self.assertEqual(
+                run_with_method(source, root / "control", destination, "copy", apply), 0
+            )
+
+            runtime = (destination / END_USER_SKILLS[0] / ".fpf-runtime.toml").read_text()
+            self.assertIn('output_style = "natural"', runtime)
+            self.assertIn('save_report = "off"', runtime)
+            current = root / "control/skills/settings.toml"
+            self.assertIn('output_style = "natural"', current.read_text())
+            self.assertIn('save_report = "off"', current.read_text())
+            snapshots = list(current.parent.glob("settings.*.toml"))
+            self.assertEqual(1, len(snapshots))
+            self.assertIn('output_style = "general"', snapshots[0].read_text())
+
+
+
+class InvalidRuntimeOverwriteTests(unittest.TestCase):
+    def test_overwrite_rejects_invalid_legacy_preferences_without_mutation(self) -> None:
+        with temporary_workspace() as temporary:
+            root = Path(temporary)
+            source = make_source(root / "source")
+            destination = root / "installed"
+            destination.mkdir()
+            legacy = destination / ".fpf-runtime.toml"
+            legacy.write_text(
+                '[defaults]\noutput_style = "unsupported"\n', encoding="utf-8",
+            )
+            apply = ["--apply", "--overwrite", "--destination", str(destination)]
+
+            self.assertEqual(
+                run_with_method(source, root / "control", destination, "copy", apply), 1
+            )
+
+            self.assertTrue(legacy.is_file())
+            current = root / "control/skills/settings.toml"
+            self.assertIn('output_style = "general"', current.read_text())
+            self.assertFalse((destination / END_USER_SKILLS[0]).exists())

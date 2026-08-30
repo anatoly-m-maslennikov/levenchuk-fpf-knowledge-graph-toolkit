@@ -1,8 +1,8 @@
 import unittest
 from pathlib import Path
 
-from service.filesystem_policy import temporary_workspace
-from service.graph_fpf_convert_from_original.graph_fpf_convert_from_original import convert_graph
+from service.scripts.filesystem_policy import temporary_workspace
+from service.scripts.graph_fpf_convert_from_original.graph_fpf_convert_from_original import convert_graph
 from service.tests.graph_fpf_convert_from_original.helpers import initialize_graphs, make_builder, make_source
 
 

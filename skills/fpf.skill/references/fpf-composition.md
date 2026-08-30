@@ -43,35 +43,38 @@ Before starting the next node, verify that its declared target state and prerequ
 
 Do not manufacture a decision, claim that a proposed correction was applied, or run a closure audit against an unchanged target. Record every unexecuted suffix node and the exact unmet run condition in the final artifact.
 
-## Stable consolidated findings
+## Stable consolidated issues
 
 Merge findings by stable fingerprint: Entity of Concern, bounded context, affected claim, and failure predicate. Different wording, evidence, severity, or discovering node does not create another issue when that predicate is the same.
 
-The final finding registry must include every issue or weak point stated by any executed node within the declared scope and evaluation profile. It is not a claim that no issue exists outside that boundary. For each finding record:
+The final issue registry must include every issue or weak point stated by any executed node within the declared scope and evaluation profile. It is not a claim that no issue exists outside that boundary. For each issue record:
 
-- stable finding ID and concise issue or weakness;
+- stable issue ID and concise issue or weakness;
 - affected target, claim, and bounded context;
 - evidence and discovering or updating nodes;
 - consequence and protected trade-offs;
-- confidence and coverage limit;
+- issue confidence, its evidence basis, and coverage limit or uncertainty;
 - lifecycle state: `OPEN`, `DECIDED`, `APPLIED`, `VERIFIED`, `DEFERRED`, `REJECTED`, or `SUPERSEDED`.
 
-When later evidence repeats a predicate, update the existing finding. When it contradicts earlier evidence, preserve the conflict and lower confidence rather than choosing silently.
+When later evidence repeats a predicate, update the existing issue. When it contradicts earlier evidence, preserve the conflict and lower confidence rather than choosing silently.
 
-## One repair and improvement list
+## One repair and improvement register
 
-Produce one deduplicated ordered list that addresses the entire final finding registry. Group compatible actions into the smallest coherent repair batches. For every action record:
+Produce one deduplicated ordered list that addresses the entire final issue registry. Group compatible actions into the smallest coherent repair batches. A fix can address more than one issue, but every issue must map to a fix or an explicit disposition. For every fix or improvement variant record:
 
-- stable action ID and exact repair or improvement;
-- finding IDs addressed;
+- stable fix ID and exact repair or improvement;
+- issue IDs addressed;
+- relationship: `alternative`, `complementary`, or `required prerequisite`;
 - affected carriers or change surface;
 - owner and required authority;
 - dependencies and execution order;
 - state: `PROPOSED`, `AUTHORIZED`, `APPLIED`, `VERIFIED`, `DEFERRED`, or `REJECTED`;
+- fix confidence and its own evidence basis, distinct from every issue confidence;
 - expected result and protected trade-offs;
-- deterministic or semantic verification criterion.
+- deterministic or semantic verification criterion; and
+- recommendation: `preferred`, `acceptable`, or `rejected`.
 
-Every finding must map to at least one action or an explicit disposition explaining why no action will be taken. Every action must map back to one or more findings. Merge duplicate actions that solve the same predicates. Separate already applied and verified actions from remaining work; never present completed work as an open recommendation.
+Every fix must map back to one or more issues. Merge duplicate fixes that solve the same change predicate and retain every addressed issue ID. Separate already applied and verified fixes from remaining work; never present completed work as an open recommendation. The final order is the one consolidated register for resolving all stated issues and weak points without a repeated full-audit loop.
 
 ## Convergence and late findings
 
@@ -92,18 +95,18 @@ Stop when the frontier and profile are unchanged and no permitted transition rem
 Return exactly one complete Markdown artifact under the standard four top-level headings:
 
 1. `## Task, scope, and boundaries`
-2. `## High-confidence results (>=95%)`
-3. `## Open questions (confidence <95%)`
+2. `## Issues, weak points, and improvements`
+3. `## Unresolved evidence gaps`
 4. `## Skills used`
 
-Preserve every material native result from executed nodes inside this envelope. Under high-confidence results include, in order:
+Preserve every material native result from executed nodes inside this envelope. Under `## Issues, weak points, and improvements` include, in order:
 
 1. **Composition execution and stop state** — requested sequence, executed prefix, unexecuted suffix, handoffs, gates, and final stop reason.
-2. **Consolidated issues and weak points** — the complete deduplicated finding registry within scope.
-3. **Consolidated fixes and improvements** — the single mapped and ordered action list.
+2. **Consolidated issues and weak points** — the complete deduplicated issue registry within scope, including all confidence levels and explicit dispositions.
+3. **Consolidated fixes and improvements** — the single mapped, deduplicated, ordered fix register, including fix-specific confidence and recommendation.
 4. **Verification, residual risk, and coverage** — applied and verified actions, unresolved findings, inspected scope, exclusions, and successor conditions.
 
-Keep lower-confidence issues, fixes, and evidence gaps under `## Open questions (confidence <95%)` while retaining their IDs and mappings. Do not hide them to make the consolidated lists appear complete.
+Keep lower-confidence issues and fixes in their respective registries with their IDs, mappings, and evidence bases. Under `## Unresolved evidence gaps`, list only missing evidence or unanswered questions, each with a stable gap ID, linked issue or fix IDs when applicable, the best current answer, consequence, and exact next evidence or action. Do not hide lower-confidence issues or fixes to make the consolidated lists appear complete.
 
 Under `## Skills used`, list every node actually executed in order. Then include one unioned `#### FPF sources consulted (N read; M used)` subsection. List each opened source once and identify the nodes for which it was used or screened. Do not list an unexecuted suffix node as used.
 

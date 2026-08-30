@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "properties": {
+    "response_markdown": {"type": "string"},
+    "output_contract": {"type": "string", "enum": ["help", "plan", "analysis"]},
+    "commands_executed": {"type": "array", "items": {"type": "string"}},
+    "methodology_sources_used": {"type": "array", "items": {"type": "string"}},
+    "report_saved": {"type": "boolean"}
+  },
+  "required": ["response_markdown", "output_contract", "commands_executed", "methodology_sources_used", "report_saved"],
+  "additionalProperties": false
+}

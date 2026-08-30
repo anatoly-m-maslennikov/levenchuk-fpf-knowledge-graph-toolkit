@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from unittest.mock import patch
 
-from service.init_settings.init_settings import read_skill_version
+from service.scripts.init_settings.init_settings import read_skill_version
 from skills.install_fpf_skills.install_fpf_skills import Harness, run
 from skills.install_fpf_skills.install_fpf_skills_workers import cli
 from skills.install_fpf_skills.install_fpf_skills_workers.catalog import load_catalog
@@ -26,7 +26,7 @@ def make_source(root: Path) -> Path:
 
 
 def write_settings(root: Path, method: str) -> tuple[Path, Path]:
-    control = root / ".caprmedio"
+    control = root / "skills"
     control.mkdir(parents=True, exist_ok=True)
     text = (
         f'[package]\nname = "fpf"\nversion = "{read_skill_version()}"\n\n'

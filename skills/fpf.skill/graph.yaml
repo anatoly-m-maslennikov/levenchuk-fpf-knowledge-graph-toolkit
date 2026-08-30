@@ -12,6 +12,7 @@ connector:
   reader: scripts/read_fpf_graph.py
   context_builder: scripts/prepare_fpf_context.py
   prompt_helper: references/fpf-context-connector.md
+  report_planner: scripts/plan_fpf_report.py
   core_sections: [problem_frame, problem, forces, solution, consequences]
   default_solution_chars: 6000
 

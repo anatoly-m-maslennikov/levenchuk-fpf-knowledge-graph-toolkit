@@ -2,7 +2,7 @@ import json
 import unittest
 from pathlib import Path
 
-from service.filesystem_policy import logical_path_exists, temporary_workspace
+from service.scripts.filesystem_policy import logical_path_exists, temporary_workspace
 from skills.install_fpf_skills.install_fpf_skills_workers import cli
 from skills.install_fpf_skills.install_fpf_skills_workers.snapshots import suite_digest
 from service.tests.install_fpf_skills.helpers import make_source, run_with_method
@@ -47,7 +47,7 @@ class SingleSkillMigrationTests(unittest.TestCase):
             self.assertEqual(["fpf"], receipt["skills"])
             self.assertEqual(4, receipt["schema_version"])
 
-    def test_modified_legacy_copy_is_removed_as_repo_owned_leftover(self) -> None:
+    def test_modified_legacy_copy_is_quarantined_intact(self) -> None:
         with temporary_workspace() as temporary:
             root = Path(temporary)
             source = make_source(root / "source")
@@ -57,11 +57,15 @@ class SingleSkillMigrationTests(unittest.TestCase):
             apply = ["--apply", "--destination", str(destination)]
             self.assertEqual(run_with_method(source, root / "control", destination, "copy", apply), 0)
             self.assertFalse(logical_path_exists(roots[RETIRED[0]]))
+            quarantine = destination.parent / ".fpf-skills-quarantine"
+            preserved = list(quarantine.glob(f"*/{RETIRED[0]}/custom.md"))
+            self.assertEqual(1, len(preserved))
+            self.assertEqual("keep\n", preserved[0].read_text(encoding="utf-8"))
             self.assertTrue((destination / "fpf" / "SKILL.md").is_file())
 
 
 class LegacyLeftoverCleanupTests(unittest.TestCase):
-    def test_apply_removes_every_known_repo_owned_legacy_shape(self) -> None:
+    def test_apply_quarantines_every_known_legacy_shape_intact(self) -> None:
         with temporary_workspace() as temporary:
             root = Path(temporary)
             source = make_source(root / "source")
@@ -85,6 +89,16 @@ class LegacyLeftoverCleanupTests(unittest.TestCase):
             apply = ["--apply", "--destination", str(destination)]
             self.assertEqual(run_with_method(source, root / "control", destination, "copy", apply), 0)
             self.assertFalse(any(logical_path_exists(path) for path in leftovers + files))
+            runs = list((destination.parent / ".fpf-skills-quarantine").iterdir())
+            self.assertEqual(1, len(runs))
+            for path in leftovers:
+                self.assertEqual(
+                    "obsolete\n", (runs[0] / path.name / "old.txt").read_text(encoding="utf-8")
+                )
+            for path in files:
+                self.assertEqual(
+                    "obsolete\n", (runs[0] / path.name).read_text(encoding="utf-8")
+                )
             self.assertTrue((destination / "fpf" / ".fpf-runtime.toml").is_file())
 
 

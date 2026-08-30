@@ -21,6 +21,8 @@ jobs:
   validate:
     name: validate
     runs-on: ubuntu-latest
+    env:
+      FPF_TOOLKIT_CONFIG_DIR: ${{ github.workspace }}/.runtime/config
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -39,10 +41,11 @@ jobs:
         run: uv sync --locked
       - name: Initialize CI control panel
         run: |
-          cp .caprmedio/settings.toml.example .caprmedio/settings.toml
-          sed -i 's#../../Repos/FPF#.runtime/original-fpf#' .caprmedio/settings.toml
+          mkdir -p "$FPF_TOOLKIT_CONFIG_DIR"
+          cp skills/settings.toml.example "$FPF_TOOLKIT_CONFIG_DIR/settings.toml"
+          sed -i 's#../../Repos/FPF#.runtime/original-fpf#' "$FPF_TOOLKIT_CONFIG_DIR/settings.toml"
       - name: Validate script architecture
-        run: uv run -m service.validate_script_architecture
+        run: uv run -m service.scripts.validate_script_architecture
       - name: Run deterministic maintenance suite
         run: uv run -m service.tests.run_tests
 
