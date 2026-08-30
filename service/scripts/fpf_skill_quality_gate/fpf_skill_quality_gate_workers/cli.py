@@ -9,7 +9,7 @@ from pathlib import Path
 import subprocess
 import sys
 
-from .cases import gate_identity, load_cases
+from .cases import gate_identity, load_cases, load_profile_cases
 from .codex_runner import run_codex
 from .evidence import build_evidence, check_evidence, validate_evaluation, write_json
 from .prompts import evaluator_prompt, subject_prompt
@@ -29,7 +29,18 @@ def _arguments() -> argparse.Namespace:
     parser.add_argument("--model", help="explicit Codex model; default uses the Codex CLI default")
     parser.add_argument("--codex", default="codex", help="Codex CLI executable")
     parser.add_argument("--timeout", type=float, default=900, help="seconds allowed per model turn")
+    parser.add_argument(
+        "--full-profiles", action="store_true",
+        help="append one live semantic case for every declared task profile",
+    )
     return parser.parse_args()
+
+
+def _gate_cases(args: argparse.Namespace) -> tuple[list[dict[str, object]], str]:
+    cases = load_cases(ASSETS / "cases.json")
+    if not args.full_profiles:
+        return cases, "release"
+    return [*cases, *load_profile_cases(ROOT)], "full-profiles"
 
 
 def _run_deterministic_suite() -> None:
@@ -88,14 +99,15 @@ def _new_run_directory() -> Path:
 def main() -> int:
     args = _arguments()
     try:
-        cases = load_cases(ASSETS / "cases.json")
+        cases, pack = _gate_cases(args)
+        case_ids = [str(case["id"]) for case in cases]
         identity = gate_identity(ROOT, ASSETS)
         if args.check:
-            failures = check_evidence(EVIDENCE, identity)
+            failures = check_evidence(EVIDENCE, identity, case_ids, pack)
             print("OK: current local FPF quality-gate evidence" if not failures else "STALE: " + "; ".join(failures))
             return 1 if failures else 0
         if args.dry_run:
-            print(json.dumps({"cases": [case["id"] for case in cases], "identity": identity}, indent=2))
+            print(json.dumps({"pack": pack, "cases": case_ids, "identity": identity}, indent=2))
             return 0
         _run_deterministic_suite()
         run = _new_run_directory()
@@ -112,6 +124,7 @@ def main() -> int:
             return 1
         evidence = build_evidence(
             identity, evaluation, outputs, run, args.model or "codex-default",
+            case_ids, pack,
         )
         write_json(EVIDENCE, evidence)
         print(f"PASS: local FPF skill quality gate ({len(cases)} cases); evidence={EVIDENCE}")

@@ -32,6 +32,70 @@
     ]
   },
   {
+    "id": "plan-typo-correction-no-execution",
+    "area": "general",
+    "output_contract": "plan",
+    "invocation": "$fpf plan sota harvers + options + design challenge Assess the current proposal. Do not save a report.",
+    "criteria": [
+      {"id": "typo-is-proposed-not-executed", "requirement": "Treats 'sota harvers' as a correction candidate for the canonical sota harvest command and never claims that the misspelled command or proposed stack executed."},
+      {"id": "aliases-normalize-in-plan", "requirement": "Normalizes the complete aliases options and design challenge to canonical planned calls while preserving the task and legal order."},
+      {"id": "plan-remains-ephemeral", "requirement": "Uses the Plan output contract, reports no methodology sources, and neither analyzes nor saves a report."}
+    ]
+  },
+  {
+    "id": "ambiguous-substring-safe-fallback",
+    "area": "software",
+    "output_contract": "plan",
+    "invocation": "$fpf Review capitalization behavior in identifiers and tell me which analytical command is appropriate. Do not save a report.",
+    "criteria": [
+      {"id": "no-api-substring-match", "requirement": "Does not route from the letters API embedded inside capitalization or claim an explicit applicability-scan command."},
+      {"id": "safe-plan-fallback", "requirement": "Uses Plan because the analytical intent is ambiguous and proposes bounded next calls with routing evidence."}
+    ]
+  },
+  {
+    "id": "literal-plus-single-analysis",
+    "area": "software",
+    "output_contract": "analysis",
+    "invocation": "$fpf problem frame Frame requirements that mention C++ and A+B syntax; the plus signs are literal task text, not a composition. Do not save a report.",
+    "criteria": [
+      {"id": "literal-plus-preserved", "requirement": "Preserves C++ and A+B as task text and does not split them into a composition."},
+      {"id": "one-command-only", "requirement": "Executes only problem-frame and returns the complete analytical four-heading contract with bounded FPF grounding."}
+    ]
+  },
+  {
+    "id": "russian-design-challenge-analysis",
+    "area": "skills",
+    "output_contract": "analysis",
+    "invocation": "$fpf проверка дизайна Проверь проект навыка: один большой промпт загружает весь граф, автоматически сохраняет каждый промежуточный результат и не имеет отрицательных маршрутизационных тестов. Отчёт не сохраняй.",
+    "criteria": [
+      {"id": "russian-native-output", "requirement": "Returns clear Russian analytical prose while preserving canonical command IDs, FPF IDs, paths, and lifecycle tokens."},
+      {"id": "design-specific-challenge", "requirement": "Challenges eager context loading, intermediate persistence, and missing negative routing tests with evidence, consequences, and mapped fixes."},
+      {"id": "canonical-execution-trace", "requirement": "Lists only the canonical design-challenge command as executed and does not save a report."}
+    ]
+  },
+  {
+    "id": "composition-stops-with-typed-handoff",
+    "area": "skills",
+    "output_contract": "analysis",
+    "invocation": "$fpf design challenge + quality improve Challenge this proposed skill design and improve it if permitted: it preloads every prompt. You may analyze the proposal, but you have no authority and no writable versioned target. Do not save a report.",
+    "criteria": [
+      {"id": "typed-edge-enforced", "requirement": "Executes design-challenge, then evaluates the design-challenge to quality-improve typed handoff instead of treating edge legality as authority."},
+      {"id": "exact-stop-and-suffix", "requirement": "Stops quality-improve with STOP_NO_AUTHORIZED_CHANGE, records the failed handoff field, and preserves the unexecuted suffix without claiming a change."},
+      {"id": "composition-receipt", "requirement": "Includes one composition receipt and one consolidated issue/fix registry rather than separate node reports."}
+    ]
+  },
+  {
+    "id": "plain-persistence-readonly-stop",
+    "area": "skills",
+    "output_contract": "analysis",
+    "invocation": "$fpf problem frame Frame the release problem for this skill. Use save_report=on and report_style=plain in this read-only evaluation workspace.",
+    "criteria": [
+      {"id": "analysis-still-returned", "requirement": "Returns the complete analytical artifact in chat even though persistence is unavailable."},
+      {"id": "exclusive-create-stop", "requirement": "Does not claim a saved report and reports STOPPED_UNSAVED: NO_EXCLUSIVE_CREATE because exclusive host-native creation is unavailable."},
+      {"id": "no-invented-proof", "requirement": "Does not invent a report path, content hash, atomicity claim, or successful read-back."}
+    ]
+  },
+  {
     "id": "software-review-convergence",
     "area": "software",
     "output_contract": "analysis",

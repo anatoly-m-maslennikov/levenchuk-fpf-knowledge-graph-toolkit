@@ -6,12 +6,19 @@ from pathlib import Path
 from unittest.mock import patch
 
 from service.scripts.filesystem_policy import temporary_workspace
+from service.scripts.validate_repository.validate_repository_workers.fpf_markdown import (
+    load_markdown_graph,
+)
 from service.scripts.fpf_skill_quality_gate.fpf_skill_quality_gate_workers.cases import (
     gate_identity,
     load_cases,
+    load_profile_cases,
 )
 from service.scripts.fpf_skill_quality_gate.fpf_skill_quality_gate_workers.evidence import (
+    build_evidence,
+    check_evidence,
     validate_evaluation,
+    write_json,
 )
 from service.scripts.fpf_skill_quality_gate.fpf_skill_quality_gate_workers.codex_runner import (
     run_codex,
@@ -50,12 +57,20 @@ def passing_evaluation(cases: list[dict[str, object]]) -> dict[str, object]:
 class QualityGateContractTests(unittest.TestCase):
     def test_case_pack_is_bounded_and_covers_all_three_areas(self) -> None:
         cases = load_cases(ASSETS / "cases.json")
-        self.assertEqual(5, len(cases))
+        self.assertGreaterEqual(len(cases), 10)
+        self.assertLessEqual(len(cases), 12)
         self.assertEqual({"general", "framework", "software", "skills"}, {case["area"] for case in cases})
         self.assertEqual(
             {"help", "plan", "analysis"},
             {case["output_contract"] for case in cases},
         )
+        case_ids = {case["id"] for case in cases}
+        for required in (
+            "plan-typo-correction-no-execution", "ambiguous-substring-safe-fallback",
+            "literal-plus-single-analysis", "russian-design-challenge-analysis",
+            "composition-stops-with-typed-handoff", "plain-persistence-readonly-stop",
+        ):
+            self.assertIn(required, case_ids)
 
     def test_exact_complete_pass_is_accepted(self) -> None:
         cases = load_cases(ASSETS / "cases.json")
@@ -111,6 +126,24 @@ class QualityGateContractTests(unittest.TestCase):
         identity = gate_identity(ROOT, ASSETS)
         self.assertEqual(5, len(identity["assets"]))
         self.assertEqual(64, len(identity["skill_tree_sha256"]))
+
+    def test_full_pack_derives_one_live_case_per_profile(self) -> None:
+        cases = load_profile_cases(ROOT)
+        self.assertEqual(len(load_markdown_graph(ROOT)["task_profiles"]), len(cases))
+        self.assertEqual(len(cases), len({case["id"] for case in cases}))
+        self.assertEqual({"framework", "software", "skills"}, {case["area"] for case in cases})
+        self.assertTrue(all(case["output_contract"] == "analysis" for case in cases))
+
+    def test_pass_evidence_is_bound_to_exact_case_pack(self) -> None:
+        with temporary_workspace(prefix="fpf-evidence-pack-") as temporary:
+            root = Path(temporary)
+            path = root / "evidence.json"
+            identity = {"skill_tree_sha256": "x", "assets": {}}
+            value = build_evidence(identity, {}, {}, root, "test", ["case-a"], "release")
+            write_json(path, value)
+            self.assertEqual([], check_evidence(path, identity, ["case-a"], "release"))
+            failures = check_evidence(path, identity, ["case-b"], "full-profiles")
+            self.assertIn("quality-gate evidence is for a different case pack", failures)
 
     def test_ci_contains_no_live_quality_gate(self) -> None:
         ci = (ROOT / ".github/workflows/ci.yml").read_text(encoding="utf-8")

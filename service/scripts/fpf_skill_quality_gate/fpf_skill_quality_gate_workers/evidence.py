@@ -138,10 +138,11 @@ def _validate_output_contract_checks(
 
 def build_evidence(
     identity: dict[str, object], evaluation: dict[str, object], outputs: dict[str, Path],
-    run_directory: Path, model: str,
+    run_directory: Path, model: str, case_ids: list[str], pack: str,
 ) -> dict[str, object]:
     return dict(
-        schema_version=1, gate="fpf-skill-quality", verdict="PASS",
+        schema_version=2, gate="fpf-skill-quality", verdict="PASS", pack=pack,
+        case_ids=case_ids,
         evaluated_at=datetime.now(timezone.utc).isoformat(), model=model,
         identity=identity,
         subject_output_sha256={key: sha256_file(path) for key, path in outputs.items()},
@@ -163,15 +164,19 @@ def write_json(path: Path, value: dict[str, object]) -> None:
             temporary.unlink()
 
 
-def check_evidence(path: Path, identity: dict[str, object]) -> list[str]:
+def check_evidence(
+    path: Path, identity: dict[str, object], case_ids: list[str], pack: str,
+) -> list[str]:
     if not path.is_file():
         return ["quality-gate PASS evidence is missing"]
     value = load_json(path)
     if not isinstance(value, dict):
         return ["quality-gate evidence must be a JSON object"]
     failures = []
-    if value.get("schema_version") != 1 or value.get("verdict") != "PASS":
-        failures.append("quality-gate evidence is not a schema-1 PASS")
+    if value.get("schema_version") != 2 or value.get("verdict") != "PASS":
+        failures.append("quality-gate evidence is not a schema-2 PASS")
+    if value.get("pack") != pack or value.get("case_ids") != case_ids:
+        failures.append("quality-gate evidence is for a different case pack")
     if value.get("identity") != identity:
         failures.append("quality-gate evidence is stale for the skill or eval assets")
     run = Path(str(value.get("run_directory", "")))

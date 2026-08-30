@@ -54,9 +54,13 @@ Run package checks with:
 ```bash
 uv run -m service.scripts.fpf_skill_quality_gate
 uv run -m service.scripts.fpf_skill_quality_gate --check
+uv run -m service.scripts.fpf_skill_quality_gate --full-profiles
+uv run -m service.scripts.fpf_skill_quality_gate --check --full-profiles
 ```
 
-This is the local release-quality gate: five isolated read-only subject runs plus an independent criterion-by-criterion semantic evaluator. It uses local Codex authentication, writes only ignored `.runtime` evidence, fails on any individual criterion, and returns every weakness with one consolidated fix list. CI never invokes the live gate or receives model credentials; its deterministic tests only validate the gate's static contract.
+This is the local release-quality gate: eleven isolated read-only subject runs plus an independent criterion-by-criterion semantic evaluator. It covers bilingual Help and analysis, all three areas, composed planning, typo correction, substring and literal-plus routing regressions, bounded review convergence, typed-handoff stopping, and read-only persistence failure. It uses local Codex authentication, writes only ignored `.runtime` evidence, fails on any individual criterion, and returns every weakness with one consolidated fix list. CI never invokes the live gate or receives model credentials; its deterministic tests only validate the gate's static contract.
+
+Use `--full-profiles` periodically or before a profile-heavy release. It appends one live case generated from every area profile's declared evaluation case. PASS evidence records the exact pack and ordered case IDs, so release-pack evidence cannot satisfy a full-profile check or vice versa.
 
 ```bash
 uv run -m skills.install_fpf_skills.for_codex --check

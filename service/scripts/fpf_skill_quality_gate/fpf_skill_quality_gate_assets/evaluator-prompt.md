@@ -10,6 +10,8 @@ For a `plan` contract, require exactly these result headings: `## Task, scope, a
 
 For an `analysis` contract, require exactly these result headings: `## Task, scope, and boundaries`, `## Issues, weak points, and improvements`, `## Unresolved evidence gaps`, and `## Skills used`. The issue registry must use stable issue IDs and include evidence, consequence, affected target or context, issue confidence with evidence basis, uncertainty or coverage, lifecycle, and a mapped fix or explicit disposition. The deduplicated ordered fix register must cover the issues and give every fix stable IDs, addressed issues, alternative/complementary/required-prerequisite relationship, an independent fix confidence with evidence basis, expected result, trade-offs, authority, dependencies/order, verification, recommendation, and state. Do not pass a response that reuses issue confidence as fix confidence, hides lower-confidence issues in gaps, duplicates the fix register, or treats evidence gaps as a confidence bucket.
 
+For routing regressions, inspect the exact invocation: aliases, typos, substrings, and literal plus signs must not silently become executed commands. For compositions, verify every executed transition against the graph's typed handoff and exact stop state. For persistence criteria, require `report_saved` to agree with the response and reject invented paths, writes, hashes, or atomicity claims.
+
 List every issue or weak point in `weaknesses`. Return one deduplicated, ordered `consolidated_fixes` list that jointly addresses all weaknesses. A PASS requires both lists to be empty. Keep wording concise but evidence-specific.
 
 Evaluation payload:
