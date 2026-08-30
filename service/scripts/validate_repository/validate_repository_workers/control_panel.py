@@ -100,4 +100,16 @@ def validate_repository_hygiene(root: Path) -> list[str]:
         not list((root / "skills").glob("settings.*.toml")),
         "settings history remains inside repository", errors,
     )
+    bytecode = [
+        path.relative_to(root).as_posix()
+        for base in (root / "skills", root / "service")
+        for path in base.rglob("*")
+        if path.is_file() and path.suffix in {".pyc", ".pyo"}
+    ]
+    _require(not bytecode, f"bytecode escaped .runtime: {bytecode[:3]}", errors)
+    service_init = (root / "service" / "__init__.py").read_text(encoding="utf-8")
+    _require(
+        'sys.pycache_prefix = str(ROOT / ".runtime" / "pycache")' in service_init,
+        "service bytecode routing changed", errors,
+    )
     return errors

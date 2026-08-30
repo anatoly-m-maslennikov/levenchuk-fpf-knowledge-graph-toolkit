@@ -19,10 +19,15 @@ permissions:
 
 jobs:
   validate:
-    name: validate
+    name: validate (Python ${{ matrix.python }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.12", "3.14"]
     env:
       FPF_TOOLKIT_CONFIG_DIR: ${{ github.workspace }}/.runtime/config
+      UV_PYTHON: ${{ matrix.python }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
