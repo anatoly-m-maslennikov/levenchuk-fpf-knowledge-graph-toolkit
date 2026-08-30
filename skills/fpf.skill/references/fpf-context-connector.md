@@ -18,6 +18,18 @@ Inspect only the available Problem frame, Problem, Forces, Solution, and Consequ
 
 For a composition, resolve bindings only for the current node immediately before it executes. Reuse an already opened page when its stable ID and edition are identical; do not preload later-node context.
 
+## Invocation-local context ledger and budget
+
+Maintain one compact in-context ledger for this invocation. It is part of the reasoning handoff, not a file, cache, generated artifact, or reusable source. For every declared binding record: edition identity, stable ID, relation and owning node/profile, resolved locator, `fpf_id` verification, inspected sections, `used`, `screened only`, `skipped conditional`, or `deferred`, and any retrieval limit.
+
+- A single-node call may open at most 6 distinct FPF pages.
+- A composition may open at most 18 distinct FPF pages across the complete run and at most 6 previously unopened pages for one current node.
+- One page inspection is limited to its task-relevant core sections and exact needed subsections; it never grants a whole-page or neighborhood preload.
+- Reuse is allowed only inside the same invocation when both edition identity and stable ID match. Never create or consult a persistent context cache.
+- Before opening a page, count it against the budget. If a required binding would exceed the budget, stop the affected node or composition with `STOP_CONTEXT_BUDGET_EXHAUSTED`, list every deferred binding, and return `insufficient basis`; never discard an already selected required binding silently.
+
+Derive the final `FPF sources consulted` subsection from this ledger. The counts must equal its opened `used` plus `screened only` entries; skipped, deferred, or merely resolved-but-unopened entries are not counted as read.
+
 ## Analytical handoff
 
 Give the analytical prompt:
@@ -28,5 +40,6 @@ Give the analytical prompt:
 - the exact opened FPF page paths or stable locators;
 - the relevant inspected sections and any skipped conditional binding;
 - every missing section or bounded-retrieval limitation.
+- the current compact context-ledger entries and remaining page budget.
 
 This connector supplies methodology context, not a finding, verdict, authority decision, or report. The analytical prompt remains responsible for evidence, confidence, boundaries, and its native result.

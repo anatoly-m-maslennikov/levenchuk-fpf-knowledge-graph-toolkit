@@ -128,7 +128,12 @@
       "FPF - Index.md",
       "conditional_method",
       "bounded-retrieval limitation",
-      "methodology context, not a finding"
+      "methodology context, not a finding",
+      "Invocation-local context ledger and budget",
+      "at most 6 distinct FPF pages",
+      "at most 18 distinct FPF pages",
+      "STOP_CONTEXT_BUDGET_EXHAUSTED",
+      "Never create or consult a persistent context cache"
     ],
     "skills/fpf.skill/references/fpf-report-persistence.md": [
       "Resolve `report_style` only now, after report saving is on",
@@ -162,7 +167,9 @@
       "issue confidence, its evidence basis",
       "fix confidence and its own evidence basis",
       "relationship: `alternative`, `complementary`, or `required prerequisite`",
-      "Persist once"
+      "Persist once",
+      "#### Composition receipt",
+      "semantic execution record"
     ],
     "skills/fpf.skill/references/fpf-output-style-general.md": [
       "ordinary general language",

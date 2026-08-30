@@ -59,6 +59,18 @@ class FpfMarkdownContextTests(unittest.TestCase):
         self.assertIn("current node immediately before it executes", connector)
         self.assertIn("do not preload later-node context", connector)
 
+    def test_context_budget_and_ledger_are_native_and_nonpersistent(self) -> None:
+        connector = (SKILL_ROOT / "references/fpf-context-connector.md").read_text(encoding="utf-8")
+        for requirement in (
+            "Invocation-local context ledger and budget",
+            "at most 6 distinct FPF pages",
+            "at most 18 distinct FPF pages",
+            "STOP_CONTEXT_BUDGET_EXHAUSTED",
+            "Never create or consult a persistent context cache",
+            "Derive the final `FPF sources consulted` subsection from this ledger",
+        ):
+            self.assertIn(requirement, connector)
+
 
 if __name__ == "__main__":
     unittest.main()

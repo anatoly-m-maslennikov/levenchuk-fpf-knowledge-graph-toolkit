@@ -60,6 +60,9 @@ class OutputContractTests(unittest.TestCase):
             "fix confidence and its own evidence basis",
             "every issue must map to a fix or an explicit disposition",
             "one consolidated register",
+            "#### Composition receipt",
+            "one outcome per typed edge",
+            "semantic execution record",
         ):
             self.assertIn(requirement, composition)
 

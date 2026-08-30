@@ -110,6 +110,8 @@ Keep lower-confidence issues and fixes in their respective registries with their
 
 Under `## Skills used`, list every node actually executed in order. Then include one unioned `#### FPF sources consulted (N read; M used)` subsection. List each opened source once and identify the nodes for which it was used or screened. Do not list an unexecuted suffix node as used.
 
+Under `## Task, scope, and boundaries`, include a compact `#### Composition receipt` containing the exact invocation, selected profile, requested sequence, executed prefix, unexecuted suffix, one outcome per typed edge, exact final `STOP_*` state or `COMPLETE`, context-ledger read/used/deferred counts, and issue/fix IDs carried into the final registries. This is a semantic execution record, not a timing log, cryptographic receipt, or proof that an external mutation occurred.
+
 ## Persist once
 
 Resolve output and report settings once for the whole composition. Intermediate node instructions to return and persist complete artifacts apply to their internal records; this composition contract replaces separate delivery with the one final consolidated artifact.
