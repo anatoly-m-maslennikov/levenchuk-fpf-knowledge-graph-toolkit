@@ -26,11 +26,16 @@ class MarkdownFpfGraphTests(unittest.TestCase):
             self.assertFalse(any(path.suffix == suffix for path in files))
 
     def test_graph_declares_all_nodes_and_persistence_boundaries(self) -> None:
-        self.assertEqual(12, len(self.nodes))
+        prompt_ids = {
+            path.stem.removeprefix("fpf-")
+            for path in (SKILL_ROOT / "prompts").glob("fpf-*.md")
+            if path.name != "fpf-runtime.md"
+        }
+        self.assertEqual(prompt_ids | {"help"}, set(self.nodes))
         self.assertFalse(self.nodes["help"]["persist_report"])
         self.assertFalse(self.nodes["plan"]["persist_report"])
         analytical = {name for name, node in self.nodes.items() if node["persist_report"]}
-        self.assertEqual(10, len(analytical))
+        self.assertTrue(analytical)
         self.assertTrue(all(self.nodes[name]["fpf_entrypoints"] for name in analytical))
 
     def test_commands_aliases_prompts_and_edges_are_resolved_from_markdown(self) -> None:
@@ -46,6 +51,12 @@ class MarkdownFpfGraphTests(unittest.TestCase):
         edges = {(edge["from"], edge["to"]) for edge in self.graph["edges"]}
         self.assertIn(("design-challenge", "quality-improve"), edges)
         self.assertIn(("quality-improve", "alignment-audit"), edges)
+        for edge in self.graph["edges"]:
+            for field in (
+                "producer_output", "consumer_input", "required_evidence", "gate_predicate",
+            ):
+                self.assertTrue(edge[field])
+            self.assertRegex(edge["stop_state"], r"^STOP_[A-Z0-9_]+$")
 
     def test_routing_precedence_covers_composition_and_safe_fallbacks(self) -> None:
         text = (SKILL_ROOT / "references/fpf-command-graph.md").read_text(encoding="utf-8")
@@ -73,7 +84,8 @@ class MarkdownFpfGraphTests(unittest.TestCase):
     def test_profiles_and_evaluation_cases_are_complete(self) -> None:
         profiles = self.graph["task_profiles"]
         cases = self.graph["evaluation_cases"]
-        self.assertEqual(22, len(profiles))
+        self.assertTrue(profiles)
+        self.assertEqual(len(profiles), len({item["id"] for item in profiles}))
         self.assertEqual({item["id"] for item in profiles}, {item["profile"] for item in cases})
         self.assertTrue(all(len(item["examples"]) >= 2 for item in profiles))
         self.assertTrue(all(item.get("required_facets") and item.get("forbidden_inference") for item in cases))
@@ -82,6 +94,15 @@ class MarkdownFpfGraphTests(unittest.TestCase):
         scanned = {name for name, _path in methodology_prompts()}
         expected = {name for name, node in self.nodes.items() if node["persist_report"]} | {"plan"}
         self.assertEqual(expected, scanned)
+
+    def test_localized_area_help_inventory_is_derived_from_graph(self) -> None:
+        analytical = [node for node in self.nodes.values() if node["persist_report"]]
+        for language, field in (("en", "command"), ("ru", "localized_command")):
+            for area in ("framework", "software", "skills"):
+                text = (SKILL_ROOT / f"prompts/help/{language}/fpf-help-{area}.md").read_text(
+                    encoding="utf-8"
+                )
+                self.assertTrue(all(f"`$fpf {node[field]} " in text for node in analytical))
 
 
 if __name__ == "__main__":

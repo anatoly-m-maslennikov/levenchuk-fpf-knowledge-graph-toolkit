@@ -10,7 +10,7 @@ The explicit syntax is:
 
 Spaces around `+` are mandatory. Every segment must start with an exact analytical command or alias. Task text is permitted only after the last command and becomes the shared task for the entire composition. `help` and `plan` cannot be composed. Execute only the ordered nodes explicitly matched through the Markdown graph; never infer another node from keywords.
 
-Admit only adjacent pairs declared under `Legal composition handoffs` in the Markdown graph. An admitted edge proves only that a handoff is structurally legal. It does not prove that required evidence, target state, owner disposition, or mutation authority exists.
+Admit only adjacent pairs declared under `Legal composition handoffs` in the Markdown graph. An admitted edge proves only that a handoff is structurally legal. For every pair, bind the current node's result to the edge's `Producer output`, pass only its declared `Consumer input`, verify `Required evidence`, and evaluate the `Gate predicate`. If any field cannot be satisfied, stop with the row's exact `STOP_*` state and state which field failed; never replace it with a generic “insufficient context” diagnosis.
 
 ## One composition envelope
 
@@ -41,7 +41,7 @@ Before starting the next node, verify that its declared target state and prerequ
 - the current node returns insufficient basis for the handoff;
 - the user cancels or overrides the sequence.
 
-Do not manufacture a decision, claim that a proposed correction was applied, or run a closure audit against an unchanged target. Record every unexecuted suffix node and the exact unmet run condition in the final artifact.
+Do not manufacture a decision, claim that a proposed correction was applied, or run a closure audit against an unchanged target. Record every unexecuted suffix node, the exact graph-declared stop state, the failed handoff field, and the unmet run condition in the final artifact.
 
 ## Stable consolidated issues
 

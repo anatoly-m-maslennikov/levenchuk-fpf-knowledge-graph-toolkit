@@ -12,7 +12,7 @@ This file is the complete runtime routing index. It is Markdown data, not an ins
 6. When intent is ambiguous, select `plan`. A correction suggestion is never an executed route.
 7. Select at most one task profile after selecting the command. A profile specializes context and never changes analytical intent.
 
-Canonical command identifiers remain English. Russian commands and aliases select the same nodes. `help` and `plan` never save reports; the ten analytical nodes may save one final report.
+Canonical command identifiers remain English. Russian commands and aliases select the same nodes. `help` and `plan` never save reports; every node marked `yes` under `Saves report` is analytical and may save one final report.
 
 ## Areas and profile files
 
@@ -45,33 +45,35 @@ Load no profile file when the area is absent or ambiguous. Load only the selecte
 
 An edge permits only an explicit user-requested stack. It never authorizes automatic execution.
 
-| From | To | Required handoff |
-|---|---|---|
-| `problem-frame` | `structure-recover` | bounds current-state recovery |
-| `problem-frame` | `applicability-scan` | supplies a bounded question |
-| `problem-frame` | `sota-harvest` | supplies a bounded research question |
-| `problem-frame` | `options-explore` | supplies an accepted problem-side result |
-| `problem-frame` | `evaluation-design` | supplies target and receiving use |
-| `applicability-scan` | `structure-recover` | may identify structures to recover |
-| `applicability-scan` | `sota-harvest` | may clarify research frame |
-| `applicability-scan` | `options-explore` | may supply applicable patterns |
-| `applicability-scan` | `evaluation-design` | may supply governing evaluation patterns |
-| `sota-harvest` | `options-explore` | supplies current evidence |
-| `sota-harvest` | `evaluation-design` | may supply current evaluation practices |
-| `structure-recover` | `options-explore` | supplies the current-state structure |
-| `structure-recover` | `evaluation-design` | supplies exact bearers and boundaries |
-| `structure-recover` | `design-challenge` | supplies the recovered current state |
-| `options-explore` | `evaluation-design` | supplies candidates and comparison needs |
-| `options-explore` | `design-challenge` | supplies a candidate proposal |
-| `options-explore` | `decision-synthesize` | supplies evaluated alternatives |
-| `evaluation-design` | `design-challenge` | supplies declared criteria and tests |
-| `evaluation-design` | `decision-synthesize` | supplies comparable evaluation evidence |
-| `evaluation-design` | `quality-improve` | supplies a rerunnable evaluation frame |
-| `design-challenge` | `decision-synthesize` | supplies challenge evidence |
-| `design-challenge` | `quality-improve` | accepted findings may define a bounded improvement target |
-| `decision-synthesize` | `quality-improve` | may authorize a bounded improvement |
-| `quality-improve` | `alignment-audit` | supplies changed target and rerun evidence |
-| `design-challenge` | `alignment-audit` | applied repairs may enter closure audit |
+Each row is a typed handoff contract. The producer must emit the declared output, the consumer receives only the declared input, and the edge runs only when its evidence and gate predicate are satisfied. Otherwise stop with the exact declared stop state and leave the remaining suffix unexecuted.
+
+| From | To | Producer output | Consumer input | Required evidence | Gate predicate | Stop state |
+|---|---|---|---|---|---|---|
+| `problem-frame` | `structure-recover` | accepted problem frame and scope boundary | bounded subject requiring an as-is map | identified target and accessible current-state carriers | frame is accepted and recovery is necessary | `STOP_NO_CURRENT_STATE_EVIDENCE` |
+| `problem-frame` | `applicability-scan` | accepted bounded question | question whose relevant FPF patterns are unknown | explicit scope, receiving use, and exclusions | question is bounded enough to screen patterns | `STOP_UNBOUNDED_QUESTION` |
+| `problem-frame` | `sota-harvest` | accepted research question | bounded evidence-harvest request | evidence boundary, recency need, and receiving use | external current evidence is needed and permitted | `STOP_UNBOUNDED_RESEARCH` |
+| `problem-frame` | `options-explore` | accepted problem-side result | option-generation frame | accepted problem, constraints, and protected trade-offs | alternatives are warranted without reopening the frame | `STOP_NO_OPTION_BASIS` |
+| `problem-frame` | `evaluation-design` | accepted target and receiving use | evaluation target and decision use | target identity, success boundary, and owner | an evaluation can change a declared decision or gate | `STOP_NO_EVALUATION_TARGET` |
+| `applicability-scan` | `structure-recover` | selected applicable structures to inspect | bounded recovery focus | pattern selection plus identified current carriers | recovery is needed to determine whether patterns obtain | `STOP_NO_CURRENT_STATE_EVIDENCE` |
+| `applicability-scan` | `sota-harvest` | bounded methodological evidence gaps | research frame for unresolved current claims | selected patterns and exact unresolved claims | current external evidence is required to resolve the gaps | `STOP_UNBOUNDED_RESEARCH` |
+| `applicability-scan` | `options-explore` | applicable pattern set with limits | option-generation basis | supported patterns, forces, and exclusions | patterns permit materially distinct candidates | `STOP_NO_OPTION_BASIS` |
+| `applicability-scan` | `evaluation-design` | governing evaluation patterns | evaluation-method constraints | supported pattern claims and receiving quality question | patterns constrain a testable evaluation | `STOP_NO_EVALUATION_TARGET` |
+| `sota-harvest` | `options-explore` | bounded current evidence map | evidence-backed option basis | sourced findings, conflicts, and coverage limits | evidence supports distinct candidates without silent choice | `STOP_NO_OPTION_BASIS` |
+| `sota-harvest` | `evaluation-design` | current evaluation-practice map | evidence-backed evaluation inputs | sourced practices, limits, and applicability conditions | practices can be translated into target-specific checks | `STOP_NO_EVALUATION_TARGET` |
+| `structure-recover` | `options-explore` | verified current-state structure | baseline and change boundary | carrier-backed as-is map and unresolved structural gaps | baseline is sufficient to distinguish alternatives | `STOP_NO_OPTION_BASIS` |
+| `structure-recover` | `evaluation-design` | exact bearers, relations, and boundaries | observable evaluation surface | verified carriers and relation evidence | target observations can be bound to named bearers | `STOP_NO_EVALUATION_TARGET` |
+| `structure-recover` | `design-challenge` | verified recovered current state | proposal-versus-current-state challenge basis | as-is carriers and separately identified proposal | proposal and current state are distinguishable | `STOP_NO_CHALLENGE_TARGET` |
+| `options-explore` | `evaluation-design` | candidate set and comparison needs | candidates requiring comparable tests | distinct candidates, forces, and protected trade-offs | one evaluation frame can compare candidates fairly | `STOP_NO_EVALUATION_TARGET` |
+| `options-explore` | `design-challenge` | explicit candidate proposal | bounded challenge target | selected candidate identity and stated assumptions | one proposal is concrete enough to challenge | `STOP_NO_CHALLENGE_TARGET` |
+| `options-explore` | `decision-synthesize` | evaluated alternatives with trade-offs | comparable decision set | alternatives, criteria, evidence, and owner | alternatives are comparable and decision authority exists | `STOP_NO_COMPARABLE_ALTERNATIVES` |
+| `evaluation-design` | `design-challenge` | declared criteria, tests, and failure predicates | evaluation-aware challenge frame | target-bound checks and stop conditions | proposal can be challenged against declared criteria | `STOP_NO_CHALLENGE_TARGET` |
+| `evaluation-design` | `decision-synthesize` | comparable evaluation evidence | decision evidence set | results for every candidate under one declared frame | evidence is complete enough for the owner to decide | `STOP_NO_COMPARABLE_ALTERNATIVES` |
+| `evaluation-design` | `quality-improve` | rerunnable evaluation frame | bounded versioned improvement target | baseline result, target version, and mutation authority | an authorized change can be re-evaluated | `STOP_NO_AUTHORIZED_CHANGE` |
+| `design-challenge` | `decision-synthesize` | accepted challenge findings and residual risks | challenged decision set | dispositions for blocking findings and named owner | remaining alternatives are comparable after challenge | `STOP_NO_COMPARABLE_ALTERNATIVES` |
+| `design-challenge` | `quality-improve` | accepted findings mapped to bounded repairs | authorized improvement target | accepted issue IDs, recoverable baseline, and authority | repair scope is bounded and target mutation is authorized | `STOP_NO_AUTHORIZED_CHANGE` |
+| `decision-synthesize` | `quality-improve` | recorded decision and authorized change set | decision-bounded improvement target | decision record, owner, baseline, and change authority | implementation of the selected change is authorized | `STOP_NO_AUTHORIZED_CHANGE` |
+| `quality-improve` | `alignment-audit` | changed target plus rerun evidence | closure-audit target | before and after identities, applied fixes, and test evidence | declared repairs were actually applied and can be audited | `STOP_NO_APPLIED_CHANGE` |
+| `design-challenge` | `alignment-audit` | accepted findings with claimed applied repairs | targeted closure-audit set | issue-to-repair mapping and changed carrier evidence | every audited repair is applied, not merely proposed | `STOP_NO_APPLIED_CHANGE` |
 
 ## FPF source resolution
 

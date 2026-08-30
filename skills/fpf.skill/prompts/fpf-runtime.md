@@ -20,7 +20,7 @@ Canonical identifiers remain English and canonical invocation is `$fpf`; Russian
 
 ## Execute the selected Markdown node
 
-For an explicit legal composition, load `references/fpf-composition.md` and `references/fpf-context-connector.md` completely. Execute the selected prompts from left to right, loading only the current prompt and its selected command/profile FPF bindings. Share one campaign and finding registry, stop at every evidence or authority gate, and return and persist one consolidated artifact. Do not emit or save intermediate node reports.
+For an explicit legal composition, load `references/fpf-composition.md` and `references/fpf-context-connector.md` completely. Execute the selected prompts from left to right, loading only the current prompt and its selected command/profile FPF bindings. At each edge, enforce its typed producer output, consumer input, required evidence, gate predicate, and exact `STOP_*` state. Share one campaign and finding registry, stop at every evidence or authority gate, and return and persist one consolidated artifact. Do not emit or save intermediate node reports.
 
 For a single node:
 

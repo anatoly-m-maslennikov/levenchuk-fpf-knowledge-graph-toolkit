@@ -16,9 +16,12 @@ Use this area for framework problem definition, concepts and terminology, patter
 
 - `$fpf problem frame Frame the recurring problem and acceptance boundary for this framework.`
 - `$fpf structure recover Recover the current framework architecture and dependency structure.`
+- `$fpf applicability scan Find the bounded FPF patterns relevant to this framework question.`
+- `$fpf sota harvest Map current evidence for this framework-design problem.`
 - `$fpf options explore Compare alternative framework structures without choosing one.`
 - `$fpf evaluation design Define the framework coverage evaluation and stop rules.`
 - `$fpf design challenge Challenge this proposed framework pattern before publication.`
+- `$fpf decision synthesize Select from evaluated framework alternatives and record the decision.`
 - `$fpf quality improve Improve this versioned framework artifact and re-evaluate it.`
 - `$fpf alignment audit Audit the completed edition migration for semantic preservation.`
 

@@ -16,9 +16,12 @@ Use this area for skill triggers and scope, prompt contracts, graph composition,
 
 - `$fpf problem frame Frame the skill task family, trigger, exclusions, and fallback.`
 - `$fpf structure recover Recover the current prompt graph and tool dependencies.`
+- `$fpf applicability scan Find the bounded FPF patterns relevant to this skill question.`
+- `$fpf sota harvest Map current evidence for this skill-design problem.`
 - `$fpf options explore Compare alternative skill compositions without choosing one.`
 - `$fpf evaluation design Define routing, golden, counterexample, and regression cases.`
 - `$fpf design challenge Challenge this proposed skill or connector before implementation.`
+- `$fpf decision synthesize Select from evaluated skill alternatives and record the decision.`
 - `$fpf quality improve Improve the versioned skill and rerun its frozen cases.`
 - `$fpf alignment audit Audit the installed skill runtime and release evidence.`
 

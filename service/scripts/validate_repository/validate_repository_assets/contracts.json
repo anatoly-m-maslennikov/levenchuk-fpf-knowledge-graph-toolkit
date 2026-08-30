@@ -22,16 +22,6 @@
     "graph-fpf-convert-from-original",
     "graph-fpf-evaluate-conversion-result"
   ],
-  "prompt_nodes": [
-    "help", "plan", "problem-frame", "structure-recover", "applicability-scan",
-    "sota-harvest", "options-explore", "evaluation-design", "design-challenge",
-    "decision-synthesize", "quality-improve", "alignment-audit"
-  ],
-  "analytical_nodes": [
-    "problem-frame", "structure-recover", "applicability-scan", "sota-harvest",
-    "options-explore", "evaluation-design", "design-challenge", "decision-synthesize",
-    "quality-improve", "alignment-audit"
-  ],
   "settings": {
     "output_language": "auto",
     "output_style": "general",

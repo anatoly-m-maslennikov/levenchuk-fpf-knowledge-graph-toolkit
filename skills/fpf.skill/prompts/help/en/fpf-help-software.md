@@ -17,9 +17,12 @@ Use this area for DDD and bounded contexts, business logic, requirements and acc
 
 - `$fpf problem frame Frame the feature problem, requirements, and acceptance boundary.`
 - `$fpf structure recover Map the current bounded contexts and business rules.`
+- `$fpf applicability scan Find the bounded FPF patterns relevant to this software question.`
+- `$fpf sota harvest Map current evidence for this software-engineering problem.`
 - `$fpf options explore Compare software architecture candidates without choosing one.`
 - `$fpf evaluation design Define the TDD test strategy or code-quality evaluation.`
 - `$fpf design challenge Challenge this proposed API migration before implementation.`
+- `$fpf decision synthesize Select from evaluated software alternatives and record the decision.`
 - `$fpf quality improve Improve this versioned module and rerun its evaluation.`
 - `$fpf alignment audit Audit implemented work against the accepted architecture and release checks.`
 

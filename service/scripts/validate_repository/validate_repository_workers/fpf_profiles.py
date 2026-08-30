@@ -28,8 +28,8 @@ def _validate_profiles(
 ) -> tuple[list[str], list[object]]:
     errors: list[str] = []
     profile_ids = [profile.get("id") for profile in profiles if isinstance(profile, dict)]
-    if len(profile_ids) != 22 or len(profile_ids) != len(set(profile_ids)):
-        errors.append("FPF Markdown task profiles must contain 22 unique profiles")
+    if not profile_ids or len(profile_ids) != len(set(profile_ids)):
+        errors.append("FPF Markdown task profiles must be present and unique")
     for profile in profiles:
         if not isinstance(profile, dict):
             errors.append("FPF Markdown task profile is not an object")

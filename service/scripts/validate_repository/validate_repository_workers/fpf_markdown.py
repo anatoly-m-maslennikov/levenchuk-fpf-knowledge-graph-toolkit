@@ -87,7 +87,15 @@ def _parse_commands(skill_root: Path, text: str) -> list[dict[str, object]]:
 
 def _parse_edges(text: str) -> list[dict[str, str]]:
     return [
-        {"from": _plain(row["From"]), "to": _plain(row["To"]), "relation": row["Required handoff"]}
+        {
+            "from": _plain(row["From"]),
+            "to": _plain(row["To"]),
+            "producer_output": _plain(row["Producer output"]),
+            "consumer_input": _plain(row["Consumer input"]),
+            "required_evidence": _plain(row["Required evidence"]),
+            "gate_predicate": _plain(row["Gate predicate"]),
+            "stop_state": _plain(row["Stop state"]),
+        }
         for row in _table(text, "Legal composition handoffs")
     ]
 

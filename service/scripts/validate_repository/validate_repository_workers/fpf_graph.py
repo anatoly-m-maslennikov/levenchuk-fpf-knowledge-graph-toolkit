@@ -102,13 +102,21 @@ def _validate_runtime_package(skill_root: Path) -> list[str]:
 def _validate_nodes(root: Path, nodes: list[dict[str, object]], contracts: dict[str, object]) -> list[str]:
     errors: list[str] = []
     node_ids = [node["id"] for node in nodes]
-    expected = set(contracts["prompt_nodes"])
+    skill_root = root / "skills/fpf.skill"
+    prompt_ids = {
+        path.stem.removeprefix("fpf-")
+        for path in (skill_root / "prompts").glob("fpf-*.md")
+        if path.name != "fpf-runtime.md"
+    }
+    expected = prompt_ids | {"help"}
     if set(node_ids) != expected or len(node_ids) != len(expected):
-        errors.append("FPF Markdown nodes do not match the prompt-node contract")
-    analytical = set(contracts["analytical_nodes"])
+        errors.append("FPF Markdown nodes do not exactly match their prompt files")
+    if not {"help", "plan"}.issubset(node_ids):
+        errors.append("FPF Markdown graph lacks Help or Plan")
+    analytical = {node["id"] for node in nodes if node["persist_report"]}
     persistent = {node["id"] for node in nodes if node["persist_report"]}
-    if persistent != analytical:
-        errors.append("FPF Markdown persistence flags do not match the analytical-node contract")
+    if persistent & {"help", "plan"} or not persistent:
+        errors.append("FPF Markdown persistence flags do not define a valid analytical set")
     aliases: dict[str, str] = {}
     for node in nodes:
         node_id = str(node["id"])
@@ -138,8 +146,31 @@ def _validate_edges(edges: list[dict[str, object]], analytical: set[str]) -> lis
     if len(edge_pairs) != len(set(edge_pairs)):
         errors.append("FPF Markdown composition edges are duplicated")
     for edge in edges:
-        if edge["from"] not in analytical or edge["to"] not in analytical or not edge["relation"]:
+        handoff_fields = (
+            "producer_output", "consumer_input", "required_evidence", "gate_predicate",
+        )
+        if (
+            edge["from"] not in analytical or edge["to"] not in analytical
+            or any(not edge.get(field) for field in handoff_fields)
+            or not re.fullmatch(r"STOP_[A-Z0-9_]+", str(edge.get("stop_state", "")))
+        ):
             errors.append(f"FPF Markdown composition edge is invalid: {edge}")
+    return errors
+
+
+def _validate_help_inventory(skill_root: Path, nodes: list[dict[str, object]]) -> list[str]:
+    analytical = [node for node in nodes if node.get("persist_report")]
+    errors: list[str] = []
+    for language, field in (("en", "command"), ("ru", "localized_command")):
+        for area in ("framework", "software", "skills"):
+            path = skill_root / f"prompts/help/{language}/fpf-help-{area}.md"
+            text = path.read_text(encoding="utf-8")
+            missing = [
+                str(node["id"]) for node in analytical
+                if f"`$fpf {node[field]} " not in text
+            ]
+            if missing:
+                errors.append(f"FPF {language} Help inventory is incomplete: {area}:{missing}")
     return errors
 
 
@@ -148,9 +179,12 @@ def validate_fpf_manifest(root: Path, contracts: dict[str, object]) -> list[str]
         manifest = load_markdown_graph(root)
     except (OSError, ValueError) as exc:
         return [f"cannot read FPF Markdown graph: {exc}"]
-    analytical = set(contracts["analytical_nodes"])
+    analytical = {
+        node["id"] for node in manifest["nodes"] if node.get("persist_report")
+    }
     errors = _validate_runtime_package(root / "skills/fpf.skill")
     errors.extend(_validate_nodes(root, manifest["nodes"], contracts))
     errors.extend(_validate_edges(manifest["edges"], analytical))
+    errors.extend(_validate_help_inventory(root / "skills/fpf.skill", manifest["nodes"]))
     errors.extend(validate_areas_and_profiles(root, manifest, analytical, _validate_binding))
     return errors
