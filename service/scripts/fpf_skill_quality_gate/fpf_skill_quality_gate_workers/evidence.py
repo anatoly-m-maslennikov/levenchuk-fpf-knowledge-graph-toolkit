@@ -15,7 +15,8 @@ def validate_evaluation(
     evaluation: dict[str, object], cases: list[dict[str, object]],
 ) -> list[str]:
     expected_cases = {str(case["id"]): case for case in cases}
-    failures = _validate_case_results(evaluation, expected_cases)
+    failures = _validate_top_level(evaluation)
+    failures.extend(_validate_case_results(evaluation, expected_cases))
     failures.extend(_validate_output_contract_checks(evaluation, expected_cases))
     if evaluation.get("verdict") != "PASS":
         failures.append("overall evaluator verdict is not PASS")
@@ -23,6 +24,19 @@ def validate_evaluation(
         failures.append("PASS evaluator result still reports weaknesses")
     if evaluation.get("verdict") == "PASS" and evaluation.get("consolidated_fixes"):
         failures.append("PASS evaluator result still reports fixes")
+    return failures
+
+
+def _validate_top_level(evaluation: dict[str, object]) -> list[str]:
+    failures: list[str] = []
+    if evaluation.get("verdict") not in {"PASS", "FAIL"}:
+        failures.append("evaluator verdict must be PASS or FAIL")
+    for field in ("weaknesses", "consolidated_fixes"):
+        value = evaluation.get(field)
+        if not isinstance(value, list) or any(
+            not isinstance(item, str) or not item.strip() for item in value
+        ):
+            failures.append(f"evaluator {field} must be a list of non-empty strings")
     return failures
 
 
@@ -47,19 +61,46 @@ def _validate_case_results(
 def _validate_case_result(
     result: object, expected_cases: dict[str, dict[str, object]],
 ) -> list[str]:
-    if not isinstance(result, dict) or result.get("case_id") not in expected_cases:
-        return []
+    if not isinstance(result, dict):
+        return ["evaluator case result must be an object"]
+    if result.get("case_id") not in expected_cases:
+        return [f"unexpected evaluator case result: {result.get('case_id')!r}"]
     case = expected_cases[str(result["case_id"])]
     criteria = result.get("criteria")
-    actual = {str(item.get("criterion_id")) for item in criteria or [] if isinstance(item, dict)}
-    expected = {str(item["id"]) for item in case["criteria"]}
-    failures = [] if actual == expected else [f"{case['id']}: criterion ids do not exactly match"]
-    if result.get("verdict") != "PASS":
+    if not isinstance(criteria, list):
+        return [f"{case['id']}: evaluator criteria must be a list"]
+    actual_ids = [item.get("criterion_id") for item in criteria if isinstance(item, dict)]
+    expected_ids = [str(item["id"]) for item in case["criteria"]]
+    failures = []
+    if (
+        len(actual_ids) != len(criteria) or len(criteria) != len(expected_ids)
+        or len(actual_ids) != len(set(actual_ids)) or set(actual_ids) != set(expected_ids)
+    ):
+        failures.append(f"{case['id']}: criterion ids do not match exactly once")
+    if result.get("verdict") not in {"PASS", "FAIL"}:
+        failures.append(f"{case['id']}: evaluator verdict must be PASS or FAIL")
+    elif result.get("verdict") != "PASS":
         failures.append(f"{case['id']}: evaluator verdict is not PASS")
-    failures.extend(
-        f"{case['id']}/{item.get('criterion_id')}: criterion is not PASS"
-        for item in criteria or [] if isinstance(item, dict) and item.get("verdict") != "PASS"
-    )
+    criterion_failures = _validate_criteria(str(case["id"]), criteria)
+    failures.extend(criterion_failures)
+    if result.get("verdict") == "PASS" and criterion_failures:
+        failures.append(f"{case['id']}: PASS contradicts one or more criterion results")
+    return failures
+
+
+def _validate_criteria(case_id: str, criteria: list[object]) -> list[str]:
+    failures: list[str] = []
+    for item in criteria:
+        if not isinstance(item, dict):
+            failures.append(f"{case_id}: evaluator criterion must be an object")
+            continue
+        criterion_id = item.get("criterion_id")
+        if item.get("verdict") not in {"PASS", "FAIL"}:
+            failures.append(f"{case_id}/{criterion_id}: criterion verdict must be PASS or FAIL")
+        elif item.get("verdict") != "PASS":
+            failures.append(f"{case_id}/{criterion_id}: criterion is not PASS")
+        if not isinstance(item.get("evidence"), str) or not str(item["evidence"]).strip():
+            failures.append(f"{case_id}/{criterion_id}: criterion evidence is blank")
     return failures
 
 
@@ -77,13 +118,21 @@ def _validate_output_contract_checks(
     ):
         failures.append("evaluator output-contract case ids do not exactly match the case pack")
     for check in contract_checks:
-        if not isinstance(check, dict) or check.get("case_id") not in expected_cases:
+        if not isinstance(check, dict):
+            failures.append("evaluator output-contract check must be an object")
+            continue
+        if check.get("case_id") not in expected_cases:
+            failures.append(f"unexpected output-contract check: {check.get('case_id')!r}")
             continue
         case = expected_cases[str(check["case_id"])]
         if check.get("output_contract") != case.get("output_contract"):
             failures.append(f"{case['id']}: evaluator output contract does not match")
-        if check.get("verdict") != "PASS":
+        if check.get("verdict") not in {"PASS", "FAIL"}:
+            failures.append(f"{case['id']}: output-contract verdict must be PASS or FAIL")
+        elif check.get("verdict") != "PASS":
             failures.append(f"{case['id']}: output-contract check is not PASS")
+        if not isinstance(check.get("evidence"), str) or not str(check["evidence"]).strip():
+            failures.append(f"{case['id']}: output-contract evidence is blank")
     return failures
 
 

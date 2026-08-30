@@ -68,6 +68,30 @@ class QualityGateContractTests(unittest.TestCase):
         evaluation["case_results"][1]["criteria"][0]["verdict"] = "FAIL"
         self.assertGreaterEqual(len(validate_evaluation(evaluation, cases)), 2)
 
+    def test_duplicate_extra_and_malformed_results_fail_closed(self) -> None:
+        cases = load_cases(ASSETS / "cases.json")
+        evaluation = copy.deepcopy(passing_evaluation(cases))
+        evaluation["case_results"][1] = copy.deepcopy(evaluation["case_results"][0])
+        evaluation["case_results"][0]["criteria"].append(
+            {"criterion_id": "unexpected", "verdict": "PASS", "evidence": "x"}
+        )
+        evaluation["output_contract_checks"][1] = "malformed"
+        failures = validate_evaluation(evaluation, cases)
+        self.assertTrue(any("case ids" in item for item in failures))
+        self.assertTrue(any("exactly once" in item for item in failures))
+        self.assertTrue(any("must be an object" in item for item in failures))
+
+    def test_blank_evidence_and_contradictory_pass_fail_closed(self) -> None:
+        cases = load_cases(ASSETS / "cases.json")
+        evaluation = copy.deepcopy(passing_evaluation(cases))
+        evaluation["case_results"][0]["criteria"][0]["evidence"] = "  "
+        evaluation["case_results"][0]["criteria"][1]["verdict"] = "FAIL"
+        evaluation["output_contract_checks"][0]["evidence"] = ""
+        failures = validate_evaluation(evaluation, cases)
+        self.assertTrue(any("criterion evidence is blank" in item for item in failures))
+        self.assertTrue(any("PASS contradicts" in item for item in failures))
+        self.assertTrue(any("output-contract evidence is blank" in item for item in failures))
+
     def test_pass_cannot_hide_reported_weaknesses_or_fixes(self) -> None:
         cases = load_cases(ASSETS / "cases.json")
         evaluation = passing_evaluation(cases)
