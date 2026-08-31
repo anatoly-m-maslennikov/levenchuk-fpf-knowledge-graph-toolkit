@@ -47,5 +47,3 @@ Record:
 4. **Re-evaluation and declared-coordinate comparison**
 5. **Trade-offs, costs, risks, and uncertainty**
 6. **Outcome and stop/continue/rollback/switch decision**
-
-Return these native requirements only inside the four-heading artifact required by `references/fpf-analysis-contract.md`. Apply that contract's final conformance gate after this prompt; native labels must not become top-level `##` headings.

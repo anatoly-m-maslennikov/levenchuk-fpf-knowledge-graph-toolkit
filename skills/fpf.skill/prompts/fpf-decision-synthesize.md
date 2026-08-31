@@ -40,5 +40,3 @@ A decision owner may move a registered finding from `OPEN` to `DECIDED` when the
 4. **ADR projection**, only when its source relation is recoverable
 5. **Accepted losses, consequences, and reopen triggers**
 6. **Unresolved authority/evidence and implementation handoff**
-
-Return these native requirements only inside the four-heading artifact required by `references/fpf-analysis-contract.md`. Apply that contract's final conformance gate after this prompt; native labels must not become top-level `##` headings.

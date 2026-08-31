@@ -32,5 +32,3 @@ Produce a read-only **Current-State Structure Record**. Recover what currently o
 5. **Recovery stop and legal downstream handoff**
 
 Do not present the recovered structure as a proposal, quality verdict, assurance result, or authorization.
-
-Return these native requirements only inside the four-heading artifact required by `references/fpf-analysis-contract.md`. Apply that contract's final conformance gate after this prompt; native labels must not become top-level `##` headings.

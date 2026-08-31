@@ -33,65 +33,6 @@ Before resolving FPF sources or starting native work, when the task cites a prio
 
 Delegation must not change the required result. Resource or retrieval limits alone do not justify cancellation, replacement, or duplicate work. Pending work may remain pending while only non-conflicting work continues. Stop it only for user cancellation or override, or a confirmed safety or protected-scope violation. If delegation is unavailable, execute directly.
 
-## Result delivery
+## Final delivery
 
-Return the complete native artifact with every required section and evidence record. Do not replace it with a summary, abbreviated surrogate, or pointer to another result.
-
-Organize it under exactly these four top-level Markdown headings, in this order:
-
-1. `## Task, scope, and boundaries`
-2. `## Issues, weak points, and improvements`
-3. `## Unresolved evidence gaps`
-4. `## Skills used`
-
-In section 1, state the task and receiving use, target and current state, scope and exclusions, inputs, sources and evidence, authority, dependencies, and stop condition. In section 2, preserve every native result requirement from the selected node prompt as a subsection or item; do not omit, merge away, or summarize it. Section 3 contains only actual missing evidence or unanswered questions; it is not a confidence bucket.
-
-Organize the material result in section 2 as one issue-centered registry plus one deduplicated ordered fix and improvement register. An issue may be a defect, weakness, risk, decision gap, or improvement opportunity within the declared scope. For every issue record, provide:
-
-- a stable issue ID and concise issue or weak point;
-- evidence, consequence, and affected target or bounded context;
-- issue confidence and its evidence basis;
-- coverage limit or uncertainty; and
-- lifecycle state: `OPEN`, `DECIDED`, `APPLIED`, `VERIFIED`, `DEFERRED`, `REJECTED`, or `SUPERSEDED`.
-
-Every issue must map to one or more fix IDs or an explicit disposition explaining why no fix will be taken. For every fix or improvement variant, provide:
-
-- a stable fix ID, exact change, and every issue ID it addresses;
-- relationship: `alternative`, `complementary`, or `required prerequisite`;
-- fix confidence and its own evidence basis; do not inherit or restate the issue confidence as fix confidence;
-- expected result, trade-offs, owner and required authority, dependencies and execution order;
-- deterministic or semantic verification criterion;
-- recommendation: `preferred`, `acceptable`, or `rejected`; and
-- state: `PROPOSED`, `AUTHORIZED`, `APPLIED`, `VERIFIED`, `DEFERRED`, or `REJECTED`.
-
-Consolidate a duplicate fix that solves the same change predicate, even when it addresses several issues; retain all of its issue IDs. After the issue records, include one deduplicated, ordered fix and improvement register that references the same fix IDs and covers every unresolved issue or explicit disposition. Do not present an already applied or verified fix as open work.
-
-In section 4, list every skill actually executed for this result in execution order, using its exact canonical `$fpf <command>` invocation from the router, and state each skill's role in one concise sentence. Do not list tools, the base model, or merely proposed or recommended downstream skills as used. For a single-node result, list only that executed analytical command.
-
-Immediately after the skill list, add this compact Markdown subsection:
-
-#### FPF sources consulted (N read; M used)
-
-- `FPF-Knowledge-Graph/<relative-path>.md` — **used**: <brief evidence role>
-- `FPF-Knowledge-Graph/<relative-path>.md` — **screened only**
-
-List every FPF source document actually opened exactly once. **Used** means it materially supports a result; **screened only** means it was read but not relied on. Do not list merely discovered-but-unopened files, project evidence, tools, or absolute machine paths. Prefer repository-root-relative `FPF-Knowledge-Graph/...` paths; for a non-file-backed edition, use a stable URI or item identifier.
-
-Assign confidence to each material claim, issue, and fix as required above, and state its evidence basis. Confidence is claim-level epistemic confidence under the available evidence, not a statistical probability, artifact-wide score, importance, severity, authorization, acceptance, assurance, or gate result. Use these bands within the relevant issue or fix record:
-
-- **95% or above:** well-supported under the declared evidence, while still bounded by stated coverage.
-- **90–94%:** probable answer, but confirmation is still needed.
-- **Below 90%:** materially uncertain.
-
-Never round up to 95%, hide conflicting, unsupported, or insufficient-basis results, or omit a lower-confidence issue. Lower confidence changes neither an issue's place in the registry nor its required disposition. In section 3, for each actual evidence gap or unanswered question, give a stable gap ID, linked issue or fix IDs when applicable, the best current answer, missing evidence or input, consequence, and exact next evidence or action. A high-confidence determination that the basis is insufficient remains an issue in section 2; the missing evidence that prevents resolution belongs in section 3. If no evidence gaps remain, keep section 3 and write `None identified within the declared scope`.
-
-## Final conformance gate
-
-Immediately before returning, verify the complete artifact and repair it if any check fails:
-
-- The only top-level `##` headings are the four required analytical headings, in the required order. Native node headings are nested below section 2.
-- Every stated defect, weakness, risk, decision gap, or opportunity appears once in the issue registry with every required issue field and one or more mapped fix IDs or an explicit disposition.
-- Every fix appears once in the ordered fix register and explicitly includes: addressed issue IDs, relationship, independent fix confidence and basis, expected result, trade-offs, owner/authority, dependencies/order, verification, recommendation, and state.
-- `## Skills used` lists only canonical analytical commands that actually executed. A proposed, stopped-before-execution, or unexecuted suffix command is not used.
-- The source trace lists only FPF methodology pages actually opened and distinguishes `used` from `screened only`; skill prompts, Help pages, routing files, project evidence, and tools are not FPF methodology sources.
-- A persistence failure or other stop state is recorded inside the complete envelope. It never replaces the analysis with a short stop notice.
+After native analysis and after loading any enabled persistence protocol, load `references/fpf-analysis-output.md` before file creation and follow it as the final authority for response shape. Do not return before applying that finalizer.

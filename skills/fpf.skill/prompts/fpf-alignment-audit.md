@@ -79,5 +79,3 @@ Never upgrade an unchecked claim through reviewer consensus. Reviewers using one
 7. **Bounded verdict and stop/return condition**
 
 Do not use an unqualified “FPF-aligned,” “all good,” or “passed” verdict.
-
-Return these native requirements only inside the four-heading artifact required by `references/fpf-analysis-contract.md`. Apply that contract's final conformance gate after this prompt; native labels must not become top-level `##` headings.

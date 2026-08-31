@@ -48,8 +48,6 @@
     "Resolve `output_language` before output style.",
     "For output style, load at most one mode resource:",
     "Never preload an unselected resource.",
-    "## Task, scope, and boundaries",
-    "## Skills used",
     "references/fpf-review-campaign.md"
   ],
   "analytical_prompt_fragments": [
@@ -59,13 +57,8 @@
     "`$fpf plan` is the exception: it remains ephemeral",
     "never creates a report file",
     "never loads `references/fpf-report-persistence.md`",
-    "Execution boundary",
-    "## Routing decisions and recommendations",
-    "## Unresolved evidence gaps",
-    "Routing confidence is confidence that this call is the appropriate next route",
-    "It is not issue confidence, fix confidence",
-    "Section 3 contains only genuine missing evidence or unanswered routing questions",
-    "FPF methodology sources:** not applicable"
+    "references/fpf-plan-output.md",
+    "final authority for response shape"
   ],
   "service_skill_fragments": {
     "graph-fpf-convert-from-original": [
@@ -97,6 +90,8 @@
       "inside the logical installed skill directory",
       "repository_root",
       "prompts/fpf-plan.md",
+      "references/fpf-plan-output.md",
+      "references/fpf-analysis-output.md",
       "references/fpf-report-persistence.md",
       "references/fpf-composition.md",
       "CAPRMEDIO is optional"
@@ -109,17 +104,34 @@
       "references/fpf-context-connector.md",
       "bounded subsection",
       "references/fpf-review-campaign.md",
+      "references/fpf-analysis-output.md",
+      "final authority for response shape"
+    ],
+    "skills/fpf.skill/references/fpf-plan-output.md": [
+      "## Task, scope, and boundaries",
+      "## Routing decisions and recommendations",
+      "## Unresolved evidence gaps",
+      "## Skills used",
+      "For every handoff, include a separate record",
+      "Never label this field only `Handoff confidence`",
+      "include one copy-ready composition",
+      "List exactly `$fpf plan`",
+      "FPF methodology sources:** not applicable"
+    ],
+    "skills/fpf.skill/references/fpf-analysis-output.md": [
       "## Task, scope, and boundaries",
       "## Issues, weak points, and improvements",
       "## Unresolved evidence gaps",
       "## Skills used",
       "stable issue ID",
-      "issue confidence and its evidence basis",
-      "fix confidence and its own evidence basis",
+      "issue confidence and evidence basis",
+      "independent fix confidence and evidence basis",
       "relationship: `alternative`, `complementary`, or `required prerequisite`",
-      "Every issue must map to one or more fix IDs or an explicit disposition",
-      "deduplicated, ordered fix and improvement register",
-      "#### FPF sources consulted ("
+      "mapped fix IDs or an explicit no-fix disposition",
+      "exactly one `### Fix and improvement register`",
+      "### Composition receipt",
+      "context-ledger read/used/deferred counts",
+      "### FPF sources consulted ("
     ],
     "skills/fpf.skill/references/fpf-context-connector.md": [
       "Direct Markdown resolution",
@@ -166,14 +178,12 @@
       "One repair and improvement register",
       "every issue must map to a fix or an explicit disposition",
       "one bounded campaign, not an autonomous review-and-fix loop",
-      "Consolidated issues and weak points",
-      "Consolidated fixes and improvements",
       "issue confidence, its evidence basis",
       "fix confidence and its own evidence basis",
       "relationship: `alternative`, `complementary`, or `required prerequisite`",
       "Persist once",
-      "#### Composition receipt",
-      "semantic execution record"
+      "references/fpf-analysis-output.md",
+      "one consolidated analytical envelope"
     ],
     "skills/fpf.skill/references/fpf-output-style-general.md": [
       "ordinary general language",
@@ -212,6 +222,14 @@
       "## Open questions (confidence <95%)"
     ],
     "skills/fpf.skill/prompts/fpf-plan.md": [
+      "## High-confidence results (>=95%)",
+      "## Open questions (confidence <95%)"
+    ],
+    "skills/fpf.skill/references/fpf-plan-output.md": [
+      "## High-confidence results (>=95%)",
+      "## Open questions (confidence <95%)"
+    ],
+    "skills/fpf.skill/references/fpf-analysis-output.md": [
       "## High-confidence results (>=95%)",
       "## Open questions (confidence <95%)"
     ]

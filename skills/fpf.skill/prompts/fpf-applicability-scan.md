@@ -50,5 +50,3 @@ Use stable citations appropriate to the source, such as file-and-line, URI-and-s
 5. **Stop/return condition**
 
 Do not claim that FPF made, approved, or authorized a project decision.
-
-Return these native requirements only inside the four-heading artifact required by `references/fpf-analysis-contract.md`. Apply that contract's final conformance gate after this prompt; native labels must not become top-level `##` headings.

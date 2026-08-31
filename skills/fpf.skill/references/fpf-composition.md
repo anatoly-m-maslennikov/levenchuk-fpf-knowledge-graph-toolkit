@@ -90,39 +90,12 @@ The composition is one bounded campaign, not an autonomous review-and-fix loop.
 
 Stop when the frontier and profile are unchanged and no permitted transition remains.
 
-## Final consolidated artifact
-
-Return exactly one complete Markdown artifact under the standard four top-level headings:
-
-1. `## Task, scope, and boundaries`
-2. `## Issues, weak points, and improvements`
-3. `## Unresolved evidence gaps`
-4. `## Skills used`
-
-Preserve every material native result from executed nodes inside this envelope. Under `## Issues, weak points, and improvements` include, in order:
-
-1. **Composition execution and stop state** — requested sequence, executed prefix, unexecuted suffix, handoffs, gates, and final stop reason.
-2. **Consolidated issues and weak points** — the complete deduplicated issue registry within scope, including all confidence levels and explicit dispositions.
-3. **Consolidated fixes and improvements** — the single mapped, deduplicated, ordered fix register, including fix-specific confidence and recommendation.
-4. **Verification, residual risk, and coverage** — applied and verified actions, unresolved findings, inspected scope, exclusions, and successor conditions.
-
-Keep lower-confidence issues and fixes in their respective registries with their IDs, mappings, and evidence bases. Under `## Unresolved evidence gaps`, list only missing evidence or unanswered questions, each with a stable gap ID, linked issue or fix IDs when applicable, the best current answer, consequence, and exact next evidence or action. Do not hide lower-confidence issues or fixes to make the consolidated lists appear complete.
-
-Under `## Skills used`, list every node actually executed in order. Then include one unioned `#### FPF sources consulted (N read; M used)` subsection. List each opened source once and identify the nodes for which it was used or screened. Do not list an unexecuted suffix node as used.
-
-Under `## Task, scope, and boundaries`, include a compact `#### Composition receipt` containing the exact invocation, selected profile, requested sequence, executed prefix, unexecuted suffix, one outcome per typed edge, exact final `STOP_*` state or `COMPLETE`, context-ledger read/used/deferred counts, and issue/fix IDs carried into the final registries. This is a semantic execution record, not a timing log, cryptographic receipt, or proof that an external mutation occurred.
-
 ## Persist once
 
 Resolve output and report settings once for the whole composition. Intermediate node instructions to return and persist complete artifacts apply to their internal records; this composition contract replaces separate delivery with the one final consolidated artifact.
 
 When saving is on, load `references/fpf-report-persistence.md` once after consolidation and use report node ID `composition`. Save exactly the same Markdown returned in chat. CAPRMEDIO mode creates one Analysis Report Atom for the complete composition scope, not one Atom per node.
 
-## Final conformance gate
+## Final delivery
 
-Immediately before returning, apply the analytical contract's final conformance gate to the consolidated artifact, then verify the composition-specific facts:
-
-- The composition receipt contains the exact requested sequence, executed prefix, unexecuted suffix, every typed-edge outcome, and the exact final `STOP_*` state or `COMPLETE`.
-- A node appears under `## Skills used` only if its native analysis actually executed. Evaluating a handoff and stopping before the consumer runs does not make that consumer a used skill.
-- One complete consolidated issue registry and one complete consolidated fix register cover all executed-node findings; no short stop response or separate node report replaces them.
-- Every issue maps to a fix or disposition, and every fix includes expected result, trade-offs, verification, and recommendation in addition to the other analytical-contract fields.
+After the composition and after loading its one enabled persistence protocol, load `references/fpf-analysis-output.md` before file creation. Use its composition receipt extension and one consolidated analytical envelope as the final authority; never return native node layouts or a short stop response.

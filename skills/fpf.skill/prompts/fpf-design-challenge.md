@@ -61,5 +61,3 @@ Use stable citations appropriate to the source, such as file-and-line, URI-and-s
 5. **Return to project authority**
 
 Do not convert an FPF recommendation into authorization, assurance, or a gate result.
-
-Return these native requirements only inside the four-heading artifact required by `references/fpf-analysis-contract.md`. Apply that contract's final conformance gate after this prompt; native labels must not become top-level `##` headings.

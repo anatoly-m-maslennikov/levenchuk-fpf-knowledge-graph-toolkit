@@ -26,9 +26,9 @@ OLD_CONFIDENCE_BUCKET_HEADINGS = (
 
 class OutputContractTests(unittest.TestCase):
     def test_issue_centered_contract_replaces_confidence_buckets(self) -> None:
-        analytical = (SKILL_ROOT / "references/fpf-analysis-contract.md").read_text(encoding="utf-8")
+        analytical = (SKILL_ROOT / "references/fpf-analysis-output.md").read_text(encoding="utf-8")
         composition = (SKILL_ROOT / "references/fpf-composition.md").read_text(encoding="utf-8")
-        plan = (SKILL_ROOT / "prompts/fpf-plan.md").read_text(encoding="utf-8")
+        plan = (SKILL_ROOT / "references/fpf-plan-output.md").read_text(encoding="utf-8")
 
         for text in (analytical, composition, plan):
             for old_heading in OLD_CONFIDENCE_BUCKET_HEADINGS:
@@ -41,17 +41,15 @@ class OutputContractTests(unittest.TestCase):
             "## Skills used",
         ):
             self.assertIn(heading, analytical)
-            self.assertIn(heading, composition)
 
         for requirement in (
             "stable issue ID",
-            "issue confidence and its evidence basis",
-            "fix confidence and its own evidence basis",
+            "issue confidence and evidence basis",
+            "independent fix confidence and evidence basis",
             "relationship: `alternative`, `complementary`, or `required prerequisite`",
-            "Every issue must map to one or more fix IDs or an explicit disposition",
-            "deduplicated, ordered fix and improvement register",
-            "## Final conformance gate",
-            "A persistence failure or other stop state",
+            "mapped fix IDs or an explicit no-fix disposition",
+            "exactly one `### Fix and improvement register`",
+            "A persistence failure changes the report outcome",
         ):
             self.assertIn(requirement, analytical)
 
@@ -62,15 +60,17 @@ class OutputContractTests(unittest.TestCase):
             "fix confidence and its own evidence basis",
             "every issue must map to a fix or an explicit disposition",
             "one consolidated register",
-            "#### Composition receipt",
-            "one outcome per typed edge",
-            "semantic execution record",
-            "A node appears under `## Skills used` only if its native analysis actually executed",
         ):
             self.assertIn(requirement, composition)
+        for requirement in (
+            "### Composition receipt", "one result for every typed edge",
+            "context-ledger read/used/deferred counts", "One consolidated registry pair",
+            "Do not list a consumer that stopped at its incoming handoff",
+        ):
+            self.assertIn(requirement, analytical)
 
     def test_plan_has_a_distinct_routing_contract(self) -> None:
-        plan = (SKILL_ROOT / "prompts/fpf-plan.md").read_text(encoding="utf-8")
+        plan = (SKILL_ROOT / "references/fpf-plan-output.md").read_text(encoding="utf-8")
         for heading in (
             "## Task, scope, and boundaries",
             "## Routing decisions and recommendations",
@@ -79,20 +79,18 @@ class OutputContractTests(unittest.TestCase):
         ):
             self.assertIn(heading, plan)
         for requirement in (
-            "**Routing confidence** and its concrete routing-evidence basis",
-            "It is not issue confidence, fix confidence",
-            "Section 3 contains only genuine missing evidence or unanswered routing questions",
-            "FPF methodology sources:** not applicable",
-            "Execution boundary",
-            "## Final conformance gate",
+            "**Routing confidence** with concrete routing evidence",
+            "List only missing evidence or unanswered routing questions",
+            "**FPF methodology sources:** not applicable",
+            "explicit statement that no proposed analytical node executed",
             "include one copy-ready composition",
-            "lists exactly `$fpf plan`",
-            "Every handoff is a separate routing decision",
-            "every proposed handoff separately has routing confidence",
+            "List exactly `$fpf plan`",
+            "For every handoff, include a separate record",
+            "Never label this field only `Handoff confidence`",
         ):
             self.assertIn(requirement, plan)
 
-    def test_every_analytical_node_yields_final_layout_to_shared_contract(self) -> None:
+    def test_runtime_owns_one_shared_output_finalizer_per_result_kind(self) -> None:
         marker = "Apply that contract's final conformance gate after this prompt"
         prompts = (
             "problem-frame", "structure-recover", "applicability-scan", "sota-harvest",
@@ -101,9 +99,12 @@ class OutputContractTests(unittest.TestCase):
         )
         for name in prompts:
             text = (SKILL_ROOT / f"prompts/fpf-{name}.md").read_text(encoding="utf-8")
-            self.assertIn(marker, text, name)
+            self.assertNotIn(marker, text, name)
             for heading in OLD_CONFIDENCE_BUCKET_HEADINGS:
                 self.assertNotIn(heading, text, name)
+        runtime = (SKILL_ROOT / "prompts/fpf-runtime.md").read_text(encoding="utf-8")
+        self.assertIn("references/fpf-plan-output.md` last", runtime)
+        self.assertIn("references/fpf-analysis-output.md` last", runtime)
 
     def test_russian_area_help_preserves_canonical_command_ids(self) -> None:
         commands = (

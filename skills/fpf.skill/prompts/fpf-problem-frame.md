@@ -32,5 +32,3 @@ Produce a read-only **Problem Frame Record**. Stop at the earliest honest proble
 5. **Acceptance boundary and exact next admissible step**
 
 Do not return a solution proposal, option ranking, implementation plan, or project authorization.
-
-Return these native requirements only inside the four-heading artifact required by `references/fpf-analysis-contract.md`. Apply that contract's final conformance gate after this prompt; native labels must not become top-level `##` headings.
