@@ -120,6 +120,8 @@ In section 2, keep every native requirement below as a subsection or item; do no
 
 Routing confidence is confidence that this call is the appropriate next route under the available task facts. It is not issue confidence, fix confidence, a statistical probability, a quality score, an authorization, or a claim that an analytical result will be correct. Keep lower-confidence routing decisions in section 2 with their basis and a confirmation condition; do not move them to section 3 merely because they are below a numeric threshold.
 
+Every handoff is a separate routing decision. For each proposed handoff, state **Routing confidence**, the concrete graph edge and task facts supporting it, and the evidence or authority condition that could prevent or change that handoff. Confidence stated for either adjacent call does not satisfy the handoff record.
+
 Section 3 contains only genuine missing evidence or unanswered routing questions that could materially change routing. For each, state the question or gap, consequence, exact evidence or decision needed, owner when known, and the affected proposed call(s). If none exist, write `None identified within the declared scope`.
 
 In section 4, list every skill actually executed for this result in execution order, using its exact canonical `$fpf <command>` invocation, and state each skill's role in one concise sentence. Do not list tools, the base model, or merely proposed or recommended downstream skills as used. If no other skill was executed, list only `$fpf plan`; skills in the proposed sequence remain recommendations, not executed skills.
@@ -151,6 +153,6 @@ Immediately before returning, verify the result mechanically and repair it if an
 - The only top-level `##` headings are the four required Plan headings, in the required order.
 - `## Skills used` lists exactly `$fpf plan`; every downstream command is proposed, not used.
 - Every proposed command is copied exactly from the command graph. Normalize a complete alias to its canonical command, but never invent a command name. Keep a typo as an explicit correction proposal; for a meta-plan, use the corrected command only when the correction is uniquely supported.
-- Every proposed call has routing confidence, concrete routing evidence, prerequisites, handoff, expected artifact, and run/stop/authority conditions.
+- Every proposed call and every proposed handoff separately has routing confidence, concrete routing evidence, prerequisites, expected artifact or transferred evidence, and run/stop/authority conditions.
 - When two or more nodes form one requested stack, include one copy-ready composition in the form `$fpf <canonical command> + <canonical command> ... <shared task>`. Do not substitute a list of separate calls for this composition.
 - The original residual task, exclusions, and order are preserved; no analytical node ran, no FPF methodology source was consulted, and no report was saved.

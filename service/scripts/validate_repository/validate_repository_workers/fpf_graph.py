@@ -161,16 +161,22 @@ def _validate_edges(edges: list[dict[str, object]], analytical: set[str]) -> lis
 def _validate_help_inventory(skill_root: Path, nodes: list[dict[str, object]]) -> list[str]:
     analytical = [node for node in nodes if node.get("persist_report")]
     errors: list[str] = []
-    for language, field in (("en", "command"), ("ru", "localized_command")):
+    for language in ("en", "ru"):
         for area in ("framework", "software", "skills"):
             path = skill_root / f"prompts/help/{language}/fpf-help-{area}.md"
             text = path.read_text(encoding="utf-8")
             missing = [
                 str(node["id"]) for node in analytical
-                if f"`$fpf {node[field]} " not in text
+                if f"`$fpf {node['command']} " not in text
             ]
             if missing:
                 errors.append(f"FPF {language} Help inventory is incomplete: {area}:{missing}")
+            missing_aliases = [
+                str(node["id"]) for node in analytical
+                if language == "ru" and f"псевдоним: `{node['localized_command']}`" not in text
+            ]
+            if missing_aliases:
+                errors.append(f"FPF ru Help aliases are incomplete: {area}:{missing_aliases}")
     return errors
 
 

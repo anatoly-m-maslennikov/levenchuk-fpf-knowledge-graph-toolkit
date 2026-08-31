@@ -20,13 +20,13 @@ Canonical identifiers remain English and canonical invocation is `$fpf`; Russian
 
 ## Execute the selected Markdown node
 
-For an explicit legal composition, load `references/fpf-composition.md` and `references/fpf-context-connector.md` completely. Execute the selected prompts from left to right, loading only the current prompt and its selected command/profile FPF bindings. At each edge, enforce its typed producer output, consumer input, required evidence, gate predicate, and exact `STOP_*` state. Share one campaign and finding registry, stop at every evidence or authority gate, and return and persist one consolidated artifact. Do not emit or save intermediate node reports.
+For an explicit legal composition, load `references/fpf-composition.md` and `references/fpf-context-connector.md` completely. Execute the selected prompts from left to right, loading only the current prompt and its selected command/profile FPF bindings. At each edge, enforce its typed producer output, consumer input, required evidence, gate predicate, and exact `STOP_*` state. Share one campaign and finding registry, stop at every evidence or authority gate, and return and persist one consolidated artifact. Do not emit or save intermediate node reports. Immediately before final delivery, re-read and apply `Final consolidated artifact` and `Final conformance gate` from `references/fpf-composition.md`; these sections are later and authoritative over every native node layout.
 
 For a single node:
 
 - `help`: load exactly the selected localized Help page, return it, and stop. Never save a report.
 - `plan`: load `prompts/fpf-plan.md`, return only the call plan, and stop. Never execute proposed nodes or save a report.
-- Any analytical node: load `references/fpf-analysis-contract.md`, `references/fpf-context-connector.md`, and exactly the selected prompt from the command graph. Pass the residual task, optional selected profile, and directly inspected FPF pages as methodology context.
+- Any analytical node: load exactly the selected prompt from the command graph and `references/fpf-context-connector.md`, then load `references/fpf-analysis-contract.md` last. Pass the residual task, optional selected profile, and directly inspected FPF pages as methodology context. The later shared contract controls final delivery; a node's native result list never defines alternative top-level headings.
 
 Before returning, run the final conformance gate at the end of the selected Plan, analytical, or composition contract. The selected node's native sections belong inside that contract envelope and never replace it. A stop, missing input, unavailable report write, or unexecuted composition suffix changes the recorded state; it never permits a shorter response envelope.
 

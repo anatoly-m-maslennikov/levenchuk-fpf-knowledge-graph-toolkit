@@ -32,3 +32,5 @@ Produce a read-only **Evaluation Design Record**. Define how a bounded target wi
 5. **Rerun contract and pass/fail/abstain/stop conditions**
 
 Do not report evaluation results, improvement, assurance, approval, or release authorization.
+
+Return these native requirements only inside the four-heading artifact required by `references/fpf-analysis-contract.md`. Apply that contract's final conformance gate after this prompt; native labels must not become top-level `##` headings.

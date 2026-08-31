@@ -97,12 +97,17 @@ class MarkdownFpfGraphTests(unittest.TestCase):
 
     def test_localized_area_help_inventory_is_derived_from_graph(self) -> None:
         analytical = [node for node in self.nodes.values() if node["persist_report"]]
-        for language, field in (("en", "command"), ("ru", "localized_command")):
+        for language in ("en", "ru"):
             for area in ("framework", "software", "skills"):
                 text = (SKILL_ROOT / f"prompts/help/{language}/fpf-help-{area}.md").read_text(
                     encoding="utf-8"
                 )
-                self.assertTrue(all(f"`$fpf {node[field]} " in text for node in analytical))
+                self.assertTrue(all(f"`$fpf {node['command']} " in text for node in analytical))
+                if language == "ru":
+                    self.assertTrue(all(
+                        f"псевдоним: `{node['localized_command']}`" in text
+                        for node in analytical
+                    ))
 
 
 if __name__ == "__main__":

@@ -45,3 +45,5 @@ Record:
 4. **SoTA_Set, traditions, palette, and bridges**
 5. **Disagreements, exclusions, and insufficient basis**
 6. **Receiving use and refresh/return condition**
+
+Return these native requirements only inside the four-heading artifact required by `references/fpf-analysis-contract.md`. Apply that contract's final conformance gate after this prompt; native labels must not become top-level `##` headings.

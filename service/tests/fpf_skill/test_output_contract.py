@@ -87,8 +87,35 @@ class OutputContractTests(unittest.TestCase):
             "## Final conformance gate",
             "include one copy-ready composition",
             "lists exactly `$fpf plan`",
+            "Every handoff is a separate routing decision",
+            "every proposed handoff separately has routing confidence",
         ):
             self.assertIn(requirement, plan)
+
+    def test_every_analytical_node_yields_final_layout_to_shared_contract(self) -> None:
+        marker = "Apply that contract's final conformance gate after this prompt"
+        prompts = (
+            "problem-frame", "structure-recover", "applicability-scan", "sota-harvest",
+            "options-explore", "evaluation-design", "design-challenge", "decision-synthesize",
+            "quality-improve", "alignment-audit",
+        )
+        for name in prompts:
+            text = (SKILL_ROOT / f"prompts/fpf-{name}.md").read_text(encoding="utf-8")
+            self.assertIn(marker, text, name)
+            for heading in OLD_CONFIDENCE_BUCKET_HEADINGS:
+                self.assertNotIn(heading, text, name)
+
+    def test_russian_area_help_preserves_canonical_command_ids(self) -> None:
+        commands = (
+            "problem frame", "structure recover", "applicability scan", "sota harvest",
+            "options explore", "evaluation design", "design challenge", "decision synthesize",
+            "quality improve", "alignment audit",
+        )
+        for area in ("framework", "software", "skills"):
+            text = (SKILL_ROOT / f"prompts/help/ru/fpf-help-{area}.md").read_text(encoding="utf-8")
+            for command in commands:
+                self.assertIn(f"`$fpf {command} ", text, (area, command))
+            self.assertIn("псевдоним", text)
 
     def test_repository_validator_rejects_a_confidence_bucket_heading(self) -> None:
         with temporary_workspace(prefix="fpf-output-contract-") as temporary:

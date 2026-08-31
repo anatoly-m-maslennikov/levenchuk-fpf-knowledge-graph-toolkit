@@ -47,3 +47,5 @@ If “interesting” remains undefined, ask for the missing distinctions or retu
 4. **Parity plan/report**, when applicable
 5. **Retained options, exclusions, and evidence gaps**
 6. **Stop condition and decision handoff**
+
+Return these native requirements only inside the four-heading artifact required by `references/fpf-analysis-contract.md`. Apply that contract's final conformance gate after this prompt; native labels must not become top-level `##` headings.
