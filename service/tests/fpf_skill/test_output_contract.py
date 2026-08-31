@@ -90,6 +90,13 @@ class OutputContractTests(unittest.TestCase):
         ):
             self.assertIn(requirement, plan)
 
+    def test_output_finalizers_accept_h1_or_h2_without_relaxing_names(self) -> None:
+        for name in ("fpf-plan-output.md", "fpf-analysis-output.md"):
+            text = (SKILL_ROOT / f"references/{name}").read_text(encoding="utf-8")
+            self.assertIn("may be Markdown `#` or `##`", text)
+            self.assertIn("one consistent top level", text)
+            self.assertIn("nested headings must be deeper", text)
+
     def test_runtime_owns_one_shared_output_finalizer_per_result_kind(self) -> None:
         marker = "Apply that contract's final conformance gate after this prompt"
         prompts = (

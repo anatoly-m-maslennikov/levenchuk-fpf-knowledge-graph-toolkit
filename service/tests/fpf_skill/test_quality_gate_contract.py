@@ -162,6 +162,11 @@ class QualityGateContractTests(unittest.TestCase):
         self.assertIn("stopped before native execution", subject)
         self.assertIn("not methodology sources", subject)
 
+    def test_evaluator_treats_h1_and_h2_as_equivalent_top_levels(self) -> None:
+        evaluator = (ASSETS / "evaluator-prompt.md").read_text(encoding="utf-8")
+        self.assertEqual(2, evaluator.count("Accept Markdown `#` or `##`"))
+        self.assertEqual(2, evaluator.count("never fail only because one of those two depths"))
+
 
 class CodexRunnerContractTests(unittest.TestCase):
     def test_runner_is_ephemeral_read_only_structured_and_noninteractive(self) -> None:

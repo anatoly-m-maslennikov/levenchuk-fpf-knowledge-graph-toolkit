@@ -2,7 +2,7 @@
 
 Load this file after `prompts/fpf-plan.md` and after all routing decisions are complete. It is the final authority for Plan response shape. Do not execute a proposed call, inspect FPF methodology, save a report, or emit an issue/fix registry.
 
-Start the response at the first heading below. Use these four top-level `##` headings exactly once and in this order; use only `###` or deeper headings inside them.
+Start the response at the first heading below. Use these four canonical heading names exactly once and in this order at one consistent top level. That top level may be Markdown `#` or `##`; nested headings must be deeper.
 
 ## Task, scope, and boundaries
 
@@ -31,4 +31,4 @@ List exactly `$fpf plan` and its routing role. Do not list proposed downstream c
 - **Routing basis used:** the embedded command graph, skill catalog, selection rules, and sequencing rules.
 - **FPF methodology sources:** not applicable; Plan opens no FPF methodology page and makes no methodology claim.
 
-Before returning, verify that the only top-level headings are the four above; every call and every handoff says **Routing confidence** and gives concrete evidence; every proposed command is canonical; `commands_executed` can contain only `$fpf plan`; methodology sources are empty; and `report_saved` is false.
+Before returning, verify that the only top-level heading names are the four above and their depth is consistent; every call and every handoff says **Routing confidence** and gives concrete evidence; every proposed command is canonical; `commands_executed` can contain only `$fpf plan`; methodology sources are empty; and `report_saved` is false.
