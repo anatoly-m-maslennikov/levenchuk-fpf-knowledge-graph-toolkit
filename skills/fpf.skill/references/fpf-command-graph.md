@@ -1,18 +1,19 @@
 # FPF Markdown Command Graph
 
-This file is the complete runtime routing index. It is Markdown data, not an instruction to execute another program. Load it for every non-fast-Help invocation, select one command or one explicit legal composition, then load only the selected prompt and optional area profile file.
+This file is the complete runtime routing index. It is Markdown data, not an instruction to execute another program. Load it for every non-fast-Help invocation. New requests are Plan-first; direct analytical execution requires an explicit operator instruction to proceed without a Plan.
 
 ## Routing precedence
 
 1. Strip one leading `$fpf` or textual `/fpf` marker and preserve the remaining original text.
-2. Recognize `plan <command> + ...` before executable composition. It proposes a stack and never executes it.
-3. Treat spaced ` + ` as composition only when every segment before the shared task starts with a complete canonical command or alias. Otherwise `+` is ordinary task text.
-4. Prefer the longest complete command or alias at the beginning of the invocation. Preserve every character after that matched span as the task.
-5. Without an explicit command, use routing cues only when one analytical node is clearly stronger than every alternative. Match complete words or phrases; never match substrings such as `API` inside `capital`.
-6. When intent is ambiguous, select `plan`. A correction suggestion is never an executed route.
-7. Select at most one task profile after selecting the command. A profile specializes context and never changes analytical intent.
+2. Apply the manager-supplied authority mode. `plan-first` is the default for every new request. `direct-without-plan` is valid only after an explicit operator bypass instruction; never infer it from a command, `+` stack, `run`, `do it`, `now`, or urgency.
+3. In plan-first mode, recognize an explicit `plan` prefix, one command, or a legal `<command> + ...` stack as constraints on the proposed Plan. They never execute before exact `do`.
+4. Treat spaced ` + ` as a requested stack only when every segment before the shared task starts with a complete canonical command or alias. Otherwise `+` is ordinary task text. A valid requested stack is normalized to canonical commands and returned as a Plan.
+5. Prefer the longest complete command or alias at the beginning of the invocation. Preserve every character after that matched span as the task. Remove only an explicit without-Plan authority directive from the residual task.
+6. Without an explicit command, use routing cues only when one analytical node is clearly stronger than every alternative. Match complete words or phrases; never match substrings such as `API` inside `capital`.
+7. In plan-first mode, return the smallest useful Plan even for one selected node. In direct-without-plan mode, ambiguity produces a blocking question or exact `STOP_*` state; it never silently changes to a Plan at `step-001/`.
+8. A correction suggestion is never an executed route. Select at most one task profile after selecting the command; a profile specializes context and never changes analytical intent.
 
-Canonical command identifiers remain English. Russian commands and aliases select the same nodes. `help` and `plan` never save reports; every node marked `yes` under `Saves report` is analytical and may save one final report.
+Canonical command identifiers remain English. Russian commands and aliases select the same nodes. `help` and `plan` never save reports; every node marked `yes` under `Saves report` is analytical and may save one final report only after exact `do` or an explicit without-Plan bypass.
 
 ## Areas and profile files
 
@@ -60,6 +61,7 @@ Each row is a typed handoff contract. The producer must emit the declared output
 | `applicability-scan` | `evaluation-design` | governing evaluation patterns | evaluation-method constraints | supported pattern claims and receiving quality question | patterns constrain a testable evaluation | `STOP_NO_EVALUATION_TARGET` |
 | `sota-harvest` | `options-explore` | bounded current evidence map | evidence-backed option basis | sourced findings, conflicts, and coverage limits | evidence supports distinct candidates without silent choice | `STOP_NO_OPTION_BASIS` |
 | `sota-harvest` | `evaluation-design` | current evaluation-practice map | evidence-backed evaluation inputs | sourced practices, limits, and applicability conditions | practices can be translated into target-specific checks | `STOP_NO_EVALUATION_TARGET` |
+| `sota-harvest` | `design-challenge` | bounded current evidence map | evidence-grounded proposal challenge | sourced findings, applicability limits, and a concrete proposal or current design | the proposal can be distinguished from the evidence map and challenged against it | `STOP_NO_CHALLENGE_TARGET` |
 | `structure-recover` | `options-explore` | verified current-state structure | baseline and change boundary | carrier-backed as-is map and unresolved structural gaps | baseline is sufficient to distinguish alternatives | `STOP_NO_OPTION_BASIS` |
 | `structure-recover` | `evaluation-design` | exact bearers, relations, and boundaries | observable evaluation surface | verified carriers and relation evidence | target observations can be bound to named bearers | `STOP_NO_EVALUATION_TARGET` |
 | `structure-recover` | `design-challenge` | verified recovered current state | proposal-versus-current-state challenge basis | as-is carriers and separately identified proposal | proposal and current state are distinguishable | `STOP_NO_CHALLENGE_TARGET` |

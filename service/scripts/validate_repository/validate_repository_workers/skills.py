@@ -160,14 +160,20 @@ def _validate_scenario(
         errors.append(f"empty call route: {scenario_id}")
     if action in {"stop", "external_action"} and sequence:
         errors.append(f"non-empty stop route: {scenario_id}")
-    if expected_mode not in {"single", "sequence", "composition", "plan", "closure", "stop", "external", "full"}:
+    allowed_modes = {"single", "sequence", "composition", "composition-direct", "plan", "closure", "stop", "external", "full"}
+    if expected_mode not in allowed_modes:
         errors.append(f"invalid expected routing mode: {scenario_id}")
-    if expected_mode in {"sequence", "composition", "plan"}:
+    if expected_mode in {"sequence", "composition", "composition-direct"}:
         pairs = zip(sequence, sequence[1:])
         if len(sequence) < 2 or any(pair not in edges for pair in pairs):
             errors.append(f"illegal stacked routing sequence: {scenario_id}")
-    if expected_mode == "plan" and action != "calls":
-        errors.append(f"meta-plan routing scenario must return calls: {scenario_id}")
+    if expected_mode == "plan":
+        if not sequence or any(pair not in edges for pair in zip(sequence, sequence[1:])):
+            errors.append(f"illegal planned routing sequence: {scenario_id}")
+        if action != "plans":
+            errors.append(f"plan routing scenario must return a proposal: {scenario_id}")
+    if expected_mode == "composition-direct" and action != "calls":
+        errors.append(f"direct composition routing scenario must execute calls: {scenario_id}")
     return errors, scenario_id, sequence
 
 
@@ -180,9 +186,7 @@ def validate_routing_scenarios(root: Path, _end_user_names: list[str]) -> list[s
     if not scenarios:
         return ["Markdown routing scenarios must be a non-empty table"]
     routable = {node["id"] for node in manifest["nodes"] if node.get("persist_report")}
-    covered: set[str] = set()
-    ids: list[str] = []
-    errors: list[str] = []
+    covered, ids, errors = set(), [], []
     edges = {(item.get("from"), item.get("to")) for item in manifest.get("edges", [])}
     for scenario in scenarios:
         scenario_errors, scenario_id, sequence = _validate_scenario(scenario, routable, edges)

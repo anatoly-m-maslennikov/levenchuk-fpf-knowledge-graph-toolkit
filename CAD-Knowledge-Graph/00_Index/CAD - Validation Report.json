@@ -1,0 +1,16 @@
+{
+  "hubs": 7,
+  "pages": 17,
+  "ids": 14,
+  "markdown_files": 27,
+  "broken_links_count": 0,
+  "broken_links_sample": [],
+  "unresolved_relations_count": 0,
+  "unresolved_relations_sample": [],
+  "source": "CONTROL-ARCHITECTURE-DESIGN-PRINCIPLES-FRAMEWORK.md",
+  "out_dir": "CAD-Knowledge-Graph",
+  "source_revision": "fb3b6a4ad1d51d732a365f75f7d68337c7a751e2",
+  "source_sha256": "72d4c479741c828c7df8b70874ece00756a0e3d377f69f7f1d89f3fbe21704e7",
+  "generated_on": "2026-10-25",
+  "framework": "CAD"
+}

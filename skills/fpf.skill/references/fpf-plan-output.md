@@ -1,34 +1,25 @@
 # FPF Plan Output Finalizer
 
-Load this file after `prompts/fpf-plan.md` and after all routing decisions are complete. It is the final authority for Plan response shape. Do not execute a proposed call, inspect FPF methodology, save a report, or emit an issue/fix registry.
+Load this file after `prompts/fpf-plan.md` and after all routing decisions are complete. It is the final authority for Plan response shape. Do not execute a proposed step, inspect FPF methodology, save a report, emit an issue/fix registry, or include copy-ready invocation boilerplate.
 
-Start the response at the first heading below. Use these four canonical heading names exactly once and in this order at one consistent top level. That top level may be Markdown `#` or `##`; nested headings must be deeper.
+Return exactly one compact numbered Plan:
 
-## Task, scope, and boundaries
+```markdown
+# Proposed plan
 
-State the task and receiving use, target and current state, scope and exclusions, inputs, routing evidence, authority, dependencies, and overall stop condition.
+1. **`$fpf <canonical command>`** - <concise action, inputs, boundary, expected result, and stop condition>.
+2. **`$fpf <canonical command>`** - <concise action>; uses the complete validated result of step 1 as <named handoff>.
+3. **`$fpf <canonical command>`** - <concise action>; uses the complete validated result of step 2 as <named handoff>.
 
-## Routing decisions and recommendations
+Reply `do` to execute this plan.
+```
 
-For every proposed call, include one record with: exact canonical `$fpf <command>`; target and purpose; prerequisites and inputs; prior handoff; expected native artifact or join artifact; selection and skipped-route basis; **Routing confidence** with concrete routing evidence; and run, stop, and authority conditions.
+Use one to the smallest useful number of steps. Number every step once in execution order. Preserve exact canonical command identifiers with spaces. Each step must state enough target, scope, input, result, dependency, authority, and stop information to execute safely, but remain one compact list item. Step N after the first explicitly names the result inherited from step N-1. The default blocking-decision threshold is 95% and is omitted from the compact Plan; when the operator overrides it, append `blocking threshold: <value>% (operator override)` to step 1.
 
-For every handoff, include a separate record with: producer and consumer canonical commands; transferred evidence; required graph edge and gate; **Routing confidence** with concrete routing evidence; and the exact stop or confirmation condition. Never label this field only `Handoff confidence`.
+Do not add “High-confidence results,” “Proposed sequence,” “Copy-ready task,” the old four-section Plan envelope, a separate skills list, or a copied composition command. Routing details live in metadata unless a correction, unresolved choice, gate, or stop must be visible to the operator.
 
-When two or more nodes form one requested stack, include one copy-ready composition using exact canonical commands and the complete shared task. For ambiguous intent, propose only exact canonical alternatives from the command graph; never emit a generic `$fpf <prose task>` call.
+If a route-affecting question prevents a safe executable Plan, replace the affected step with two or three canonical variants and their impacts; do not tell the operator to reply `do` until the Plan is unambiguous. A merely lower-confidence analytical finding is not a Plan question.
 
-Preserve the native Plan requirements: routing assumptions, proposed sequence, copy-ready task for each call, inputs and handoffs, independent calls and joins, skipped skills, and the explicit statement that no proposed analytical node executed.
+The final line is exactly `Reply \`do\` to execute this plan.` only when every numbered step is executable. It means the proposed analytical nodes have not run, FPF methodology sources were not consulted, no report was saved, and exact `do` will approve only this most recent Plan.
 
-## Unresolved evidence gaps
-
-List only missing evidence or unanswered routing questions that can change the route. For each, state consequence, exact evidence or decision needed, owner when known, and affected proposed calls. Otherwise write `None identified within the declared scope`.
-
-## Skills used
-
-List exactly `$fpf plan` and its routing role. Do not list proposed downstream commands, even when marked proposed.
-
-### Routing basis and FPF methodology sources
-
-- **Routing basis used:** the embedded command graph, skill catalog, selection rules, and sequencing rules.
-- **FPF methodology sources:** not applicable; Plan opens no FPF methodology page and makes no methodology claim.
-
-Before returning, verify that the only top-level heading names are the four above and their depth is consistent; every call and every handoff says **Routing confidence** and gives concrete evidence; every proposed command is canonical; `commands_executed` can contain only `$fpf plan`; methodology sources are empty; and `report_saved` is false.
+Before writing `candidate.md`, verify: the only top-level heading is `Proposed plan`; the body is one ordered list; every command is canonical; every later step names its inherited prior result; any non-default threshold is visible in step 1 and matches metadata; there is no copy-ready invocation; `commands_executed` contains only `$fpf plan`; methodology sources are empty; persistence is off; and the approval line is present only for an executable Plan.

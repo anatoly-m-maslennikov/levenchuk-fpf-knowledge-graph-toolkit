@@ -1,0 +1,303 @@
+{
+  "schema_version": 1,
+  "upstream_repository": "ailev/FPF",
+  "upstream_revision": "fb3b6a4ad1d51d732a365f75f7d68337c7a751e2",
+  "upstream_remote": "https://github.com/ailev/FPF.git",
+  "tracked_files": [
+    {
+      "path": "DPFs/DECISION-DESIGN-PRINCIPLES-FRAMEWORK.md",
+      "source_revision": "79aec961a70985f344d57fe351395a81080f674c",
+      "upstream_sha256": "22d00dbfaa179345363e2aed14cf2c832fb5e529f385ed6e432cc03b876fbd9d",
+      "effective_sha256": "22d00dbfaa179345363e2aed14cf2c832fb5e529f385ed6e432cc03b876fbd9d"
+    },
+    {
+      "path": "DPFs/DEFENSE-AND-TRANSMISSION-MODELING-DPF.md",
+      "source_revision": "b40c9df9e856c1c8c6a12f93ed8b310265007f68",
+      "upstream_sha256": "8ceac73282fd3c3624c290b9b0fd4f9bbdfec8a991c75172bc8cae55be1805eb",
+      "effective_sha256": "8ceac73282fd3c3624c290b9b0fd4f9bbdfec8a991c75172bc8cae55be1805eb"
+    },
+    {
+      "path": "DPFs/ECONOMIC-REASONING-AND-COORDINATION-PRINCIPLES-FRAMEWORK.md",
+      "source_revision": "6b315b154fc2e258806f41c4983d3cc8b13d49d8",
+      "upstream_sha256": "fe07998cf2c80f0935981853cb3a02af85f80c7c114ce9ccba2e90d48a8b5114",
+      "effective_sha256": "fe07998cf2c80f0935981853cb3a02af85f80c7c114ce9ccba2e90d48a8b5114"
+    },
+    {
+      "path": "DPFs/EMBODIED-RHYTHMICS-PRINCIPLES-FRAMEWORK.md",
+      "source_revision": "efe8d3eaebd212a8d4b8a1a789b0b98fba227f3c",
+      "upstream_sha256": "a5088de4099d06473ed755cde26862cddacd4066305af1f2932f9c59ae604dc0",
+      "effective_sha256": "a5088de4099d06473ed755cde26862cddacd4066305af1f2932f9c59ae604dc0"
+    },
+    {
+      "path": "DPFs/EXPLANATION-DESIGN-PRINCIPLES-FRAMEWORK.md",
+      "source_revision": "4589d3c2e83bdaa5a8dcd7859659eb19c1074d05",
+      "upstream_sha256": "7dbf46dac6fc981fa59b1bb33c6c1f26357201c24e70166e9b7714bdfc2776f6",
+      "effective_sha256": "7dbf46dac6fc981fa59b1bb33c6c1f26357201c24e70166e9b7714bdfc2776f6"
+    },
+    {
+      "path": "DPFs/Engineering DPF Suite/CONTROL-ARCHITECTURE-DESIGN-PRINCIPLES-FRAMEWORK.md",
+      "source_revision": "c698e4108ee6e4ed6e69e67f80696e8e7bfeba20",
+      "upstream_sha256": "72d4c479741c828c7df8b70874ece00756a0e3d377f69f7f1d89f3fbe21704e7",
+      "effective_sha256": "72d4c479741c828c7df8b70874ece00756a0e3d377f69f7f1d89f3fbe21704e7"
+    },
+    {
+      "path": "DPFs/Engineering DPF Suite/ENGINEERING-DPF-SUITE-REFERENCE.md",
+      "source_revision": "fb3b6a4ad1d51d732a365f75f7d68337c7a751e2",
+      "upstream_sha256": "2386ea9f01456d974a269ac36e0a1332b5b6b3658bd718dd5b0f7473fa9ce0cc",
+      "effective_sha256": "2386ea9f01456d974a269ac36e0a1332b5b6b3658bd718dd5b0f7473fa9ce0cc"
+    },
+    {
+      "path": "DPFs/Engineering DPF Suite/KNOWLEDGE-CORPUS-ACCESS-ENGINEERING-PRINCIPLES-FRAMEWORK.md",
+      "source_revision": "f45bb89605d031756c33c85ba7631543f5c18bc2",
+      "upstream_sha256": "1105a4fbd37509dfba7bcaf76b8186cc176a32ed01f34327ae835bf46cdbdc5d",
+      "effective_sha256": "1105a4fbd37509dfba7bcaf76b8186cc176a32ed01f34327ae835bf46cdbdc5d"
+    },
+    {
+      "path": "DPFs/Engineering DPF Suite/MAINTENANCE-ENGINEERING-PRINCIPLES-FRAMEWORK.md",
+      "source_revision": "22984da9ba607842cd2bb4ec8e5201d4f225b69f",
+      "upstream_sha256": "3f3b85e4711d4613e327e16ac114c52289422edbd925753e7695283dd7f95b79",
+      "effective_sha256": "3f3b85e4711d4613e327e16ac114c52289422edbd925753e7695283dd7f95b79"
+    },
+    {
+      "path": "DPFs/Engineering DPF Suite/README.md",
+      "source_revision": "f45bb89605d031756c33c85ba7631543f5c18bc2",
+      "upstream_sha256": "a74625612d8504a1628925a78f850a2382e49569cc3c97dafb23581c7696585c",
+      "effective_sha256": "a74625612d8504a1628925a78f850a2382e49569cc3c97dafb23581c7696585c"
+    },
+    {
+      "path": "DPFs/Engineering DPF Suite/SEMANTIC-INTEGRATION-ENGINEERING-PRINCIPLES-FRAMEWORK.md",
+      "source_revision": "fdc9ae9882b177014e64cf816a632c88883a5395",
+      "upstream_sha256": "2ac3bf8152ff40312f3862a676328921fd6d7e59f4f16f8794b2d3f19f823a8a",
+      "effective_sha256": "2ac3bf8152ff40312f3862a676328921fd6d7e59f4f16f8794b2d3f19f823a8a"
+    },
+    {
+      "path": "DPFs/Engineering DPF Suite/SYSTEMS-ENGINEERING-PRINCIPLES-FRAMEWORK.md",
+      "source_revision": "c698e4108ee6e4ed6e69e67f80696e8e7bfeba20",
+      "upstream_sha256": "75e59244823c71a6a8d71a5c46b0e33cb70ee68b7571f5856b26549fd6bf0d4b",
+      "effective_sha256": "75e59244823c71a6a8d71a5c46b0e33cb70ee68b7571f5856b26549fd6bf0d4b"
+    },
+    {
+      "path": "DPFs/FINANCIAL-DOMAIN-MODELING-PRINCIPLES-FRAMEWORK.md",
+      "source_revision": "8dea42b6d01c20cb768d72aac2b2b2dfa6441428",
+      "upstream_sha256": "9015f879e2af0fed2d511e55b67f7850d9fefff3a968a09d38d8354a5226eccc",
+      "effective_sha256": "9015f879e2af0fed2d511e55b67f7850d9fefff3a968a09d38d8354a5226eccc"
+    },
+    {
+      "path": "DPFs/Foundational Thinking DPF Suite/COMPUTATIONAL-THINKING-DPF.md",
+      "source_revision": "efe8d3eaebd212a8d4b8a1a789b0b98fba227f3c",
+      "upstream_sha256": "a5e1b32dba5206d55bb27ec4b66ecc72ada44a13c807e89ef979b17da4ea6f2d",
+      "effective_sha256": "a5e1b32dba5206d55bb27ec4b66ecc72ada44a13c807e89ef979b17da4ea6f2d"
+    },
+    {
+      "path": "DPFs/Foundational Thinking DPF Suite/FOUNDATIONAL-THINKING-DPF-SUITE-REFERENCE.md",
+      "source_revision": "efe8d3eaebd212a8d4b8a1a789b0b98fba227f3c",
+      "upstream_sha256": "a71fe0f38cfc0b5251ba8b763ba6c6bfdebfa26bde078ebb665c3a2ccabfcdd7",
+      "effective_sha256": "a71fe0f38cfc0b5251ba8b763ba6c6bfdebfa26bde078ebb665c3a2ccabfcdd7"
+    },
+    {
+      "path": "DPFs/Foundational Thinking DPF Suite/MATHEMATICAL-MODELING-PRACTICE-DPF.md",
+      "source_revision": "996ae39ce00b4a9c9b59b48a4f1446b2175dcffb",
+      "upstream_sha256": "55fa4e7ffccf817ef2fb0b2b6cfb14fde83801e328391c19181800e402d361f7",
+      "effective_sha256": "55fa4e7ffccf817ef2fb0b2b6cfb14fde83801e328391c19181800e402d361f7"
+    },
+    {
+      "path": "DPFs/Foundational Thinking DPF Suite/MATHEMATICAL-PRACTICE-DPF.md",
+      "source_revision": "19f47508d43f01024b8a51257c8c574285d953e0",
+      "upstream_sha256": "251822f474621d9907712fe1f278b1970427ee169ceee6f9b842f1c92a445305",
+      "effective_sha256": "251822f474621d9907712fe1f278b1970427ee169ceee6f9b842f1c92a445305"
+    },
+    {
+      "path": "DPFs/Foundational Thinking DPF Suite/NOTATIONAL-ENGINEERING-DPF.md",
+      "source_revision": "500ff0b64e63d617a4339c3654e4a6878e0f6d38",
+      "upstream_sha256": "1ee6f0542e7c801adbd44ec6aaaa8866f8503d9889d12e9a8a5ef20feb222dac",
+      "effective_sha256": "1ee6f0542e7c801adbd44ec6aaaa8866f8503d9889d12e9a8a5ef20feb222dac"
+    },
+    {
+      "path": "DPFs/Foundational Thinking DPF Suite/PHYSICAL-THINKING-DPF.md",
+      "source_revision": "500ff0b64e63d617a4339c3654e4a6878e0f6d38",
+      "upstream_sha256": "9c7c3cdb3e02fc2888c2ac77469a8e47c038ce472b57bb65d05450a3a468039e",
+      "effective_sha256": "9c7c3cdb3e02fc2888c2ac77469a8e47c038ce472b57bb65d05450a3a468039e"
+    },
+    {
+      "path": "DPFs/Foundational Thinking DPF Suite/README.md",
+      "source_revision": "996ae39ce00b4a9c9b59b48a4f1446b2175dcffb",
+      "upstream_sha256": "48cd34f45984072aa63d3ae04c82425cb2c950ab545dfef43e8747fa10cba747",
+      "effective_sha256": "48cd34f45984072aa63d3ae04c82425cb2c950ab545dfef43e8747fa10cba747"
+    },
+    {
+      "path": "DPFs/Human Capability Engineering DPF Suite/HUMAN-CAPABILITY-DEVELOPMENT-PRINCIPLES-FRAMEWORK.md",
+      "source_revision": "d840fe78f0a15134af2e3de1ac7025439b1b8a05",
+      "upstream_sha256": "96723cce6505daf00777c440afc058a9c8d41f62f821d9011d4bc63544b2ba85",
+      "effective_sha256": "96723cce6505daf00777c440afc058a9c8d41f62f821d9011d4bc63544b2ba85"
+    },
+    {
+      "path": "DPFs/Human Capability Engineering DPF Suite/HUMAN-CAPABILITY-ENGINEERING-DPF-SUITE-REFERENCE.md",
+      "source_revision": "996ae39ce00b4a9c9b59b48a4f1446b2175dcffb",
+      "upstream_sha256": "7c205270e2a45bf242efbb5b3c33be7034b0a60262849fcae9fbe04b6442461c",
+      "effective_sha256": "7c205270e2a45bf242efbb5b3c33be7034b0a60262849fcae9fbe04b6442461c"
+    },
+    {
+      "path": "DPFs/Human Capability Engineering DPF Suite/README.md",
+      "source_revision": "d840fe78f0a15134af2e3de1ac7025439b1b8a05",
+      "upstream_sha256": "74228f6cdde7d2f482b0c84e505a72657d3852f27f6be74da741b23306ee97d2",
+      "effective_sha256": "74228f6cdde7d2f482b0c84e505a72657d3852f27f6be74da741b23306ee97d2"
+    },
+    {
+      "path": "DPFs/Human Capability Engineering DPF Suite/SOMATIC-MOVEMENT-MODELING-PRINCIPLES-FRAMEWORK.md",
+      "source_revision": "bd15ada5ccbb56aaf047a966efa693537a149d9c",
+      "upstream_sha256": "a0d0a37d376171b02547bbdcd1fde483f7f2c36e57b43c717b364c3ef4f0a1ce",
+      "effective_sha256": "a0d0a37d376171b02547bbdcd1fde483f7f2c36e57b43c717b364c3ef4f0a1ce"
+    },
+    {
+      "path": "DPFs/IMPLEMENTATION-FACILITATION-PRINCIPLES-FRAMEWORK.md",
+      "source_revision": "162ec2b0485ce0166de0320fce7a6c80a6955cdd",
+      "upstream_sha256": "c8cfb022620863156e56af38b20f246dc1d5b931238c8f9a0909a5e354308a98",
+      "effective_sha256": "c8cfb022620863156e56af38b20f246dc1d5b931238c8f9a0909a5e354308a98"
+    },
+    {
+      "path": "DPFs/MUSIC-AND-DANCE-PRACTICE-ENGINEERING-PRINCIPLES-FRAMEWORK.md",
+      "source_revision": "3952dc565a309c3d41d84c90d5d49ea1e864a080",
+      "upstream_sha256": "fa787440f6fc93a7388617bbba0e576f380e8ddfd941018f28bdf22b43892809",
+      "effective_sha256": "fa787440f6fc93a7388617bbba0e576f380e8ddfd941018f28bdf22b43892809"
+    },
+    {
+      "path": "DPFs/Management DPF Suite/COMMUNITY-MANAGEMENT-PRINCIPLES-FRAMEWORK.md",
+      "source_revision": "8dea42b6d01c20cb768d72aac2b2b2dfa6441428",
+      "upstream_sha256": "4072ca7cced4ce3b1c6c3d852293f295d8ae94778dd9dd1872a74fadc39a103e",
+      "effective_sha256": "4072ca7cced4ce3b1c6c3d852293f295d8ae94778dd9dd1872a74fadc39a103e"
+    },
+    {
+      "path": "DPFs/Management DPF Suite/CORPORATE-FINANCE-PRINCIPLES-FRAMEWORK.md",
+      "source_revision": "8dea42b6d01c20cb768d72aac2b2b2dfa6441428",
+      "upstream_sha256": "4b938ad2b76a2eab08f70bf922f6663f060ea143c23e8785ade41e51b679046c",
+      "effective_sha256": "4b938ad2b76a2eab08f70bf922f6663f060ea143c23e8785ade41e51b679046c"
+    },
+    {
+      "path": "DPFs/Management DPF Suite/CORPORATE-GOVERNANCE-PRINCIPLES-FRAMEWORK.md",
+      "source_revision": "162ec2b0485ce0166de0320fce7a6c80a6955cdd",
+      "upstream_sha256": "ad1343cca10cea9fec42f2a57235d9000d26f8fdc711c740ef6023ca70c42fdc",
+      "effective_sha256": "ad1343cca10cea9fec42f2a57235d9000d26f8fdc711c740ef6023ca70c42fdc"
+    },
+    {
+      "path": "DPFs/Management DPF Suite/CUSTOMIZATION-AND-PRODUCTIZATION-MANAGEMENT-PRINCIPLES-FRAMEWORK.md",
+      "source_revision": "b40c9df9e856c1c8c6a12f93ed8b310265007f68",
+      "upstream_sha256": "f30039196d3e0827cf95dec2db32daa278b69872447c9790bb565b6241d28596",
+      "effective_sha256": "f30039196d3e0827cf95dec2db32daa278b69872447c9790bb565b6241d28596"
+    },
+    {
+      "path": "DPFs/Management DPF Suite/ENGINEERING-ASSET-MANAGEMENT-PRINCIPLES-FRAMEWORK.md",
+      "source_revision": "b40c9df9e856c1c8c6a12f93ed8b310265007f68",
+      "upstream_sha256": "28b809ecf0a43b4157c409930f079e91c6950f338c4001234e27e4a86531c504",
+      "effective_sha256": "28b809ecf0a43b4157c409930f079e91c6950f338c4001234e27e4a86531c504"
+    },
+    {
+      "path": "DPFs/Management DPF Suite/LEADERSHIP-PRINCIPLES-FRAMEWORK.md",
+      "source_revision": "2c8e37e2fe5be53859ecc38498a22af819f91360",
+      "upstream_sha256": "0894c6fded8a0a54d720eadc34447bdf4276e4ef9032b09967b549655317e3eb",
+      "effective_sha256": "0894c6fded8a0a54d720eadc34447bdf4276e4ef9032b09967b549655317e3eb"
+    },
+    {
+      "path": "DPFs/Management DPF Suite/MANAGEMENT-ACCOUNTING-PRINCIPLES-FRAMEWORK.md",
+      "source_revision": "fb3b6a4ad1d51d732a365f75f7d68337c7a751e2",
+      "upstream_sha256": "8eea64eff78d6cebbbaff708c3f1422ea859cac169f146b46860c35a2421eb51",
+      "effective_sha256": "8eea64eff78d6cebbbaff708c3f1422ea859cac169f146b46860c35a2421eb51"
+    },
+    {
+      "path": "DPFs/Management DPF Suite/MANAGEMENT-DPF-SUITE-REFERENCE.md",
+      "source_revision": "fb3b6a4ad1d51d732a365f75f7d68337c7a751e2",
+      "upstream_sha256": "b19a25491f32fa2fbe25b0717de38e21728badc5251d0c7c3aa9ccf6b8a81fca",
+      "effective_sha256": "b19a25491f32fa2fbe25b0717de38e21728badc5251d0c7c3aa9ccf6b8a81fca"
+    },
+    {
+      "path": "DPFs/Management DPF Suite/MARKETING-PRINCIPLES-FRAMEWORK.md",
+      "source_revision": "8dea42b6d01c20cb768d72aac2b2b2dfa6441428",
+      "upstream_sha256": "6607923a5fc8a4e9399377405d09b789c57be60f9e615bd9754f2ca1c7833736",
+      "effective_sha256": "6607923a5fc8a4e9399377405d09b789c57be60f9e615bd9754f2ca1c7833736"
+    },
+    {
+      "path": "DPFs/Management DPF Suite/OPERATIONS-MANAGEMENT-PRINCIPLES-FRAMEWORK.md",
+      "source_revision": "fb3b6a4ad1d51d732a365f75f7d68337c7a751e2",
+      "upstream_sha256": "59bd47a2aec50562e3c50f24ef925b964c046888bb2171725ccaae81c11aaba0",
+      "effective_sha256": "59bd47a2aec50562e3c50f24ef925b964c046888bb2171725ccaae81c11aaba0"
+    },
+    {
+      "path": "DPFs/Management DPF Suite/ORGANIZATION-ADMINISTRATION-PRINCIPLES-FRAMEWORK.md",
+      "source_revision": "6faea89b360deb1a3f54a522fa39cda2cf037782",
+      "upstream_sha256": "1063b4a90c87365b999d5e38bf457fa45f4034491f778899b151f4964c6be39a",
+      "effective_sha256": "1063b4a90c87365b999d5e38bf457fa45f4034491f778899b151f4964c6be39a"
+    },
+    {
+      "path": "DPFs/Management DPF Suite/ORGANIZATION-CHANGE-ENGINEERING-PRINCIPLES-FRAMEWORK.md",
+      "source_revision": "ba28ab38a05d67996f6bd78a54c66abe3b8c4fb3",
+      "upstream_sha256": "2868ee96247f2f66e2531bec7c792bbd44989e7131bf03ba7dffbd72cf7ecb05",
+      "effective_sha256": "2868ee96247f2f66e2531bec7c792bbd44989e7131bf03ba7dffbd72cf7ecb05"
+    },
+    {
+      "path": "DPFs/Management DPF Suite/README.md",
+      "source_revision": "fb3b6a4ad1d51d732a365f75f7d68337c7a751e2",
+      "upstream_sha256": "57be8dece2d3d55c92166c6039804b4084e132a8a4c8060d281f76adc270a45a",
+      "effective_sha256": "57be8dece2d3d55c92166c6039804b4084e132a8a4c8060d281f76adc270a45a"
+    },
+    {
+      "path": "DPFs/Management DPF Suite/STRATEGY-PRINCIPLES-FRAMEWORK.md",
+      "source_revision": "bd15ada5ccbb56aaf047a966efa693537a149d9c",
+      "upstream_sha256": "51dfce0ad639c491a6524e4ccd657b4974f22500a99ff9d22d514130e122382c",
+      "effective_sha256": "51dfce0ad639c491a6524e4ccd657b4974f22500a99ff9d22d514130e122382c"
+    },
+    {
+      "path": "DPFs/Narrativization-and-Narrative-Studies-Principles-Framework.md",
+      "source_revision": "162ec2b0485ce0166de0320fce7a6c80a6955cdd",
+      "upstream_sha256": "c5c274316d31db178d105526ee32e912c4ccd02a6c03279a42f83244612737ba",
+      "effective_sha256": "c5c274316d31db178d105526ee32e912c4ccd02a6c03279a42f83244612737ba"
+    },
+    {
+      "path": "DPFs/README.md",
+      "source_revision": "fb3b6a4ad1d51d732a365f75f7d68337c7a751e2",
+      "upstream_sha256": "53b63da938fdc2ada7982e780bfd2ab262b059ca7bbc0dec644c535fb2c10dd4",
+      "effective_sha256": "53b63da938fdc2ada7982e780bfd2ab262b059ca7bbc0dec644c535fb2c10dd4"
+    },
+    {
+      "path": "DPFs/RESEARCH-METHOD-PRACTICE-PRINCIPLES-FRAMEWORK.md",
+      "source_revision": "6b315b154fc2e258806f41c4983d3cc8b13d49d8",
+      "upstream_sha256": "c726019240541875b1954debb44c5f32530452404f47fc4a36bfe14dea156056",
+      "effective_sha256": "c726019240541875b1954debb44c5f32530452404f47fc4a36bfe14dea156056"
+    },
+    {
+      "path": "FPF-LIBRARY-REFERENCE.md",
+      "source_revision": "593f24ec7508ea6eab8d51f7c9163b51ab023409",
+      "upstream_sha256": "e4c7c6b1ca30f96e7366f49b1014b7ab0ff6bce3a6d532c6c6b3b3b4354c47b6",
+      "effective_sha256": "e4c7c6b1ca30f96e7366f49b1014b7ab0ff6bce3a6d532c6c6b3b3b4354c47b6"
+    },
+    {
+      "path": "FPF-Spec.md",
+      "source_revision": "4589d3c2e83bdaa5a8dcd7859659eb19c1074d05",
+      "upstream_sha256": "03e2d58f56ef5e271d6e5481a042845eb1848994c221bed7fb384311b2a1a236",
+      "effective_sha256": "03e2d58f56ef5e271d6e5481a042845eb1848994c221bed7fb384311b2a1a236"
+    },
+    {
+      "path": "LICENSE",
+      "source_revision": "9208be543f1ede0f53eb24604bf97fd2f121dd24",
+      "upstream_sha256": "9e5f1b3c610b9c2da5c313bf81d577a7d1acec686bdb0384edefa6df0f90cd94",
+      "effective_sha256": "9e5f1b3c610b9c2da5c313bf81d577a7d1acec686bdb0384edefa6df0f90cd94"
+    },
+    {
+      "path": "LICENSING.md",
+      "source_revision": "b40c9df9e856c1c8c6a12f93ed8b310265007f68",
+      "upstream_sha256": "686ee0b66f8564b6a51b21b2007e5572989d2a20f6ebf51f60129f73108e15e2",
+      "effective_sha256": "686ee0b66f8564b6a51b21b2007e5572989d2a20f6ebf51f60129f73108e15e2"
+    },
+    {
+      "path": "Readme.md",
+      "source_revision": "2c8e37e2fe5be53859ecc38498a22af819f91360",
+      "upstream_sha256": "dbac30cb386efcfc5c50ae02873e967e77488565a19afeba3546351a15160f92",
+      "effective_sha256": "dbac30cb386efcfc5c50ae02873e967e77488565a19afeba3546351a15160f92"
+    },
+    {
+      "path": "USING-FPF.md",
+      "source_revision": "7282291e766505e36c869f3ceaac9f64deec9b24",
+      "upstream_sha256": "e840dc49f93965ffe99f2e631121e95917897e3329a9af2efcb9be00c38684f9",
+      "effective_sha256": "e840dc49f93965ffe99f2e631121e95917897e3329a9af2efcb9be00c38684f9"
+    }
+  ],
+  "patches": []
+}

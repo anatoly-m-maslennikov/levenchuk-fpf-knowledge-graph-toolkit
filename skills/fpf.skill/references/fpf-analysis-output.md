@@ -1,6 +1,6 @@
 # FPF Analysis Output Finalizer
 
-Load this file after the native analytical prompt, source retrieval, shared analytical contract, composition work when applicable, and the persistence protocol when saving is requested, but before file creation. It is the final authority for every analytical response shape, including stopped runs and unsaved reports. After finalization, an allowed exclusive create and read-back may deliver these exact bytes but must not reshape them.
+Load this file after the native analytical prompt, source retrieval, shared analytical contract, composition work when applicable, and the persistence protocol when saving is requested, but before creating the current two-file artifact set. It is the final authority for every analytical candidate shape, including step artifacts, final consolidation, stopped runs, and unsaved reports. After warden validation, the manager may deliver only a validated direct-call or final candidate and must not reshape its bytes.
 
 Start the response at the first heading below. Use these four canonical heading names exactly once and in this order at one consistent top level. That top level may be Markdown `#` or `##`; nested headings must be deeper. Never use `High-confidence results`, `Open questions (confidence <95%)`, or a native prompt label as a top-level heading.
 
@@ -34,4 +34,4 @@ List only canonical analytical commands whose native analysis actually executed,
 
 List each direct FPF methodology page actually opened once, repository-root-relative or by stable non-file locator, marked **used** or **screened only**. Do not list Help pages, prompts, contracts, command/profile graphs, project evidence, tools, or discovered-but-unopened pages. If no direct page was usable, state the exact insufficient-basis condition instead of implying methodology grounding.
 
-Before returning, verify all four heading names and their consistent depth, every required issue and fix field, one registry pair, the complete composition receipt when applicable, the complete native result, exact executed-skill trace, exact source trace, and truthful report state. Repair the response before emitting it if any check fails.
+Before writing `candidate.md`, verify all four heading names and their consistent depth, every required issue and fix field, one registry pair, the complete composition receipt when applicable, the complete native result, exact executed-skill trace, exact source trace, and truthful planned report state. Repair the candidate before handing it to the manager if any check fails.

@@ -18,8 +18,6 @@ CATALOG_ROW_RE = re.compile(
 
 def source_revision(source: Path, profile: GraphProfile = FPF_PROFILE) -> str:
     arguments = ["rev-parse", "HEAD"]
-    if profile != FPF_PROFILE:
-        arguments = ["log", "-1", "--format=%H", "--", source.name]
     result = subprocess.run(
         ["git", "-C", str(source.parent), *arguments], check=False,
         capture_output=True, text=True,

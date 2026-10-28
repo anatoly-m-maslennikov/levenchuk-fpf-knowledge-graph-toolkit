@@ -8,6 +8,7 @@ from pathlib import Path
 
 from service.scripts.build_fpf_obsidian_graph.build_fpf_obsidian_graph_workers.models import FPF_PROFILE, PROFILES
 from service.scripts.init_settings.init_settings import read_fpf_source
+from service.scripts.graph_fpf_convert_from_original.graph_fpf_convert_from_original_workers.source_layout import resolve_framework_source
 from ..validate_fpf_graph import validate_graph
 
 
@@ -25,7 +26,7 @@ def _run(args: argparse.Namespace) -> dict[str, object]:
         source = Path(args.source).expanduser().resolve()
     else:
         fpf_source, _ = read_fpf_source(create_if_missing=False)
-        source = fpf_source.parent / profile.default_source
+        source = resolve_framework_source(fpf_source.parent, profile.default_source)
     graph = Path(args.graph or profile.default_output).expanduser().resolve()
     return validate_graph(graph, source, profile)
 

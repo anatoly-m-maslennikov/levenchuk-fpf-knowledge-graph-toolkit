@@ -6,6 +6,7 @@ from datetime import date
 from pathlib import Path
 
 from service.scripts.init_settings.init_settings import read_fpf_source
+from service.scripts.graph_fpf_convert_from_original.graph_fpf_convert_from_original_workers.source_layout import resolve_framework_source
 from ..build_fpf_obsidian_graph import build
 from .models import FPF_PROFILE, PROFILES
 
@@ -28,7 +29,7 @@ def main() -> int:
     else:
         try:
             fpf_source, _created = read_fpf_source()
-            source = fpf_source.parent / profile.default_source
+            source = resolve_framework_source(fpf_source.parent, profile.default_source)
         except ValueError as exc:
             raise SystemExit(f"ERROR: {exc}") from exc
     out_dir = Path(args.out or profile.default_output).resolve()

@@ -36,6 +36,7 @@ def _timeout_error(exc: subprocess.TimeoutExpired, timeout: float) -> RuntimeErr
 def run_codex(
     prompt: str, schema: Path, output: Path, root: Path, *,
     executable: str, model: str | None, timeout: float, state_home: Path,
+    sandbox: str = "read-only", additional_writable_dirs: tuple[Path, ...] = (),
 ) -> dict[str, object]:
     resolved = shutil.which(executable)
     if resolved is None:
@@ -43,9 +44,11 @@ def run_codex(
     output.parent.mkdir(parents=True, exist_ok=True)
     command = [
         resolved, "-a", "never", "exec", "--ephemeral", "--ignore-user-config", "--ignore-rules",
-        "-s", "read-only", "-C", str(root),
+        "-s", sandbox, "-C", str(root),
         "--output-schema", str(schema), "--output-last-message", str(output), "-",
     ]
+    for path in additional_writable_dirs:
+        command[4:4] = ["--add-dir", str(path)]
     if model:
         command[4:4] = ["--model", model]
     environment = dict(os.environ)

@@ -10,6 +10,7 @@ from pathlib import Path
 from .location_migration import legacy_files, migrate_legacy_control_panel
 from .migration import read_project_version, render_settings, replace_with_versioned_archive
 from .schema import ALLOWED_SKILL_VALUES, validated_settings
+from service.scripts.graph_fpf_convert_from_original.graph_fpf_convert_from_original_workers.source_layout import resolve_framework_source
 
 
 ROOT = Path(__file__).resolve().parents[4]
@@ -22,6 +23,7 @@ EXAMPLE_PATH = ROOT / "skills" / "settings.toml.example"
 LEGACY_CONTROL_ROOTS = (ROOT / "skills", ROOT / ".caprmedio")
 FPF_SOURCE_NAME = "FPF-Spec.md"
 NPF_SOURCE_NAME = "Narrativization-and-Narrative-Studies-Principles-Framework.md"
+CAD_SOURCE_NAME = "CONTROL-ARCHITECTURE-DESIGN-PRINCIPLES-FRAMEWORK.md"
 
 
 def settings_paths_for_root(root: Path) -> tuple[Path, Path]:
@@ -181,4 +183,14 @@ def read_npf_source(
     repository, created = read_fpf_original_repo(
         settings_path, example_path, create_if_missing=create_if_missing,
     )
-    return repository / NPF_SOURCE_NAME, created
+    return resolve_framework_source(repository, NPF_SOURCE_NAME), created
+
+
+def read_cad_source(
+    settings_path: Path = SETTINGS_PATH, example_path: Path = EXAMPLE_PATH,
+    *, create_if_missing: bool = True,
+) -> tuple[Path, bool]:
+    repository, created = read_fpf_original_repo(
+        settings_path, example_path, create_if_missing=create_if_missing,
+    )
+    return resolve_framework_source(repository, CAD_SOURCE_NAME), created

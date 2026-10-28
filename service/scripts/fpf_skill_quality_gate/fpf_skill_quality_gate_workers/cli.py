@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 import subprocess
 import sys
+import tempfile
 
 from .cases import gate_identity, load_cases, load_profile_cases
 from .codex_runner import run_codex
@@ -67,6 +68,8 @@ def _run_subjects(
                 subject_prompt(ASSETS / "subject-prompt.md", case), schema, output, ROOT,
                 executable=args.codex, model=args.model, timeout=args.timeout,
                 state_home=run / "codex-home",
+                sandbox="workspace-write",
+                additional_writable_dirs=(Path(tempfile.gettempdir()),),
             )
         except RuntimeError as exc:
             raise RuntimeError(f"subject case {case_id} failed: {exc}") from exc

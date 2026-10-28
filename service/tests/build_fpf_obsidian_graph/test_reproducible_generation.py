@@ -10,6 +10,12 @@ import sys
 from pathlib import Path
 
 from service.scripts.filesystem_policy import temporary_workspace
+from service.scripts.build_fpf_obsidian_graph.build_fpf_obsidian_graph_workers.graph_io import build_graph
+from service.scripts.build_fpf_obsidian_graph.build_fpf_obsidian_graph_workers.models import GraphProfile
+from .test_source_anchor_navigation import verify_source_anchor_navigation
+from .test_source_path_navigation import verify_source_path_navigation
+from .test_fenced_rendering import verify_fenced_rendering
+from .test_hub_preambles import verify_hub_preambles
 
 ROOT = Path(__file__).resolve().parents[3]
 GENERATOR_MODULE = "service.scripts.build_fpf_obsidian_graph"
@@ -19,6 +25,9 @@ RISK_SOURCE = '''# Part A - Example
 ## A.1 - Rendering risks
 
 [A.2: adjacent bracket reference].
+[A.2][fpf-a2-ref] and [A.2][].
+[fpf-a2-ref]: https://example.com/FPF-Spec.md#A.2
+[A.2]: #a2---real-second-page
 
 | Target | Empty |
 | --- | --- |
@@ -73,12 +82,53 @@ def verify_rendering_regressions(root: Path, source: Path) -> None:
     text = "\n".join(path.read_text() for path in output.rglob("*.md"))
     if "[[[" in text or "]]]" in text:
         raise SystemExit("bracket reference produced malformed nested wiki-link syntax")
+    for original in ("[A.2](https://example.com/FPF-Spec.md#A.2)", "[fpf-a2-ref]: https://example.com/FPF-Spec.md#A.2", "[A.2]: #a2---real-second-page"):
+        if original not in text:
+            raise SystemExit("reference-style Markdown or its destination was altered")
     if 'fpf_id: "A.99"' in text or text.count('fpf_id: "A.2"') != 1:
         raise SystemExit("fenced or table-shaped text was parsed as a heading")
     table_lines = [line for line in text.splitlines() if line.startswith("|")]
     aliased = any(re.search(r"\[\[[^\]]+\|[^\]]+\]\]", line) for line in table_lines)
     if "| Empty |" in text or aliased:
         raise SystemExit("table cleanup or wiki-link alias escaping regressed")
+
+
+def verify_reference_locators(root: Path) -> None:
+    for label in ("FPF", "CAD", "NSTD"):
+        source = root / f"{label}-references.md"
+        source.write_text(
+            f"# {label} Architectural Reference\n\n"
+            f"## {label}.Reference:1 - First reference\n\n"
+            f"See `{label}.Reference:2` and {label}.Reference:End.\n\n"
+            f"### {label}.Reference:1.1 - Nested subsection\n\n"
+            f"### Relations\n\n- Related: {label}.Reference:2\n\n"
+            f"## {label}.Reference:2 - Second reference\n\n"
+            f"## {label}.Reference:End\n\n"
+            f"# {label} Sources\n\n"
+            f"## {label}.Sources:1 - First source note\n\n"
+            f"## {label}.Sources:2 - Second source note\n\n"
+            f"## {label}.Sources:End\n\n"
+            f"# Part {label} - Patterns\n\n## {label}.1 - Real pattern\n",
+            encoding="utf-8",
+        )
+        profile = GraphProfile(
+            label.lower(), label, f"{label.lower()}_id", source.name,
+            f"{label}-Knowledge-Graph", (label,), label != "FPF",
+        )
+        output = root / profile.default_output
+        report = build_graph(source, output, True, REVISION, GENERATED_ON, profile)
+        texts = [path.read_text(encoding="utf-8") for path in output.rglob("*.md")]
+        for namespace in ("Reference", "Sources"):
+            for locator in ("1", "2", "End"):
+                key = f'{profile.id_field}: "{label}.{namespace}:{locator}"'
+                matches = [text for text in texts if key in text]
+                if len(matches) != 1 or f'type: "{label.lower()}-section"' not in matches[0]:
+                    raise SystemExit("section locators must remain unique section identities")
+        if report["ids"] != 7 or report["broken_links_count"] or report["unresolved_relations_count"]:
+            raise SystemExit("reference locators lost identity or link resolution")
+        first = next(text for text in texts if f'{profile.id_field}: "{label}.Reference:1"' in text)
+        if f"|{label}.Reference:2]]" not in first or f"|{label}.Reference:End]]" not in first:
+            raise SystemExit("reference locator linkification lost the exact target")
 
 
 def main() -> int:
@@ -101,6 +151,11 @@ def main() -> int:
         verify_clean_removes_stale(root, source)
         source.write_text(SOURCE, encoding="utf-8")
         verify_rendering_regressions(root, source)
+        verify_reference_locators(root)
+        verify_source_anchor_navigation(root)
+        verify_source_path_navigation(root)
+        verify_fenced_rendering(root)
+        verify_hub_preambles(root)
     print("reproducible generation: ok")
     return 0
 

@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections import defaultdict
 
 from .models import FPF_PROFILE, GraphProfile, Page
-from .patterns import BACKTICK_ID_RE, BOLD_REL_LABEL_RE, BULLET_RE, FRONTMATTER_NORM_RE, FRONTMATTER_STATUS_RE, HEADING_RE, ID_RE, QUALIFIED_RELATION_ID_RE, RANGE_RELATION_ID_RE, REL_LABEL_RE, U_TERM_RE
+from .patterns import BOLD_REL_LABEL_RE, BULLET_RE, FRONTMATTER_NORM_RE, FRONTMATTER_STATUS_RE, HEADING_RE, QUALIFIED_RELATION_ID_RE, RANGE_RELATION_ID_RE, RELATION_ID_RE, RELATION_TOKEN_RE, REL_LABEL_RE, U_TERM_RE
 
 
 def extract_relations(
@@ -20,36 +20,57 @@ def extract_relations(
             in_rel = "relations" in ht or "see also" in ht
             current = "related"
             continue
+        bullet = BULLET_RE.match(line)
         bold = BOLD_REL_LABEL_RE.match(line)
-        if bold:
+        if bold and (in_rel or bullet):
             current = normalize_relation(bold.group(1))
-            for ref in extract_ids(bold.group(2), profile):
-                rels[current].add(ref)
+            item = bold.group(2)
+        elif not in_rel:
             continue
-        if not in_rel:
-            continue
-        bm = BULLET_RE.match(line)
-        if not bm:
-            continue
-        item = bm.group(1)
-        label = REL_LABEL_RE.match(item)
-        if label:
-            current = normalize_relation(label.group(1))
-            item = label.group(2)
+        else:
+            item = bullet.group(1) if bullet else line.strip()
+            label = REL_LABEL_RE.match(item)
+            if label:
+                current = normalize_relation(label.group(1))
+                item = label.group(2)
+            elif item.rstrip("*").rstrip().endswith(":"):
+                current = ""
+                continue
+            elif not bullet or not current:
+                continue
         for ref in extract_ids(item, profile):
             rels[current].add(ref)
     return {k: sorted(v) for k, v in rels.items() if v}
 
 
 def normalize_relation(label: str) -> str:
-    return label.lower().replace(" ", "_").replace("-", "_")
+    return label.lower().replace("(", "").replace(")", "").replace(" ", "_").replace("-", "_")
 
 
 def extract_ids(text: str, profile: GraphProfile = FPF_PROFILE) -> list[str]:
-    refs = set(BACKTICK_ID_RE.findall(text)) | set(ID_RE.findall(text))
+    refs = {ref for token in RELATION_TOKEN_RE.findall(text) for ref in _chain_ids(token)}
     if not profile.multi_root_relations:
-        refs = {ref for ref in refs if len(ref.split(".", 1)[0]) == 1}
+        refs = {
+            ref for ref in refs
+            if len(ref.split(".", 1)[0]) == 1 or ":" in ref
+        }
     return sorted(r for r in refs if "." in r and not r.startswith("U."))
+
+
+def _chain_ids(token: str) -> list[str]:
+    parts = [part.strip() for part in token.rstrip(".:").split("/")]
+    extensions = {"md", "markdown", "txt", "json", "yaml", "yml", "toml", "py", "pdf"}
+    if any(
+        not RELATION_ID_RE.fullmatch(part)
+        or part.rsplit(".", 1)[-1].lower() in extensions
+        for part in parts
+    ):
+        return []
+    return [
+        part if part.split(":", 1)[0].endswith((".Reference", ".Sources"))
+        else part.split(":", 1)[0]
+        for part in parts
+    ]
 
 
 def normalize_relation_targets(pages: list[Page]) -> None:

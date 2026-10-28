@@ -12,10 +12,10 @@ from pathlib import Path
 DEFAULT_TIMEOUT_SECONDS = 300.0
 REQUIRED_CASE_NAMES = {
     "compile", "settings-unit", "settings-preflight", "converter-transaction",
-    "graph-validator", "npf-converter", "npf-validator",
+    "graph-validator", "npf-converter", "npf-validator", "cad-converter", "cad-validator",
     "reproducible-generation", "installer", "fpf-skill-runtime",
     "service-installer-unit", "suite-contract-unit", "methodology-settings-sync",
-    "generated-graph", "generated-npf-graph", "eval-pack",
+    "generated-graph", "generated-npf-graph", "generated-cad-graph", "eval-pack",
     "skill-graph-compatibility", "repository-integration", "architecture-unit",
     "architecture", "patch-hygiene",
 }

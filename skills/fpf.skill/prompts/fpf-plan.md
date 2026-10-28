@@ -10,24 +10,26 @@ For output style, load at most one mode resource:
 - `general`: load only `references/fpf-output-style-general.md`.
 - `ste`: load only `references/fpf-output-style-ste.md`.
 Never preload an unselected resource. If the selected file is missing, report it; do not substitute. Keep exact FPF locators and source paths in compact evidence or source records, not narrative prose.
-`$fpf plan` is the exception: it remains ephemeral, ignores report persistence and `report_style`, never creates a report file, and never loads `references/fpf-report-persistence.md`, even though the suite default is on.
+A Plan candidate is the exception: whether selected explicitly or by default Plan-first behavior, it remains ephemeral, ignores report persistence and `report_style`, never creates a report file, and never loads `references/fpf-report-persistence.md`, even though the suite default is on.
 <!-- output-settings:end -->
 
-Produce a read-only **FPF Skill Plan** for one question. Route work among the available FPF prompt nodes; do not answer the question, inspect the FPF methodology, or execute the proposed calls.
+Produce one compact, read-only **FPF Skill Plan** for one question. This is the default result of every new non-Help invocation unless the operator explicitly asked to proceed without a Plan. Route work among the available FPF prompt nodes; do not answer the question, inspect the FPF methodology, or execute the proposed steps. A later exact `do` will approve this Plan as one resumable ordered run.
+
+Load `references/fpf-plan-execution.md` to resolve the blocking-decision confidence threshold. Use 95% unless the operator explicitly supplies a valid 0-100% override. Carry the resolved value in Plan metadata; expose it in step 1 only when it differs from the default.
 
 ## Route contract
 
 1. Restate the question as one bounded receiving use. Identify the target state: open question, research need, proposal, evaluated alternatives, versioned improvement target, or implemented/accepted work.
-2. Resolve the smallest useful sequence from the available skills. One call is a valid sequence. Do not propose a full lifecycle when the requested result stops earlier.
-3. Rewrite every call as a self-contained, copy-ready task. Preserve the user's intent without embedding an expected finding, preferred option, or approval outcome.
-4. Make dependencies, independent calls, decision ownership, missing inputs, and stop conditions explicit. The active runtime chooses scheduling.
+2. Resolve the smallest useful ordered sequence from the available skills. One step is a valid sequence. Do not propose a full lifecycle when the requested result stops earlier.
+3. Rewrite every step as one concise executable action. Preserve the user's intent without embedding an expected finding, preferred option, or approval outcome.
+4. Make each prior-result handoff, decision ownership, required input, and stop condition explicit. The sequence is strictly ordered: step N consumes the complete result of step N-1.
 5. If no available FPF skill fits, return no call and explain which required trigger or input is absent. Never route to `$fpf plan` recursively.
 
-When the router supplies an invalid explicit `+` composition, explain the rejected segment or handoff and return the smallest legal corrected composition or ordinary sequence. Do not execute it. Explicit composition is appropriate only when the user wants one ordered run with one shared task and consolidated result; ordinary proposed sequences remain separate calls unless the user requests stacking.
+When the router supplies an invalid explicit `+` composition, identify the rejected segment or handoff inside the relevant numbered step and return the smallest legal corrected ordered Plan. Do not execute it.
 
-When the router supplies a valid explicit meta-plan (`mode: plan`, `planned_nodes`, and `execution_disabled = true`), treat the returned ordered nodes as the requested sequence. Do not re-route from keywords, load any analytical prompt, or execute any node. Validate the declared graph handoffs, make the shared task self-contained, expose every run condition and stop gate, and return one copy-ready executable composition for a later user-authorized invocation. The `plan` prefix itself is not part of that copy-ready composition.
+When the router supplies a valid explicit command or `+` stack in plan-first mode (`mode: plan`, `planned_nodes`, and `execution_disabled = true`), treat the returned ordered nodes as the requested sequence. Do not re-route from keywords, load any analytical prompt, or execute any node. Validate the declared graph handoffs, keep the shared task self-contained, and expose every material run condition and stop gate in the numbered steps. The later exact `do`, not the command text alone, starts execution.
 
-When the router supplies `suggestions`, list the possible canonical corrections with the router's evidence and keep them explicitly unselected. A single strong suggestion may be shown as the smallest copy-ready correction, but it remains a proposed invocation: do not silently replace the user's text, execute it, or claim that fuzzy matching selected an analytical node.
+When the router supplies `suggestions`, put the possible canonical corrections in the affected numbered step with the router's evidence and keep ambiguous corrections explicitly unselected. A single strong correction may be proposed in that step, but it remains unexecuted until `do`; do not claim that fuzzy matching selected or executed an analytical node.
 
 ## Review campaign routing
 
@@ -39,7 +41,7 @@ When the question cites a prior FPF report, finding, repair, closure check, or r
 - Return a no-call stop plan when both the semantic frontier and evaluation profile are unchanged and the campaign budget has already been used.
 - Never restart a full sequence merely because another skill produced the latest report.
 
-In every campaign route, carry the campaign ID, frontiers, evaluation profile, predecessor, finding fingerprints and states, allowed next transition, and stop condition into each copy-ready task. A no-call route is a complete valid result when the shared protocol requires stop or external action.
+In every campaign route, carry the campaign ID, frontiers, evaluation profile, predecessor, finding fingerprints and states, allowed next transition, and stop condition in the compact Plan state. A no-call route is a complete valid result when the shared protocol requires stop or external action.
 
 ## Skill selection
 
@@ -70,26 +72,26 @@ In every campaign route, carry the campaign ID, frontiers, evaluation profile, p
 - Use `$fpf decision synthesize` only when alternatives, evaluation evidence, and project decision authority are recoverable. Otherwise name the missing prerequisite.
 - Use `$fpf quality improve` directly when a versioned target, baseline, evaluation frame, and allowed change surface exist. Do not prepend an alignment audit unless FPF alignment is itself a required baseline claim.
 - Put `$fpf alignment audit` after implementation or acceptance, never as approval for a proposal.
-- Mark calls as independent only when neither consumes the other's output. Name the required handoff or join artifact for the next step; the active runtime chooses scheduling.
+- Return one linear execution order. Name the result inherited by each next step; do not propose parallel scheduling in a Plan approved by `do`.
 - End at the user's receiving use. Present later steps only as conditional follow-ups. When review-campaign policy applies, obey its full-review budget and stop rule.
-- For an explicitly requested stack, use only legal graph edges, keep the shared task after the final command, and mark every evidence, authority, application, or decision gate that can stop the composed run before its suffix executes.
+- For an explicitly requested stack, use only legal graph edges and mark every evidence, authority, application, or decision gate that can stop the run before its suffix executes.
 
 ## Maintainer evaluation
 
 `references/fpf-routing-scenarios.md` is the repository's behavioral scenario matrix. It is Markdown test evidence for maintainers, not required runtime context. When changing routing rules or the skill catalog, update that matrix and run the repository's deterministic maintenance suite outside the installed skill.
 
-## Address each task
+## Address each numbered step
 
-For every proposed call, write an imperative task that includes:
+For every proposed step, write one compact imperative item that includes:
 
 - the target or claim and its current state;
 - bounded context and intended receiving use;
-- available input artifacts and the exact prior-step handoff, if any;
+- available input artifacts and the exact result inherited from the prior step, if any;
 - project authority or decision owner when relevant;
 - the selected skill's native result;
 - explicit exclusions and the stop or return condition.
 
-Do not use vague tasks such as “apply FPF” or “review everything.” Do not ask a skill to make an authorization, assurance, gate, or project decision outside its own contract.
+Do not use vague tasks such as “apply FPF” or “review everything.” Do not ask a skill to make an authorization, assurance, gate, or project decision outside its own contract. Keep detailed routing evidence in the doer metadata; include it in the user-facing Plan only when it explains a correction, condition, or stop.
 
 ## Final delivery
 

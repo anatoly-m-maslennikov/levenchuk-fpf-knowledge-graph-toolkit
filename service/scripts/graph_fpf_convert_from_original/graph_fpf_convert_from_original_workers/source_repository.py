@@ -7,6 +7,7 @@ import subprocess
 from pathlib import Path
 
 from service.scripts.build_fpf_obsidian_graph.build_fpf_obsidian_graph_workers.models import FPF_PROFILE
+from .source_layout import resolve_framework_source
 
 
 CANONICAL_REMOTE_RE = re.compile(
@@ -75,7 +76,7 @@ def canonical_source_revision(
     if not source.is_file():
         raise ValueError(f"{source_label} source is not a file: {source}")
     repo = Path(git(source.parent, "rev-parse", "--show-toplevel")).resolve()
-    expected_source = repo / expected_filename
+    expected_source = resolve_framework_source(repo, expected_filename)
     if source.resolve() != expected_source.resolve():
         raise ValueError(f"configured source must be the original repository {expected_filename}: {expected_source}")
     remote = _canonical_remote(repo)

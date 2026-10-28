@@ -3,8 +3,9 @@ from __future__ import annotations
 from collections import defaultdict
 
 from .frontmatter import frontmatter, provenance_lines, wiki
-from .markdown import linkify_line, remove_empty_table_columns, demote_headings
+from .body import render_body
 from .models import FPF_PROFILE, GraphProfile, Page
+from .source_links import AnchorTargets
 
 
 def render_page(
@@ -16,9 +17,11 @@ def render_page(
     hub_by_title: dict[str, str],
     id_to_page: dict[str, str],
     profile: GraphProfile = FPF_PROFILE,
+    anchor_targets: AnchorTargets | None = None,
+    reference_definitions: dict[str, str] | None = None,
+    source_file_links: dict[str, str] | None = None,
 ) -> str:
-    body_lines = remove_empty_table_columns(demote_headings(page.body))
-    body = [linkify_line(x, id_to_page, profile) for x in body_lines]
+    body = render_body(page.body, page.page_name, id_to_page, profile, anchor_targets, reference_definitions, source_file_links)
     return frontmatter(
         page,
         source_name,
@@ -28,7 +31,7 @@ def render_page(
         hub_by_title,
         id_to_page,
         profile,
-    ) + "\n".join(body).rstrip() + "\n"
+    ) + body
 
 
 def render_hub(
@@ -39,11 +42,17 @@ def render_hub(
     source_sha256: str,
     generated_on: str,
     profile: GraphProfile = FPF_PROFILE,
+    id_to_page: dict[str, str] | None = None,
+    anchor_targets: AnchorTargets | None = None,
+    reference_definitions: dict[str, str] | None = None,
+    source_file_links: dict[str, str] | None = None,
 ) -> str:
     children = [p for p in pages if p.parent_hub == hub.title]
     out = [frontmatter(hub, source_name, source_revision, source_sha256, generated_on, {}, {}, profile)]
     out.append(f"# {hub.title}\n")
     out.append(f"Source lines: `{hub.start}-{hub.end}` in `{source_name}`.\n")
+    if any(line.strip() for line in hub.body):
+        out.append(render_body(hub.body, hub.page_name, id_to_page or {}, profile, anchor_targets, reference_definitions, source_file_links))
     out.append("## Pages\n")
     for p in children:
         label = p.framework_id or p.title

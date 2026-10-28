@@ -1,31 +1,21 @@
 {
-  "hubs": 15,
-  "pages": 330,
-  "ids": 300,
-  "markdown_files": 348,
+  "hubs": 14,
+  "pages": 434,
+  "ids": 422,
+  "markdown_files": 451,
   "broken_links_count": 0,
   "broken_links_sample": [],
-  "unresolved_relations_count": 3,
+  "unresolved_relations_count": 1,
   "unresolved_relations_sample": [
     {
       "source": "A_Kernel Architecture Cluster/18_Minimal CSLC in Kernel (Characteristic ⟷ Scale ⟷ Level ⟷ Coordinate) (A.CSLC-KERNEL)/00_A.18 - Minimal CSLC in Kernel (Characteristic ⟷ Scale ⟷ Level ⟷ Coordinate) (A.CSLC-KERNEL)",
       "relation": "related",
       "target": "C.MM"
-    },
-    {
-      "source": "B_Trans-disciplinary Reasoning Cluster/02_03_Trust and Assurance Calculus/03_B.03.05 - Working-Model Relations & Grounding (CT2R-LOG)",
-      "relation": "related",
-      "target": "B.3.1"
-    },
-    {
-      "source": "C_Kernel Extension Specifications/02_11_Decision Theory (Decsn-CAL)/00_C.11 - Decision Theory (Decsn-CAL)",
-      "relation": "builds_on",
-      "target": "C.9"
     }
   ],
   "source": "FPF-Spec.md",
   "out_dir": "FPF-Knowledge-Graph",
-  "source_revision": "563f4c8e06a319cbd375b66cdbb2df27a5f8b9ef",
-  "source_sha256": "c9551f2a4b52c9e57972a11552ab945f52a3522f433c54395221b16bef375ac7",
-  "generated_on": "2026-08-26"
+  "source_revision": "fb3b6a4ad1d51d732a365f75f7d68337c7a751e2",
+  "source_sha256": "03e2d58f56ef5e271d6e5481a042845eb1848994c221bed7fb384311b2a1a236",
+  "generated_on": "2026-10-25"
 }

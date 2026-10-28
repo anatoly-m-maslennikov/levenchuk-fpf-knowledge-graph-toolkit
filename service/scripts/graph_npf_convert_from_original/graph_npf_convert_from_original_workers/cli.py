@@ -37,7 +37,7 @@ def _run(args: argparse.Namespace) -> dict[str, object]:
     source, _ = read_npf_source(create_if_missing=False)
     repo, revision, remote = canonical_source_revision(
         source, expected_filename=NPF_PROFILE.default_source,
-        source_label=NPF_PROFILE.label, revision_scope="source-file",
+        source_label=NPF_PROFILE.label, revision_scope="repository",
     )
     if configured_repo != repo:
         raise ValueError(

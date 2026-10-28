@@ -18,6 +18,7 @@ FORBIDDEN_RUNTIME_TEXT = (
     "scripts/plan_fpf_report.py", "graph.yaml", "profiles.yaml",
     "uv --project", "uv run", "run python",
 )
+ORCHESTRATION_PROMPTS = {"fpf-manager.md", "fpf-runtime.md", "fpf-warden.md"}
 
 
 def _missing(text: str, fragments: list[str], label: str) -> list[str]:
@@ -84,7 +85,10 @@ def _validate_runtime_package(skill_root: Path) -> list[str]:
             continue
         if path.name != "SKILL.md" and path.suffix != ".md":
             errors.append(f"end-user FPF runtime contains a non-Markdown package file: {path}")
-    runtime_files = [skill_root / "SKILL.md", skill_root / "prompts/fpf-runtime.md"]
+    runtime_files = [
+        skill_root / "SKILL.md",
+        *(skill_root / "prompts" / name for name in sorted(ORCHESTRATION_PROMPTS)),
+    ]
     for path in runtime_files:
         text = path.read_text(encoding="utf-8")
         for fragment in FORBIDDEN_RUNTIME_TEXT:
@@ -106,7 +110,7 @@ def _validate_nodes(root: Path, nodes: list[dict[str, object]], contracts: dict[
     prompt_ids = {
         path.stem.removeprefix("fpf-")
         for path in (skill_root / "prompts").glob("fpf-*.md")
-        if path.name != "fpf-runtime.md"
+        if path.name not in ORCHESTRATION_PROMPTS
     }
     expected = prompt_ids | {"help"}
     if set(node_ids) != expected or len(node_ids) != len(expected):

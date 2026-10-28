@@ -16,6 +16,6 @@ def convert_npf_graph(
 ) -> dict[str, object]:
     return convert_framework_graph(
         profile=NPF_PROFILE, converter_name="graph-npf-convert-from-original",
-        require_existing=False, revision_scope="source-file",
+        require_existing=False, revision_scope="repository",
         root=root, source=source, generated_on=generated_on,
     )

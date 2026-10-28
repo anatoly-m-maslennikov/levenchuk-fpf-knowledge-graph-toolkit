@@ -11,6 +11,9 @@ from .patterns import INDEX_DIR, LINK_RE
 from .relations import normalize_relation_targets
 from .render import render_hub, render_master_index, render_page, render_relation_index, render_term_index
 from .source_parser import build_pages, parse_headings
+from .source_links import source_anchor_targets
+from .reference_links import source_reference_definitions
+from .source_paths import source_file_targets
 
 
 def remove_os_metadata(root: Path) -> None:
@@ -50,16 +53,13 @@ def validate(
         "broken_links_count": len(broken),
         "broken_links_sample": broken[:50],
         "unresolved_relations_count": len(unresolved),
-        "unresolved_relations_sample": unresolved[:50],
+        "unresolved_relations_sample": unresolved,
     }
 
 
 def build_graph(
-    source: Path,
-    out_dir: Path,
-    clean: bool,
-    source_revision: str,
-    generated_on: str,
+    source: Path, out_dir: Path, clean: bool,
+    source_revision: str, generated_on: str,
     profile: GraphProfile = FPF_PROFILE,
 ) -> dict:
     source_sha256 = hashlib.sha256(source.read_bytes()).hexdigest()
@@ -67,17 +67,20 @@ def build_graph(
     hubs, pages = build_pages(lines, headings, profile)
     normalize_relation_targets(pages)
     hub_by_title, id_to_page = assign_names(hubs, pages, profile)
+    anchor_targets = source_anchor_targets(headings, hubs, pages)
+    reference_definitions = source_reference_definitions(lines)
+    source_file_links = source_file_targets(source)
     if clean and out_dir.exists():
         remove_directory(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     for page in pages:
         path = out_dir / f"{page.page_name}.md"
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(render_page(page, source.name, source_revision, source_sha256, generated_on, hub_by_title, id_to_page, profile), encoding="utf-8")
+        path.write_text(render_page(page, source.name, source_revision, source_sha256, generated_on, hub_by_title, id_to_page, profile, anchor_targets, reference_definitions, source_file_links), encoding="utf-8")
     for hub in hubs:
         path = out_dir / f"{hub.page_name}.md"
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(render_hub(hub, pages, source.name, source_revision, source_sha256, generated_on, profile), encoding="utf-8")
+        path.write_text(render_hub(hub, pages, source.name, source_revision, source_sha256, generated_on, profile, id_to_page, anchor_targets, reference_definitions, source_file_links), encoding="utf-8")
     index_dir = out_dir / INDEX_DIR
     index_dir.mkdir(parents=True, exist_ok=True)
     master_name, relation_name, term_name = profile.index_files

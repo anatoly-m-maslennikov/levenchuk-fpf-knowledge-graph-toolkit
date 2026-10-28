@@ -23,12 +23,12 @@
     "id": "plan-composed-research",
     "area": "software",
     "output_contract": "plan",
-    "invocation": "$fpf plan sota harvest + options explore + design challenge Build a local quality gate for an analytical software-development skill. Do not save a report.",
+    "invocation": "$fpf sota harvest + design challenge + quality improve Review the current source FPF skill repository: identify current relevant practice, challenge the design, and propose bounded improvements. Do not save a report.",
     "criteria": [
-      {"id": "plan-only", "requirement": "Returns a plan and copy-ready composition without executing downstream analytical nodes or consulting FPF methodology sources."},
-      {"id": "legal-handoffs", "requirement": "Preserves the requested legal order and states evidence, authority, and stop gates between calls."},
+      {"id": "plan-only", "requirement": "Applies the default Plan-first rule to the explicit command stack and returns one compact numbered Proposed plan without executing downstream analytical nodes or consulting FPF methodology sources."},
+      {"id": "legal-handoffs", "requirement": "Preserves the requested SOTA harvest, design challenge, quality improve order and states evidence, authority, and stop gates between calls."},
       {"id": "bounded-task", "requirement": "Carries one self-contained shared task and explicit exclusions into the proposed composition."},
-      {"id": "plan-output-contract", "requirement": "Uses the Plan headings Task, scope, and boundaries; Routing decisions and recommendations; Unresolved evidence gaps; and Skills used. Each proposed call has routing confidence and a concrete routing-evidence basis; it neither emits an issue/fix registry nor moves merely lower-confidence routing decisions into evidence gaps."}
+      {"id": "plan-output-contract", "requirement": "Uses one Proposed plan heading and one ordered list; every later step names the complete prior-step result it consumes; the final line is Reply `do` to execute this plan. It has one validated plan/ artifact set under a run directory whose summary represents the whole task. It has no old Plan envelope, copy-ready invocation, issue/fix registry, execution, methodology sources, or report."}
     ]
   },
   {
@@ -39,7 +39,27 @@
     "criteria": [
       {"id": "typo-is-proposed-not-executed", "requirement": "Treats 'sota harvers' as a correction candidate for the canonical sota harvest command and never claims that the misspelled command or proposed stack executed."},
       {"id": "aliases-normalize-in-plan", "requirement": "Normalizes the complete aliases options and design challenge to canonical planned calls while preserving the task and legal order."},
-      {"id": "plan-remains-ephemeral", "requirement": "Uses the Plan output contract, reports no methodology sources, and neither analyzes nor saves a report."}
+      {"id": "plan-remains-ephemeral", "requirement": "Uses the compact numbered Plan output contract with the exact do approval line, reports no methodology sources, and neither analyzes nor saves a report."}
+    ]
+  },
+  {
+    "id": "approved-plan-do-continuation",
+    "area": "skills",
+    "output_contract": "analysis",
+    "invocation": "do",
+    "prior_validated_plan": {
+      "plan_id": "quality-gate-approved-plan-001",
+      "decision_threshold_percent": 90,
+      "original_invocation": "$fpf plan problem frame + structure recover Recover the current manager-doer-warden execution protocol of the source FPF skill package. Do not save a report.",
+      "warden_verdict": "PASS",
+      "plan_markdown": "# Proposed plan\n\n1. **`$fpf problem frame`** - Bound the current source-package execution-protocol question, its receiving use, acceptance boundary, exclusions, and honest blockers; return an accepted problem frame and stop before solution work; blocking threshold: 90% (operator override).\n2. **`$fpf structure recover`** - Recover the exact current manager-doer-warden entities, states, handoffs, and boundaries; use the complete validated result of step 1 as the bounded subject and acceptance boundary, and stop if current source carriers are unavailable.\n\nReply `do` to execute this plan."
+    },
+    "criteria": [
+      {"id": "exact-do-approves-latest-plan", "requirement": "Treats exact do as one-time approval of the supplied latest validated Plan, preserves its operator-set 90% blocking threshold, and executes no omitted command."},
+      {"id": "ordered-inherited-results", "requirement": "Executes problem frame then structure recover exactly once and passes the complete step-1 result into step 2."},
+      {"id": "automatic-completion", "requirement": "Completes without a second do because no material blocking decision below the active 90% threshold arises; releases no intermediate report."},
+      {"id": "step-artifact-chain", "requirement": "Creates step-001 for problem frame, starts step-002 only after step-001 passes the warden, records step-001 as step-002's predecessor, and creates final only from the two passed step sets. Each set contains exactly candidate.md and candidate-meta.md."},
+      {"id": "validated-final-analysis", "requirement": "Returns the complete analytical output contract only after manager-doer-warden validation, with no report saved."}
     ]
   },
   {
@@ -49,24 +69,24 @@
     "invocation": "$fpf Review capitalization behavior in identifiers and tell me which analytical command is appropriate. Do not save a report.",
     "criteria": [
       {"id": "no-api-substring-match", "requirement": "Does not route from the letters API embedded inside capitalization or claim an explicit applicability-scan command."},
-      {"id": "safe-plan-fallback", "requirement": "Uses Plan because the analytical intent is ambiguous and proposes bounded next calls with routing evidence."}
+      {"id": "safe-plan-fallback", "requirement": "Uses the default Plan-first mode, resolves the ambiguous analytical intent into bounded proposed calls with routing evidence, and executes none of them."}
     ]
   },
   {
     "id": "literal-plus-single-analysis",
     "area": "software",
     "output_contract": "analysis",
-    "invocation": "$fpf problem frame Frame requirements that mention C++ and A+B syntax; the plus signs are literal task text, not a composition. Do not save a report.",
+    "invocation": "$fpf problem frame Frame requirements that mention C++ and A+B syntax; the plus signs are literal task text, not a composition. Execute without a plan. Do not save a report.",
     "criteria": [
       {"id": "literal-plus-preserved", "requirement": "Preserves C++ and A+B as task text and does not split them into a composition."},
-      {"id": "one-command-only", "requirement": "Executes only problem-frame and returns the complete analytical four-heading contract with bounded FPF grounding."}
+      {"id": "one-command-only", "requirement": "Executes only problem frame, uses one validated step-001 artifact set with exactly candidate.md and candidate-meta.md, and returns the complete analytical four-heading contract with bounded FPF grounding."}
     ]
   },
   {
     "id": "russian-design-challenge-analysis",
     "area": "skills",
     "output_contract": "analysis",
-    "invocation": "$fpf проверка дизайна Проверь проект навыка: один большой промпт загружает весь граф, автоматически сохраняет каждый промежуточный результат и не имеет отрицательных маршрутизационных тестов. Отчёт не сохраняй.",
+    "invocation": "$fpf проверка дизайна Проверь проект навыка: один большой промпт загружает весь граф, автоматически сохраняет каждый промежуточный результат и не имеет отрицательных маршрутизационных тестов. Выполни без плана. Отчёт не сохраняй.",
     "criteria": [
       {"id": "russian-native-output", "requirement": "Returns clear Russian analytical prose while preserving canonical command IDs, FPF IDs, paths, and lifecycle tokens."},
       {"id": "design-specific-challenge", "requirement": "Challenges eager context loading, intermediate persistence, and missing negative routing tests with evidence, consequences, and mapped fixes."},
@@ -77,18 +97,18 @@
     "id": "composition-stops-with-typed-handoff",
     "area": "skills",
     "output_contract": "analysis",
-    "invocation": "$fpf design challenge + quality improve Challenge this proposed skill design and improve it if permitted: it preloads every prompt. You may analyze the proposal, but you have no authority and no writable versioned target. Do not save a report.",
+    "invocation": "$fpf design challenge + quality improve Challenge this proposed skill design and improve it if permitted: it preloads every prompt. Execute without a plan. You may analyze the proposal, but you have no authority and no writable versioned target. Do not save a report.",
     "criteria": [
       {"id": "typed-edge-enforced", "requirement": "Executes design-challenge, then evaluates the design-challenge to quality-improve typed handoff instead of treating edge legality as authority."},
       {"id": "exact-stop-and-suffix", "requirement": "Stops quality-improve with STOP_NO_AUTHORIZED_CHANGE, records the failed handoff field, and preserves the unexecuted suffix without claiming a change."},
-      {"id": "composition-receipt", "requirement": "Includes one composition receipt and one consolidated issue/fix registry rather than separate node reports."}
+      {"id": "composition-receipt", "requirement": "Includes one composition receipt and one consolidated issue/fix registry rather than releasing separate node reports. The executed design challenge has one passed step set and final consolidates only passed step sets; the stopped quality improve suffix gets no step set."}
     ]
   },
   {
     "id": "plain-persistence-readonly-stop",
     "area": "skills",
     "output_contract": "analysis",
-    "invocation": "$fpf problem frame Frame the release problem for this skill. Use save_report=on and report_style=plain in this read-only evaluation workspace.",
+    "invocation": "$fpf problem frame Frame the release problem for this skill. Execute without a plan. Use save_report=on and report_style=plain in this read-only evaluation workspace.",
     "criteria": [
       {"id": "analysis-still-returned", "requirement": "Returns the complete analytical artifact in chat even though persistence is unavailable."},
       {"id": "exclusive-create-stop", "requirement": "Does not claim a saved report and reports STOPPED_UNSAVED: NO_EXCLUSIVE_CREATE because exclusive host-native creation is unavailable."},
@@ -99,12 +119,12 @@
     "id": "software-review-convergence",
     "area": "software",
     "output_contract": "analysis",
-    "invocation": "$fpf design challenge + quality improve + alignment audit Review and improve version 1 of this design: a Python service puts business rules, persistence calls, HTTP mapping, and retry policy in one handler; tests assert only status 200; the team may revise the design text but may not change product behavior. Return one consolidated issue list and one fix list. Do not save a report.",
+    "invocation": "$fpf design challenge + quality improve + alignment audit Review and improve version 1 of this design: a Python service puts business rules, persistence calls, HTTP mapping, and retry policy in one handler; tests assert only status 200; the team may revise the design text but may not change product behavior. Execute without a plan. Return one consolidated issue list and one fix list. Do not save a report.",
     "criteria": [
       {"id": "substantive-analysis", "requirement": "Finds concrete business-logic, architecture, testing, and failure-policy weaknesses with evidence and consequences."},
       {"id": "one-issue-registry", "requirement": "Uses the analytical four-heading envelope and deduplicates issues across nodes into one stable issue registry rather than repeating reviews. Each issue has evidence, consequence, affected context, issue confidence plus evidence basis, uncertainty, lifecycle, and a mapped fix or explicit disposition; lower-confidence issues remain in that registry."},
       {"id": "one-mapped-fix-register", "requirement": "Returns one deduplicated ordered fix register that maps every stated weakness to a fix or disposition. Each fix variant states addressed issue IDs, alternative/complementary/required-prerequisite relationship, its own confidence and evidence basis, trade-offs, authority, dependencies/order, verification, recommendation, and state."},
-      {"id": "bounded-convergence", "requirement": "Uses one challenge, bounded improvement, and one closure audit or explains a stopped suffix; it does not restart an autonomous loop."},
+      {"id": "bounded-convergence", "requirement": "Uses one challenge, bounded improvement, and one closure audit or explains a stopped suffix; each executed command gets one sequential warden-PASS step set, final consumes the last passed set, and it does not restart an autonomous loop."},
       {"id": "fpf-grounding", "requirement": "Uses bounded relevant FPF sources and distinguishes methodology context from findings."}
     ]
   },
@@ -112,12 +132,45 @@
     "id": "framework-skill-analysis",
     "area": "framework",
     "output_contract": "analysis",
-    "invocation": "$fpf applicability scan + options explore + design challenge Evaluate a proposed framework for authoring analytical agent skills: YAML routes commands to Markdown prompts, every result is saved automatically, and one shared evaluator checks all skill types. Identify applicable patterns, alternatives, and weaknesses without selecting or implementing a winner. Do not save a report.",
+    "invocation": "$fpf applicability scan + options explore + design challenge Evaluate a proposed framework for authoring analytical agent skills: YAML routes commands to Markdown prompts, every result is saved automatically, and one shared evaluator checks all skill types. Execute without a plan. Identify applicable patterns, alternatives, and weaknesses without selecting or implementing a winner. Do not save a report.",
     "criteria": [
       {"id": "smallest-applicable-set", "requirement": "Selects a bounded relevant FPF pattern set rather than treating the whole graph as evidence."},
       {"id": "diverse-options", "requirement": "Produces materially distinct architecture and evaluation alternatives without silently selecting a winner."},
       {"id": "cross-boundary-challenge", "requirement": "Challenges routing, persistence defaults, evaluator specialization, provenance, and failure boundaries."},
-      {"id": "complete-consolidation", "requirement": "Returns all stated weaknesses in the issue-centered analytical envelope and one deduplicated mapped, ordered improvement register with residual risks. It keeps issue confidence separate from fix confidence and uses unresolved evidence gaps only for missing evidence or unanswered questions."}
+      {"id": "complete-consolidation", "requirement": "Returns all stated weaknesses in the issue-centered analytical envelope and one deduplicated mapped, ordered improvement register with residual risks. It keeps issue confidence separate from fix confidence and uses unresolved evidence gaps only for missing evidence or unanswered questions. Every executed command has one ordered warden-PASS step set and final consolidates only those passed sets."}
+    ]
+  },
+  {
+    "id": "sota-harvest-fixture-analysis",
+    "area": "skills",
+    "output_contract": "analysis",
+    "invocation": "$fpf sota harvest Using only service/scripts/fpf_skill_quality_gate/fpf_skill_quality_gate_assets/sota-evidence-fixture.md as the bounded evidence packet, map the represented practice for improving analytical-agent skill quality gates. Treat 2026-08-01 as the fixture freshness boundary, do not browse, do not claim coverage beyond the packet, execute without a plan, and do not save a report.",
+    "criteria": [
+      {"id": "direct-sota-execution", "requirement": "Executes only sota-harvest through the explicit without-Plan path and returns the complete analytical output contract without saving a report."},
+      {"id": "fixture-bounded-ledger", "requirement": "Uses all three fixture source records in a reconstructible corpus ledger, preserves their roles and limitations, and does not invent another source or live-web verification."},
+      {"id": "claims-and-synthesis-separated", "requirement": "Separates fixture claims from reviewer synthesis, keeps incompatible or setting-bound evidence visible, and states that the packet cannot establish a universal or current external frontier."}
+    ]
+  },
+  {
+    "id": "evaluation-design-direct-analysis",
+    "area": "skills",
+    "output_contract": "analysis",
+    "invocation": "$fpf evaluation design Design a rerunnable evaluation for version 1 of a portable analytical skill. The receiving decision is whether maintainers may call the package release-ready. Evaluate deterministic command coverage, live semantic behavior, temporary-artifact integrity, and Codex/Claude installation portability; preserve runtime cost and provider independence; do not run the checks, execute without a plan, and do not save a report.",
+    "criteria": [
+      {"id": "direct-evaluation-design-execution", "requirement": "Executes only evaluation-design through the explicit without-Plan path and returns the complete analytical output contract without saving a report."},
+      {"id": "rerunnable-multicoordinate-frame", "requirement": "Defines separate observable coordinates, baselines, representative cases, failure paths, evidence, uncertainty, and freshness rules for the four named concerns without collapsing them into one score."},
+      {"id": "decision-and-gate-boundaries", "requirement": "Defines pass, fail, abstain, stop, and redesign conditions while keeping the evaluation distinct from release authority and from actually running or improving the target."}
+    ]
+  },
+  {
+    "id": "decision-synthesize-direct-analysis",
+    "area": "skills",
+    "output_contract": "analysis",
+    "invocation": "$fpf decision synthesize Record the package owner's decision for the default live semantic gate. Option A runs the bounded release case pack on every local release check and keeps profile cases opt-in; observed duration is 24 minutes and every analytical command has direct coverage. Option B runs the release pack plus every profile on every check; observed duration is 47 minutes and adds profile specialization evidence. The protected limit is 30 minutes for the default check, full-profile evidence remains required before a major profile-system release, and the owner explicitly selects Option A. Produce the decision relation and ADR projection, execute without a plan, and do not save a report.",
+    "criteria": [
+      {"id": "direct-decision-synthesis-execution", "requirement": "Executes only decision-synthesize through the explicit without-Plan path and returns the complete analytical output contract without saving a report."},
+      {"id": "owner-selection-preserved", "requirement": "Records Option A as the owner-selected default without presenting FPF or the assistant as the decision authority, and preserves the full-profile obligation for major profile-system releases."},
+      {"id": "decision-and-adr-traceability", "requirement": "Separates the decision relation from its ADR projection and preserves options, evidence, rationale, accepted loss, consequences, confirmation path, and reopen trigger."}
     ]
   }
 ]

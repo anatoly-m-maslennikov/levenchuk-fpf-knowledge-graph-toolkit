@@ -8,8 +8,9 @@ from pathlib import Path
 from typing import Callable
 
 from service.scripts.filesystem_policy import remove_directory
-from service.scripts.build_fpf_obsidian_graph.build_fpf_obsidian_graph_workers.models import FPF_PROFILE
+from service.scripts.build_fpf_obsidian_graph.build_fpf_obsidian_graph_workers.models import CAD_PROFILE, FPF_PROFILE, GraphProfile
 from .source_package import source_identity
+from .source_layout import resolve_framework_source
 from .source_stage import stage_root
 from .eval_pack import build_eval_pack
 from .projection_manifest import PROJECTION_PROFILES, projection_manifest, tree_sha256
@@ -121,30 +122,44 @@ def _verify_evidence(root: Path, evidence_path: Path) -> str:
     return revision
 
 
-def _verify_stage(root: Path, revision: str) -> None:
-    stage = stage_root(root)
-    source = stage / FPF_PROFILE.default_source
+def _verify_projection_source(root: Path, revision: str, profile: GraphProfile) -> None:
+    source = resolve_framework_source(stage_root(root), profile.default_source)
     _, staged_revision, _ = source_identity(
-        source, expected_filename=FPF_PROFILE.default_source,
-        source_label=FPF_PROFILE.label, revision_scope="repository",
+        source, expected_filename=profile.default_source,
+        source_label=profile.label, revision_scope="repository",
     )
     if staged_revision != revision:
         raise ValueError("staged source revision does not match the evaluation")
     report = _read_json(
-        root / FPF_PROFILE.default_output / "00_Index" / "FPF - Validation Report.json",
+        root / profile.default_output / "00_Index" / f"{profile.label} - Validation Report.json",
         "current graph report",
     )
     digest = hashlib.sha256(source.read_bytes()).hexdigest()
     if report.get("source_sha256") != digest:
-        raise ValueError("staged source bytes do not match the current graph")
+        raise ValueError(f"staged source bytes do not match the current {profile.label} graph")
+
+
+def _verify_stage(root: Path, revision: str) -> None:
+    _verify_projection_source(root, revision, FPF_PROFILE)
+    if (root / CAD_PROFILE.default_output).is_dir():
+        _verify_projection_source(root, revision, CAD_PROFILE)
 
 
 def _cleanup_targets(root: Path, evidence: dict[str, object]) -> list[Path]:
     targets = [stage_root(root)]
     manifest = evidence["projection_manifest"]
     for profile in PROJECTION_PROFILES:
-        relative = manifest[profile.key]["backup_path"]
+        if profile.key not in manifest:
+            continue
+        record = manifest[profile.key]
+        relative = record["backup_path"]
         path = root / relative
+        if (
+            profile == CAD_PROFILE and record["backup_revision"] is None
+            and record["backup_tree_sha256"] is None
+            and not path.exists() and not path.is_symlink()
+        ):
+            continue
         if path.is_symlink() or not path.is_dir():
             raise ValueError(f"backup cleanup target must be a real directory: {path}")
         targets.append(path)

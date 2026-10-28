@@ -29,9 +29,9 @@ def read_settings(path: Path = EXAMPLE_PATH) -> dict[str, str]:
 def _report_contract(is_plan: bool) -> str:
     if is_plan:
         return (
-            "`$fpf plan` is the exception: it remains ephemeral, ignores report persistence and `report_style`, "
-            "never creates a report file, and never loads `references/fpf-report-persistence.md`, even though "
-            "the suite default is on."
+            "A Plan candidate is the exception: whether selected explicitly or by default Plan-first behavior, "
+            "it remains ephemeral, ignores report persistence and `report_style`, never creates a report file, "
+            "and never loads `references/fpf-report-persistence.md`, even though the suite default is on."
         )
     return (
         'Return the complete artifact in chat. When `save_report = "on"`, consult `report_style`, then load '

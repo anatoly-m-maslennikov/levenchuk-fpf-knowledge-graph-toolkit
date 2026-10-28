@@ -1,10 +1,10 @@
-"""Run structural validators for both generated framework graphs."""
+"""Run structural validators for the generated framework graphs."""
 
 from pathlib import Path
 
-from service.scripts.build_fpf_obsidian_graph.build_fpf_obsidian_graph_workers.models import FPF_PROFILE, NPF_PROFILE
+from service.scripts.build_fpf_obsidian_graph.build_fpf_obsidian_graph_workers.models import CAD_PROFILE, FPF_PROFILE, NPF_PROFILE
 from service.scripts.init_settings.init_settings import (
-    read_fpf_source, read_npf_source, settings_paths_for_root,
+    read_cad_source, read_fpf_source, read_npf_source, settings_paths_for_root,
 )
 from service.scripts.validate_fpf_graph.validate_fpf_graph import validate_graph
 
@@ -28,4 +28,6 @@ def validate_graphs(root: Path):
         return {}, {}, [f"cannot resolve graph sources: {exc}"]
     fpf_result, fpf_errors = _validate_one(root, FPF_PROFILE, fpf_source)
     npf_result, npf_errors = _validate_one(root, NPF_PROFILE, npf_source)
-    return fpf_result, npf_result, fpf_errors + npf_errors
+    cad_source, _ = read_cad_source(settings, example, create_if_missing=False)
+    _, cad_errors = _validate_one(root, CAD_PROFILE, cad_source)
+    return fpf_result, npf_result, fpf_errors + npf_errors + cad_errors

@@ -10,6 +10,7 @@ from service.scripts.init_settings.init_settings import (
     NPF_SOURCE_NAME,
     read_control_panel,
     read_fpf_original_repo,
+    read_npf_source,
     read_skill_version,
     settings_paths_for_root,
 )
@@ -70,7 +71,8 @@ def validate_control_panel(root: Path, expected: dict[str, str]) -> list[str]:
     _require(example_panel.get("package") == expected_package, "control-panel example package version changed", errors)
     _require(example_panel.get("skills") == expected, "control-panel example defaults changed", errors)
     _require((repository / FPF_SOURCE_NAME).is_file(), "configured original FPF source is missing", errors)
-    _require((repository / NPF_SOURCE_NAME).is_file(), "configured original NPF source is missing", errors)
+    npf_source, _ = read_npf_source(settings, example, create_if_missing=False)
+    _require(npf_source.is_file(), "configured original NPF source is missing", errors)
     return errors
 
 

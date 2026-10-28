@@ -31,7 +31,8 @@ class GraphProfile:
 
 FPF_PROFILE = GraphProfile("fpf", "FPF", "fpf_id", "FPF-Spec.md", "FPF-Knowledge-Graph", tuple("ABCDEFGHIJK"), False)
 NPF_PROFILE = GraphProfile("npf", "NPF", "npf_id", "Narrativization-and-Narrative-Studies-Principles-Framework.md", "NPF-Knowledge-Graph", ("NSTD",), True)
-PROFILES = {profile.key: profile for profile in (FPF_PROFILE, NPF_PROFILE)}
+CAD_PROFILE = GraphProfile("cad", "CAD", "cad_id", "CONTROL-ARCHITECTURE-DESIGN-PRINCIPLES-FRAMEWORK.md", "CAD-Knowledge-Graph", ("CAD",), True)
+PROFILES = {profile.key: profile for profile in (FPF_PROFILE, NPF_PROFILE, CAD_PROFILE)}
 
 
 @dataclass

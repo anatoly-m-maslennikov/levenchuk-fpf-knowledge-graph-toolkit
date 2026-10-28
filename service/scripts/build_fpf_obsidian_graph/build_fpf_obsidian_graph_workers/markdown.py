@@ -133,6 +133,8 @@ def linkify_line(
     id_to_page: dict[str, str],
     profile: GraphProfile = FPF_PROFILE,
 ) -> str:
+    if re.match(r"^\s{0,3}\[[^\]]+\]:", line):
+        return line
     protected: list[str] = []
     in_table = line.lstrip().startswith("|")
     def hold(value: str) -> str:
@@ -144,6 +146,7 @@ def linkify_line(
         return wiki(id_to_page[ref]) if in_table else wiki(id_to_page[ref], ref)
     line = re.sub(r"\[\[[^\]]+\]\]", protect, line)
     line = re.sub(r"\[[^\]]+\]\([^\)]+\)", protect, line)
+    line = re.sub(r"\[[^\]]+\]\s*\[[^\]]*\]", protect, line)
     def repl_backtick(match: re.Match[str]) -> str:
         ref = match.group(1)
         return hold(linked_ref(ref)) if ref in id_to_page else match.group(0)

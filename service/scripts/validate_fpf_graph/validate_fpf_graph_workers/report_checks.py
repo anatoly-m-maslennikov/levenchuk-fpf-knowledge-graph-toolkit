@@ -69,6 +69,7 @@ def _classification(target: str, count: int, status: str | None):
 def classify_unresolved(
     report: dict[str, object], source: Path,
     errors: list[str], warnings: list[str],
+    profile: GraphProfile = FPF_PROFILE,
 ) -> list[dict[str, object]]:
     count = report.get("unresolved_relations_count")
     sample = report.get("unresolved_relations_sample", [])
@@ -84,7 +85,11 @@ def classify_unresolved(
     classified: list[dict[str, object]] = []
     for target, occurrences in sorted(targets.items()):
         status = statuses.get(target)
-        label, severity, message = _classification(target, occurrences, status)
+        if profile != FPF_PROFILE and target.split(".", 1)[0] not in profile.pattern_roots:
+            label, severity = "external framework target outside this projection", "warning"
+            message = f"{label}: {target} ({occurrences} relation occurrences)"
+        else:
+            label, severity, message = _classification(target, occurrences, status)
         (errors if severity == "error" else warnings).append(message)
         classified.append(dict(
             target=target, occurrences=occurrences,

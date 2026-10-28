@@ -21,8 +21,8 @@ class ReportDeliveryContractTests(unittest.TestCase):
         for requirement in (
             "host-native file operation that guarantees create-if-absent",
             "STOPPED_UNSAVED: NO_EXCLUSIVE_CREATE",
-            "read the created file back",
-            "compare its complete text with the chat artifact",
+            "reads it back immediately",
+            "compares its complete text with the candidate",
             "FAILED_VERIFICATION",
             "a hash is supplemental evidence, not a runtime requirement",
         ):

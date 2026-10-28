@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+import json
 from pathlib import Path
 
 
@@ -14,6 +15,18 @@ STRATA_NAMES = (
     "unprefixed-h2-routing", "changed-since-backup",
     "unresolved-placeholder-relation", "top-level-family-root",
 )
+FENCED_CONTENT = re.compile(r"^#|[A-Z]\.[A-Za-z0-9-]", re.MULTILINE)
+
+
+def _has_fenced_heading_or_id(text: str) -> bool:
+    """Match the prior triple-backtick risk heuristic without quadratic scans."""
+    first = text.find("```")
+    last = text.rfind("```")
+    if first < 0 or last < first + 3:
+        return False
+    # The widest possible pair contains every eligible match. Search the original
+    # text so ^ keeps its actual line boundary instead of the window boundary.
+    return FENCED_CONTENT.search(text, first + 3, last) is not None
 
 
 def _matches(text: str, identifier: str, path: str, title: str, duplicates: set[str], changed: set[str]) -> set[str]:
@@ -25,7 +38,7 @@ def _matches(text: str, identifier: str, path: str, title: str, duplicates: set[
         matched.add("existing-link")
     if any(line.lstrip().startswith("|") and "[[" in line for line in lines):
         matched.add("markdown-table-generated-links")
-    if re.search(r"```[\s\S]*?(?:^#|[A-Z](?:\.[A-Za-z0-9-]+)+)[\s\S]*?```", text, re.MULTILINE):
+    if _has_fenced_heading_or_id(text):
         matched.add("fenced-code-heading-or-id")
     if re.search(r"(?im)^(?:##+\s+.*relation|\*\*.*relation.*\*\*|\s*[-*]\s+.*(?:→|->))", text):
         matched.add("relation-section-variants")
@@ -42,6 +55,42 @@ def _matches(text: str, identifier: str, path: str, title: str, duplicates: set[
     if re.search(r"(?i)unresolved|placeholder|\bTBD\b", text):
         matched.add("unresolved-placeholder-relation")
     return matched
+
+
+def _idless_source_pages(current: Path, identified_paths: set[str]) -> list[str]:
+    result = []
+    for path in sorted(current.rglob("*.md")):
+        relative = path.relative_to(current).as_posix()
+        if relative in identified_paths:
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace")
+        if not text.startswith("---\n"):
+            continue
+        header = text.split("\n---\n", 1)[0]
+        if not re.search(r'^mode: "canonical-generated"$', header, re.MULTILINE):
+            continue
+        if re.search(r'^fpf_id:\s*\S', header, re.MULTILINE):
+            continue
+        lines = re.search(r"^source_lines:\n  - ([1-9]\d*)\n  - ([1-9]\d*)$", header, re.MULTILINE)
+        if lines and int(lines[2]) >= int(lines[1]):
+            result.append(relative)
+    return result
+
+
+def _reported_unresolved_sources(current: Path, current_ids: dict[str, str], idless: list[str]) -> list[str]:
+    report = current / "00_Index" / "FPF - Validation Report.json"
+    if not report.is_file():
+        return []
+    data = json.loads(report.read_text(encoding="utf-8"))
+    targets = {path.removesuffix(".md"): identifier for identifier, path in current_ids.items()}
+    targets.update({path.removesuffix(".md"): path for path in idless})
+    sources = {
+        targets[item["source"].removesuffix(".md")]
+        for item in data.get("unresolved_relations_sample", [])
+        if isinstance(item, dict) and isinstance(item.get("source"), str)
+        and item["source"].removesuffix(".md") in targets
+    }
+    return sorted(sources)
 
 
 def risk_inventory(
@@ -62,6 +111,11 @@ def risk_inventory(
         for name in _matches(text, identifier, path, title, duplicates, changed):
             strata[name].append(identifier)
     strata["top-level-family-root"] = sorted(roots.values())
+    idless = _idless_source_pages(current, set(current_ids.values()))
+    strata["unprefixed-h2-routing"].extend(idless)
+    if unresolved := _reported_unresolved_sources(current, current_ids, idless):
+        generic = strata["unresolved-placeholder-relation"]
+        strata["unresolved-placeholder-relation"] = unresolved + sorted(set(generic) - set(unresolved))
     return {
         name: {
             "population": len(values), "targets": values[:1],

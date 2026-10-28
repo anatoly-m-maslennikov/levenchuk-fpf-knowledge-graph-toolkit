@@ -19,7 +19,7 @@ from service.scripts.filesystem_policy import (
     temporary_workspace,
 )
 from .source_package import source_identity
-
+from .revision_backup import revision_backup
 
 BUILDER_MODULE = "service.scripts.build_fpf_obsidian_graph"
 
@@ -190,7 +190,8 @@ def convert_transaction(
         _run_builder(command)
         report = _normalize_report(candidate, profile.label, graph.name)
         unchanged = graph.is_dir() and _tree_snapshot(candidate) == _tree_snapshot(graph)
-        replaced = False if unchanged else _install_candidate(candidate, graph, backup, Path(name))
+        target = revision_backup(graph, backup, Path(name), profile.label, revision)
+        replaced = False if unchanged else _install_candidate(candidate, graph, target, Path(name))
     return _result(
         converter_name, source, repo, remote, revision, generated_on,
         graph, backup, replaced, report,

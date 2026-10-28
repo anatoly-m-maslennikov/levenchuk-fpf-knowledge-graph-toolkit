@@ -60,7 +60,10 @@ def refresh_source_package(root: Path, repository: Path) -> dict[str, object]:
 
 
 def _existing_package(root: Path, destination: Path) -> Path | None:
-    candidates = sorted(path for path in root.glob(f"{PACKAGE_PREFIX}*") if path.is_dir())
+    candidates = sorted(
+        path for path in root.glob(f"{PACKAGE_PREFIX}*") if path.is_dir()
+        and any(item.is_file() or item.is_symlink() for item in path.rglob("*") if item.name != ".DS_Store")
+    )
     if not candidates:
         return None
     if len(candidates) != 1:

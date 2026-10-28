@@ -6,15 +6,29 @@ An Obsidian-ready, LLM-friendly usability fork of the original [First Principles
 
 This repository does not claim authority over upstream FPF. The canonical upstream source and its evolution remain in [ailev/FPF](https://github.com/ailev/FPF). This toolkit keeps a revision-bound local source package and may apply explicit repository-owned patches before graph conversion; any such patch is a toolkit change, not an upstream FPF change.
 
-The FPF graph uses upstream revision [`563f4c8`](https://github.com/ailev/FPF/commit/563f4c8e06a319cbd375b66cdbb2df27a5f8b9ef), dated **2026-08-25**. The NPF projection is packaged under the same full repository HEAD; its unchanged narrativization bytes remain traceable through the source metadata.
+The FPF, NPF, and CAD graphs use upstream repository revision [`fb3b6a4`](https://github.com/ailev/FPF/commit/fb3b6a4ad1d51d732a365f75f7d68337c7a751e2), dated **2026-10-25** (Georgia time). Each publication's own last-change commit and exact bytes remain traceable through the source metadata. Graphs were generated on **2026-10-25**.
+
+### Source currentness
+
+This repository is a validated snapshot, not a continuously synchronized mirror of upstream FPF.
+
+| Item | Status |
+|---|---|
+| Bundled revision | [`fb3b6a4`](https://github.com/ailev/FPF/commit/fb3b6a4ad1d51d732a365f75f7d68337c7a751e2), 2026-10-25 |
+| Last upstream comparison | 2026-10-25 |
+| Upstream HEAD at comparison | `fb3b6a4` |
+| Difference at comparison | 0 commits; refreshed from the latest original checkout |
+| Toolkit status | FPF, NPF, and CAD are generated from the same verified source package. Acceptance is recorded separately by the conversion evaluator. |
+
+“Revision-bound and validated” does not mean “latest upstream.” Every report or skill result should retain the bundled source revision so that its evidence can be reproduced.
 
 FPF was created by **Anatoly Levenchuk, with AI-agent assistance**. It is a pattern language for making difficult engineering, research, management, governance, and human/AI work explicit and reviewable. It separates entities from descriptions, evidence, decisions, plans, and performed work; scopes claims to their intended use; and identifies the direct patterns governing a question.
 
-The effective conversion sources are in [`.fpf-original-563f4c8e06a319cbd375b66cdbb2df27a5f8b9ef/`](.fpf-original-563f4c8e06a319cbd375b66cdbb2df27a5f8b9ef/). The folder contains every file tracked by that upstream HEAD and SHA-256 metadata for upstream and effective bytes. Its patch list is currently empty because upstream contains `F.0.2 Conceptual Synthesis across Source Ontologies`; a future repository-owned patch must live in this same revision-named folder and appear in the metadata. A script stages the verified package and generates smaller linked notes, hubs, indexes, and frontmatter. Runtime copies and graph backups are deleted after acceptance; the revision-named source package remains tracked.
+The effective conversion sources are in [`.fpf-original-fb3b6a4ad1d51d732a365f75f7d68337c7a751e2/`](.fpf-original-fb3b6a4ad1d51d732a365f75f7d68337c7a751e2/). The folder contains all 49 upstream-tracked files and SHA-256 metadata for upstream and effective bytes. Its patch list is empty. A future repository-owned patch must live in this revision-named folder and appear in the metadata. The scripts stage this verified package and generate smaller linked notes, hubs, indexes, and frontmatter. Runtime copies and graph backups are deleted after acceptance; the revision-named source package remains tracked.
 
 ## Why this version
 
-The current specification is roughly 12 MB. Loading it for every question consumes many LLM tokens and weakens retrieval focus. This fork provides:
+The current core specification is roughly 18 MB, with additional domain-framework files. Loading it for every question consumes many LLM tokens and weakens retrieval focus. This fork provides:
 
 - bounded LLM retrieval of relevant patterns, with lower context cost;
 - Obsidian hubs, links, backlinks, folders, frontmatter, and graph navigation;
@@ -22,23 +36,35 @@ The current specification is roughly 12 MB. Loading it for every question consum
 - pattern, relation, and term indexes with source-line metadata;
 - shared human/agent navigation, incremental Git diffs, and automatic link validation.
 
+## Which surface to use
+
+| Need | Use | Boundary |
+|---|---|---|
+| Read or cite canonical FPF | [Original `ailev/FPF`](https://github.com/ailev/FPF) | Upstream is authoritative; this toolkit is not. |
+| Browse the bundled revision as linked notes | [`FPF-Knowledge-Graph/`](FPF-Knowledge-Graph/) | Revision-bound generated projection, not a live upstream mirror. |
+| Run a bounded FPF analysis | [`$fpf`](skills/README.md) | Produces evidence-backed analysis; it does not authorize external actions. |
+| Regenerate or validate the graph | [`service/`](service/README.md) | Repository maintenance tooling, not an end-user analysis surface. |
+| Enforce permissions or workflow transitions | A project-specific runtime | Deliberately outside this toolkit; prompts and graph navigation are not authorization controls. |
+
 ## Repository layout
 
 - [`FPF-Knowledge-Graph/`](FPF-Knowledge-Graph/) — generated graph and validation output.
 - [`NPF-Knowledge-Graph/`](NPF-Knowledge-Graph/) — generated narrativization and narrative-studies graph using canonical `NSTD.*` identifiers and project-local `NPF` graph labels.
+- [`CAD-Knowledge-Graph/`](CAD-Knowledge-Graph/) — generated Control Architecture Design graph, including its five patterns and architectural reference.
 - [`skills/`](skills/) — the Markdown-only end-user `fpf.skill` and its global end-user installer.
 - [`service/`](service/README.md) — original-FPF conversion, graph generation, validation, settings tools, project service skills, and their installer.
 - [`service/tests/`](service/tests/) — every repository test and the deterministic maintenance-suite runner.
 - [`service/scripts/build_fpf_obsidian_graph/`](service/scripts/build_fpf_obsidian_graph/) — generator.
 - [`service/scripts/graph_npf_convert_from_original/`](service/scripts/graph_npf_convert_from_original/) — transactional NPF converter using the same configured original repository.
+- [`service/scripts/graph_cad_convert_from_original/`](service/scripts/graph_cad_convert_from_original/) — transactional CAD converter using the same staged source package; [`validate_cad_graph`](service/scripts/validate_cad_graph/) checks the result.
 - [`skills/settings.toml.example`](skills/settings.toml.example) — tracked defaults template for the external end-user skill control panel.
-- [`.fpf-original-563f4c8e06a319cbd375b66cdbb2df27a5f8b9ef/`](.fpf-original-563f4c8e06a319cbd375b66cdbb2df27a5f8b9ef/) — digest-bound full source package for upstream HEAD `563f4c8`; currently unpatched because upstream includes the required synthesis pattern.
+- [`.fpf-original-fb3b6a4ad1d51d732a365f75f7d68337c7a751e2/`](.fpf-original-fb3b6a4ad1d51d732a365f75f7d68337c7a751e2/) — digest-bound full source package for upstream HEAD `fb3b6a4`, including Core and all domain frameworks.
 
 ## Included skills
 
 The portable methodology package hardcodes no repository path, tool, operating system, or project layer. Its installer records the absolute local toolkit path in machine-local settings inside the installed skill, allowing runtime discovery of the bundled graph without requiring CAPRMEDIO. Installers expose it as the global Personal `$fpf` entry. This project exposes only the converter and evaluator service skills, avoiding a duplicate project-local `$fpf`. The original-to-graph converter skill resolves this owning checkout and its external control panel at runtime.
 
-The single end-user `$fpf` package is a lazy bilingual Markdown prompt graph with a thin entry skill. General Help shows only three areas—framework, software, and skills—and exact area Help calls load one localized page directly; every other call loads one internal runtime prompt. The installed package contains only Markdown plus its installer-generated `.fpf-runtime.toml`: it requires no Python, uv, YAML/JSON parser, subprocess, executable permission, virtual environment, or runtime cache. Its Markdown command graph separates analytical intent from reusable task profiles declared by the three area files. Stable FPF IDs resolve directly through the configured repository's FPF Markdown index; only selected command/profile pages and verified FPF sections are opened, and conditional patterns remain unloaded until their condition applies. Its standalone defaults are automatic English/Russian selection, general-language output, `save_report = "on"`, and `report_style = "plain"` (`plain` or `caprmedio`). Russian aliases select the same canonical nodes; identifiers, FPF IDs, paths, code, quotations, and citations remain unchanged. Explicit user instructions override installed defaults, which override embedded defaults; skill preferences are never read from the analyzed repository's `.caprmedio` directory. See the [skills README](skills/README.md#output-and-report-defaults) for the portable contract.
+The single end-user `$fpf` package is a lazy bilingual Markdown prompt graph with a thin entry skill. General Help shows only three areas—framework, software, and skills—and exact area Help calls load one localized page directly. Every new non-Help request is Plan-first: a single command or explicit `+` stack produces a validated Plan, and only exact `do` executes it. Direct execution is invocation-local and requires an explicit operator instruction to proceed without a Plan. Every non-Help call uses a manager that retains one resumable doer and one independent warden. Under one `fpf-YYYY-MM-DD-<whole-task-summary>-<uuid>` temporary run directory, every executed subtask gets its own `step-NNN/` set containing `candidate.md` and `candidate-meta.md`; the next subtask starts only after that set passes the warden. Plan and final consolidation use matching `plan/` and `final/` sets. Only a validated direct-call or final candidate is released or persisted. The installed package contains only Markdown plus its installer-generated `.fpf-runtime.toml`: it requires no Python, uv, YAML/JSON parser, subprocess, executable permission, virtual environment, or runtime cache. Its Markdown command graph separates analytical intent from reusable task profiles declared by the three area files. Stable FPF IDs resolve directly through the configured repository's FPF Markdown index; only selected command/profile pages and verified FPF sections are opened, and conditional patterns remain unloaded until their condition applies. Its standalone defaults are automatic English/Russian selection, general-language output, `save_report = "on"`, and `report_style = "plain"` (`plain` or `caprmedio`). Russian aliases select the same canonical nodes; identifiers, FPF IDs, paths, code, quotations, and citations remain unchanged. Explicit user instructions override installed defaults, which override embedded defaults; skill preferences are never read from the analyzed repository's `.caprmedio` directory. See the [skills README](skills/README.md#output-and-report-defaults) for the portable contract.
 
 | Command | Use case | Result |
 |---|---|---|
@@ -57,11 +83,11 @@ The single end-user `$fpf` package is a lazy bilingual Markdown prompt graph wit
 | [`graph-fpf-convert-from-original`](service/skills/graph-fpf-convert-from-original.skill/SKILL.md) | Convert canonical `ailev/FPF` into this repository's generated graph. | Transactional backup, deterministic tests, and repair-loop coordination. |
 | [`graph-fpf-evaluate-conversion-result`](service/skills/graph-fpf-evaluate-conversion-result.skill/SKILL.md) | Evaluate one generated conversion candidate. | Exhaustive mechanical coverage, bounded semantic fidelity, historical regression probes, broader graph risks, and a classified verdict. |
 
-Every graph node marked `Saves report = yes` may save its complete result when `save_report = "on"`: `plain` preserves the plain Markdown copy, while `caprmedio` follows the verified CAPRMEDIO Analysis Report Atom adapter, including narrowest-containing-Scope-Unit selection and the BSEED special case. That does not authorize edits to the target. `$fpf help` and `$fpf plan` remain ephemeral and ignore report persistence and `report_style`.
+Every graph node marked `Saves report = yes` may save its complete result when `save_report = "on"`: `plain` preserves the plain Markdown copy, while `caprmedio` follows the verified CAPRMEDIO Analysis Report Atom adapter, including narrowest-containing-Scope-Unit selection and the BSEED special case. The doer resolves but does not perform this delivery; after independent validation, only the manager executes the planned exclusive create and exact read-back. That does not authorize edits to the target. `$fpf help` and `$fpf plan` remain ephemeral and ignore report persistence and `report_style`.
 
-Analytical commands can be composed explicitly with spaces around `+`, for example `$fpf design challenge + quality improve + alignment audit <shared task>`. A composition follows only legal graph handoffs, shares one campaign and stable finding registry, and stops at missing evidence or authority gates. It returns and saves one consolidated artifact: every issue and weak point found within the declared scope and evaluation profile, one deduplicated fixes and improvements list mapped to those findings, and the final verification and residual-risk state. Intermediate nodes do not create separate reports.
+Analytical commands can be composed explicitly with spaces around `+`, for example `$fpf design challenge + quality improve + alignment audit <shared task>`. By default this returns the proposed ordered Plan and waits for exact `do`; command text alone never starts analysis. Add an explicit instruction such as `without a plan` only when immediate execution is intended. An executed composition follows only legal graph handoffs, shares one campaign and stable finding registry, and stops at missing evidence or authority gates. Every executed node creates one temporary warden-validated artifact set before its successor starts. The run returns and may save one consolidated final artifact: every issue and weak point found within the declared scope and evaluation profile, one deduplicated fixes and improvements list mapped to those findings, and the final verification and residual-risk state. Intermediate sets are not separate durable reports.
 
-Prefix an explicit stack with `plan` to validate and render it without execution, for example `$fpf plan sota harvest + options explore + design challenge <shared task>`. The planner returns a copy-ready composition, never loads the analytical prompts, and never saves a report.
+Prefix an explicit stack with `plan` to validate and render it without execution, for example `$fpf plan sota harvest + options explore + design challenge <shared task>`. The planner returns one compact numbered Plan. Reply exact `do` once to execute it in order: each step receives the complete previous-step result, and execution continues automatically until complete. Only a material decision required to continue and below the active blocking threshold pauses the run for one question with two or three variants; the default is 95%, and the operator may explicitly override it for the invocation or active Plan. After the answer, the same run resumes without another `do`. The threshold never relaxes evidence, authority, persistence, or validation gates. Plan never loads analytical prompts or saves a report.
 
 Near-match command typos produce canonical suggestions only in the non-executing planner/error path. A fuzzy match never launches an analytical node; the corrected command must be invoked explicitly.
 
@@ -91,11 +117,20 @@ Fetch or check out the original `ailev/FPF` repository outside the active Obsidi
 
 For a new upstream HEAD, first run `uv run -m service.scripts.graph_fpf_convert_from_original --refresh-source-package`. It copies every upstream-tracked file into a package whose folder name includes the full upstream commit, applies any colocated `.patch` files in filename order, and writes digest metadata. It never makes a local source patch, commit, or push in the external checkout; fast-forwarding that checkout to upstream is the refresh precondition. Then run `--check-settings` and `--stage-sources`; both reconstruct the effective result from the recorded upstream commit and fail if a patch, metadata record, stored byte, or file inventory differs. Run the FPF converter and then `uv run -m service.scripts.graph_npf_convert_from_original`; both read only the staged effective package and preserve their current graphs as temporary `.bak` trees. Run the deterministic suite, prepare the eval pack, and execute the separate evaluator. After it writes revision- and tree-bound PASS evidence, run `--finalize-accepted`. Finalization reruns the complete suite and clears the runtime stage plus every root `*-Knowledge-Graph.bak` tree while retaining the tracked revision-named package. Failed tests, failed evaluation, or stale evidence preserve all temporary inputs and backups.
 
-The NPF projection uses the same staged checkout and reads `Narrativization-and-Narrative-Studies-Principles-Framework.md`. It writes `NPF-Knowledge-Graph`, temporarily rotates an existing projection to `NPF-Knowledge-Graph.bak`, and participates in the complete acceptance suite before cleanup.
+The NPF projection reads `DPFs/Narrativization-and-Narrative-Studies-Principles-Framework.md`; legacy upstream editions with that file at the repository root remain supported. CAD reads `DPFs/Engineering DPF Suite/CONTROL-ARCHITECTURE-DESIGN-PRINCIPLES-FRAMEWORK.md`. Both use the verified stage, write their own `*-Knowledge-Graph` folder, preserve an existing graph as a temporary `.bak` tree, and participate in the complete deterministic suite.
+
+After refreshing and staging the original source package, regenerate all three projections:
+
+```bash
+uv run -m service.scripts.graph_fpf_convert_from_original
+uv run -m service.scripts.graph_npf_convert_from_original
+uv run -m service.scripts.graph_cad_convert_from_original
+uv run -m service.tests.run_tests
+```
 
 ## Local live quality gate
 
-GitHub Actions remains deterministic and model-free. Before a skill release, run `uv run -m service.scripts.fpf_skill_quality_gate` from a normal local terminal with a logged-in, writable Codex CLI profile. It first requires the complete deterministic suite, then uses ephemeral read-only `codex exec` turns against the current source package for eleven bounded English/Russian, cross-area, routing-regression, typed-handoff, and persistence-stop cases, followed by a separate structured semantic evaluator. Every declared criterion must pass independently; scores are never averaged. A failure returns all weaknesses and one consolidated fix list, exits non-zero, and does not refresh PASS evidence. A pass writes digest-bound local evidence under `.runtime/fpf-skill-quality-evaluation.json`; `uv run -m service.scripts.fpf_skill_quality_gate --check` rejects missing or stale evidence without making a model call. Use `--model <model>` to pin the local model when release policy requires it. This live gate is intentionally absent from `.github/workflows/ci.yml`.
+GitHub Actions remains deterministic and model-free. Before a skill release, run `uv run -m service.scripts.fpf_skill_quality_gate` from a normal local terminal with a logged-in, writable Codex CLI profile. It first requires the complete deterministic suite, then uses ephemeral read-only `codex exec` turns against the current source package for twelve bounded English/Russian, cross-area, Plan-continuation, routing-regression, typed-handoff, and persistence-stop cases, followed by a separate structured semantic evaluator. Each case must have no final error, complete its required workflow, create all required artifacts, use correct and internally consistent artifact structures, and return a semantically correct result aligned to the task; case-specific criteria refine only that last gate. The structured subject result is the evaluator boundary, and scores are never averaged. A failure returns all weaknesses and one consolidated fix list, exits non-zero, and does not refresh PASS evidence. A pass writes digest-bound local evidence under `.runtime/fpf-skill-quality-evaluation.json`; `uv run -m service.scripts.fpf_skill_quality_gate --check` rejects missing or stale evidence without making a model call. Use `--model <model>` to pin the local model when release policy requires it. This live gate is intentionally absent from `.github/workflows/ci.yml`.
 
 Run `uv run -m service.scripts.fpf_skill_quality_gate --full-profiles` periodically or before a profile-heavy release. It appends one live semantic case from every declared task profile. Evidence is bound to the exact pack and ordered case IDs; use the same `--full-profiles` flag with `--check`.
 
@@ -103,8 +138,8 @@ Regenerate from the repository root:
 
 ```bash
 uv run -m service.scripts.build_fpf_obsidian_graph \
-  --source-revision 563f4c8e06a319cbd375b66cdbb2df27a5f8b9ef \
-  --generated-on 2026-08-26 --clean
+  --source-revision fb3b6a4ad1d51d732a365f75f7d68337c7a751e2 \
+  --generated-on 2026-10-25 --clean
 ```
 
 The report and every generated note record this revision, the SHA-256 of the exact source bytes, and the supplied generation date. Check the [`validation report`](FPF-Knowledge-Graph/00_Index/FPF%20-%20Validation%20Report.json) for zero broken links, then review the diff.

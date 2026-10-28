@@ -10,6 +10,7 @@ from pathlib import Path
 from service.scripts.filesystem_policy import temporary_workspace
 
 from .source_repository import canonical_source_revision, git
+from .source_layout import resolve_framework_source
 
 
 PACKAGE_PREFIX = ".fpf-original-"
@@ -172,18 +173,13 @@ def source_identity(
     source: Path, *, expected_filename: str, source_label: str,
     revision_scope: str,
 ) -> tuple[Path, str, str]:
-    if (source.parent / METADATA_NAME).is_file():
-        metadata = validate_source_package(source.parent)
-        if source.name != expected_filename:
-            raise ValueError(f"expected {expected_filename}, got {source.name}")
+    directory = next((parent for parent in source.parents if (parent / METADATA_NAME).is_file()), None)
+    if directory is not None:
+        metadata = validate_source_package(directory)
+        if source.resolve() != resolve_framework_source(directory, expected_filename).resolve():
+            raise ValueError(f"expected {expected_filename}, got {source}")
         revision = str(metadata["upstream_revision"])
-        if revision_scope == "source-file":
-            records = _records(metadata["tracked_files"], "tracked_files")
-            revision = next(
-                record["source_revision"] for record in records
-                if record["path"] == expected_filename
-            )
-        return source.parent.resolve(), revision, str(metadata["upstream_remote"])
+        return directory.resolve(), revision, str(metadata["upstream_remote"])
     return canonical_source_revision(
         source, expected_filename=expected_filename, source_label=source_label,
         revision_scope=revision_scope,

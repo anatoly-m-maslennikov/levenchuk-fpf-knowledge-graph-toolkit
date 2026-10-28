@@ -5,8 +5,59 @@
     "output_contract": {"type": "string", "enum": ["help", "plan", "analysis"]},
     "commands_executed": {"type": "array", "items": {"type": "string"}},
     "methodology_sources_used": {"type": "array", "items": {"type": "string"}},
-    "report_saved": {"type": "boolean"}
+    "report_saved": {"type": "boolean"},
+    "plan_execution": {
+      "type": "object",
+      "properties": {
+        "plan_id": {"type": "string"},
+        "decision_threshold_percent": {"type": "number", "minimum": 0, "maximum": 100},
+        "completed_steps": {"type": "array", "items": {"type": "string"}},
+        "prior_result_handoffs": {"type": "array", "items": {"type": "string"}},
+        "blocking_questions": {"type": "integer", "minimum": 0},
+        "same_doer_resumed": {"type": "boolean"},
+        "second_do_required": {"type": "boolean"}
+      },
+      "required": ["plan_id", "decision_threshold_percent", "completed_steps", "prior_result_handoffs", "blocking_questions", "same_doer_resumed", "second_do_required"],
+      "additionalProperties": false
+    },
+    "orchestration": {
+      "type": "object",
+      "properties": {
+        "mode": {"type": "string", "enum": ["fast-help", "manager-doer-warden"]},
+        "warden_verdict": {"type": "string", "enum": ["NOT_APPLICABLE", "PASS", "REVISE", "BLOCKED"]},
+        "attempt": {"type": "integer", "minimum": 0},
+        "run_directory_leaf": {"type": "string"},
+        "whole_task_summary": {"type": "string"},
+        "artifact_sets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "set_id": {"type": "string"},
+              "kind": {"type": "string", "enum": ["plan", "step", "final"]},
+              "command": {"type": "string"},
+              "predecessor_set": {"type": "string"},
+              "attempt": {"type": "integer", "minimum": 1},
+              "warden_verdict": {"type": "string", "enum": ["PASS"]},
+              "files": {
+                "type": "array",
+                "prefixItems": [
+                  {"type": "string", "const": "candidate.md"},
+                  {"type": "string", "const": "candidate-meta.md"}
+                ],
+                "minItems": 2,
+                "maxItems": 2
+              }
+            },
+            "required": ["set_id", "kind", "command", "predecessor_set", "attempt", "warden_verdict", "files"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["mode", "warden_verdict", "attempt", "run_directory_leaf", "whole_task_summary", "artifact_sets"],
+      "additionalProperties": false
+    }
   },
-  "required": ["response_markdown", "output_contract", "commands_executed", "methodology_sources_used", "report_saved"],
+  "required": ["response_markdown", "output_contract", "commands_executed", "methodology_sources_used", "report_saved", "orchestration"],
   "additionalProperties": false
 }

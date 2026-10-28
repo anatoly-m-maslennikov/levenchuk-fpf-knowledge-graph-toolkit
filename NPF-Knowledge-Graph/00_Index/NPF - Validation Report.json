@@ -1,16 +1,537 @@
 {
-  "hubs": 4,
-  "pages": 25,
-  "ids": 8,
-  "markdown_files": 32,
+  "hubs": 6,
+  "pages": 29,
+  "ids": 26,
+  "markdown_files": 38,
   "broken_links_count": 0,
   "broken_links_sample": [],
-  "unresolved_relations_count": 0,
-  "unresolved_relations_sample": [],
+  "unresolved_relations_count": 104,
+  "unresolved_relations_sample": [
+    {
+      "source": "NSTD/15_01_Choose a Narrative's Purpose and the Source Structures It Must Preserve/00_NSTD.01 - Choose a Narrative's Purpose and the Source Structures It Must Preserve",
+      "relation": "uses",
+      "target": "A.10"
+    },
+    {
+      "source": "NSTD/15_01_Choose a Narrative's Purpose and the Source Structures It Must Preserve/00_NSTD.01 - Choose a Narrative's Purpose and the Source Structures It Must Preserve",
+      "relation": "uses",
+      "target": "A.16.1"
+    },
+    {
+      "source": "NSTD/15_01_Choose a Narrative's Purpose and the Source Structures It Must Preserve/00_NSTD.01 - Choose a Narrative's Purpose and the Source Structures It Must Preserve",
+      "relation": "uses",
+      "target": "A.6.3.NAR"
+    },
+    {
+      "source": "NSTD/15_01_Choose a Narrative's Purpose and the Source Structures It Must Preserve/00_NSTD.01 - Choose a Narrative's Purpose and the Source Structures It Must Preserve",
+      "relation": "uses",
+      "target": "B.3"
+    },
+    {
+      "source": "NSTD/15_01_Choose a Narrative's Purpose and the Source Structures It Must Preserve/00_NSTD.01 - Choose a Narrative's Purpose and the Source Structures It Must Preserve",
+      "relation": "uses",
+      "target": "C.2.8"
+    },
+    {
+      "source": "NSTD/15_01_Choose a Narrative's Purpose and the Source Structures It Must Preserve/00_NSTD.01 - Choose a Narrative's Purpose and the Source Structures It Must Preserve",
+      "relation": "uses",
+      "target": "C.2.LS"
+    },
+    {
+      "source": "NSTD/15_01_Choose a Narrative's Purpose and the Source Structures It Must Preserve/00_NSTD.01 - Choose a Narrative's Purpose and the Source Structures It Must Preserve",
+      "relation": "uses",
+      "target": "C.33"
+    },
+    {
+      "source": "NSTD/15_01_Choose a Narrative's Purpose and the Source Structures It Must Preserve/00_NSTD.01 - Choose a Narrative's Purpose and the Source Structures It Must Preserve",
+      "relation": "uses",
+      "target": "C.35"
+    },
+    {
+      "source": "NSTD/15_01_Choose a Narrative's Purpose and the Source Structures It Must Preserve/00_NSTD.01 - Choose a Narrative's Purpose and the Source Structures It Must Preserve",
+      "relation": "uses",
+      "target": "D.1"
+    },
+    {
+      "source": "NSTD/15_01_Choose a Narrative's Purpose and the Source Structures It Must Preserve/00_NSTD.01 - Choose a Narrative's Purpose and the Source Structures It Must Preserve",
+      "relation": "uses",
+      "target": "D.5"
+    },
+    {
+      "source": "NSTD/15_01_Choose a Narrative's Purpose and the Source Structures It Must Preserve/00_NSTD.01 - Choose a Narrative's Purpose and the Source Structures It Must Preserve",
+      "relation": "uses",
+      "target": "E.10"
+    },
+    {
+      "source": "NSTD/15_01_Choose a Narrative's Purpose and the Source Structures It Must Preserve/00_NSTD.01 - Choose a Narrative's Purpose and the Source Structures It Must Preserve",
+      "relation": "uses",
+      "target": "F.18"
+    },
+    {
+      "source": "NSTD/15_01_Choose a Narrative's Purpose and the Source Structures It Must Preserve/00_NSTD.01 - Choose a Narrative's Purpose and the Source Structures It Must Preserve",
+      "relation": "uses",
+      "target": "G.11"
+    },
+    {
+      "source": "NSTD/15_01_Choose a Narrative's Purpose and the Source Structures It Must Preserve/00_NSTD.01 - Choose a Narrative's Purpose and the Source Structures It Must Preserve",
+      "relation": "uses",
+      "target": "G.2"
+    },
+    {
+      "source": "NSTD/16_02_Choose a Narrative Order That Keeps Needed Source Relations Recoverable/00_NSTD.02 - Choose a Narrative Order That Keeps Needed Source Relations Recoverable",
+      "relation": "uses",
+      "target": "A.16.2"
+    },
+    {
+      "source": "NSTD/16_02_Choose a Narrative Order That Keeps Needed Source Relations Recoverable/00_NSTD.02 - Choose a Narrative Order That Keeps Needed Source Relations Recoverable",
+      "relation": "uses",
+      "target": "A.6.3.CSC"
+    },
+    {
+      "source": "NSTD/16_02_Choose a Narrative Order That Keeps Needed Source Relations Recoverable/00_NSTD.02 - Choose a Narrative Order That Keeps Needed Source Relations Recoverable",
+      "relation": "uses",
+      "target": "A.6.3.NAR"
+    },
+    {
+      "source": "NSTD/16_02_Choose a Narrative Order That Keeps Needed Source Relations Recoverable/00_NSTD.02 - Choose a Narrative Order That Keeps Needed Source Relations Recoverable",
+      "relation": "uses",
+      "target": "A.6.P"
+    },
+    {
+      "source": "NSTD/16_02_Choose a Narrative Order That Keeps Needed Source Relations Recoverable/00_NSTD.02 - Choose a Narrative Order That Keeps Needed Source Relations Recoverable",
+      "relation": "uses",
+      "target": "C.2.8"
+    },
+    {
+      "source": "NSTD/16_02_Choose a Narrative Order That Keeps Needed Source Relations Recoverable/00_NSTD.02 - Choose a Narrative Order That Keeps Needed Source Relations Recoverable",
+      "relation": "uses",
+      "target": "C.33"
+    },
+    {
+      "source": "NSTD/16_02_Choose a Narrative Order That Keeps Needed Source Relations Recoverable/00_NSTD.02 - Choose a Narrative Order That Keeps Needed Source Relations Recoverable",
+      "relation": "uses",
+      "target": "C.34"
+    },
+    {
+      "source": "NSTD/16_02_Choose a Narrative Order That Keeps Needed Source Relations Recoverable/00_NSTD.02 - Choose a Narrative Order That Keeps Needed Source Relations Recoverable",
+      "relation": "uses",
+      "target": "E.17"
+    },
+    {
+      "source": "NSTD/16_02_Choose a Narrative Order That Keeps Needed Source Relations Recoverable/00_NSTD.02 - Choose a Narrative Order That Keeps Needed Source Relations Recoverable",
+      "relation": "uses",
+      "target": "E.17.EFP"
+    },
+    {
+      "source": "NSTD/16_02_Choose a Narrative Order That Keeps Needed Source Relations Recoverable/00_NSTD.02 - Choose a Narrative Order That Keeps Needed Source Relations Recoverable",
+      "relation": "uses",
+      "target": "G.11"
+    },
+    {
+      "source": "NSTD/17_03_Repair Missing or Unsupported Narrative Connections (Coherence and Event Models)/00_NSTD.03 - Repair Missing or Unsupported Narrative Connections (Coherence and Event Models)",
+      "relation": "uses",
+      "target": "A.10"
+    },
+    {
+      "source": "NSTD/17_03_Repair Missing or Unsupported Narrative Connections (Coherence and Event Models)/00_NSTD.03 - Repair Missing or Unsupported Narrative Connections (Coherence and Event Models)",
+      "relation": "uses",
+      "target": "A.6.3.NAR"
+    },
+    {
+      "source": "NSTD/17_03_Repair Missing or Unsupported Narrative Connections (Coherence and Event Models)/00_NSTD.03 - Repair Missing or Unsupported Narrative Connections (Coherence and Event Models)",
+      "relation": "uses",
+      "target": "B.3"
+    },
+    {
+      "source": "NSTD/17_03_Repair Missing or Unsupported Narrative Connections (Coherence and Event Models)/00_NSTD.03 - Repair Missing or Unsupported Narrative Connections (Coherence and Event Models)",
+      "relation": "uses",
+      "target": "C.2.8"
+    },
+    {
+      "source": "NSTD/17_03_Repair Missing or Unsupported Narrative Connections (Coherence and Event Models)/00_NSTD.03 - Repair Missing or Unsupported Narrative Connections (Coherence and Event Models)",
+      "relation": "uses",
+      "target": "C.28"
+    },
+    {
+      "source": "NSTD/17_03_Repair Missing or Unsupported Narrative Connections (Coherence and Event Models)/00_NSTD.03 - Repair Missing or Unsupported Narrative Connections (Coherence and Event Models)",
+      "relation": "uses",
+      "target": "C.33"
+    },
+    {
+      "source": "NSTD/17_03_Repair Missing or Unsupported Narrative Connections (Coherence and Event Models)/00_NSTD.03 - Repair Missing or Unsupported Narrative Connections (Coherence and Event Models)",
+      "relation": "uses",
+      "target": "C.34"
+    },
+    {
+      "source": "NSTD/17_03_Repair Missing or Unsupported Narrative Connections (Coherence and Event Models)/00_NSTD.03 - Repair Missing or Unsupported Narrative Connections (Coherence and Event Models)",
+      "relation": "uses",
+      "target": "G.11"
+    },
+    {
+      "source": "NSTD/18_04_Choose Narrative Voice and Focalization while Keeping Agency Claims Grounded/00_NSTD.04 - Choose Narrative Voice and Focalization while Keeping Agency Claims Grounded",
+      "relation": "uses",
+      "target": "A.10"
+    },
+    {
+      "source": "NSTD/18_04_Choose Narrative Voice and Focalization while Keeping Agency Claims Grounded/00_NSTD.04 - Choose Narrative Voice and Focalization while Keeping Agency Claims Grounded",
+      "relation": "uses",
+      "target": "A.13"
+    },
+    {
+      "source": "NSTD/18_04_Choose Narrative Voice and Focalization while Keeping Agency Claims Grounded/00_NSTD.04 - Choose Narrative Voice and Focalization while Keeping Agency Claims Grounded",
+      "relation": "uses",
+      "target": "A.19.ECS"
+    },
+    {
+      "source": "NSTD/18_04_Choose Narrative Voice and Focalization while Keeping Agency Claims Grounded/00_NSTD.04 - Choose Narrative Voice and Focalization while Keeping Agency Claims Grounded",
+      "relation": "uses",
+      "target": "A.2"
+    },
+    {
+      "source": "NSTD/18_04_Choose Narrative Voice and Focalization while Keeping Agency Claims Grounded/00_NSTD.04 - Choose Narrative Voice and Focalization while Keeping Agency Claims Grounded",
+      "relation": "uses",
+      "target": "A.2.1"
+    },
+    {
+      "source": "NSTD/18_04_Choose Narrative Voice and Focalization while Keeping Agency Claims Grounded/00_NSTD.04 - Choose Narrative Voice and Focalization while Keeping Agency Claims Grounded",
+      "relation": "uses",
+      "target": "A.2.2"
+    },
+    {
+      "source": "NSTD/18_04_Choose Narrative Voice and Focalization while Keeping Agency Claims Grounded/00_NSTD.04 - Choose Narrative Voice and Focalization while Keeping Agency Claims Grounded",
+      "relation": "uses",
+      "target": "A.6.3.NAR"
+    },
+    {
+      "source": "NSTD/18_04_Choose Narrative Voice and Focalization while Keeping Agency Claims Grounded/00_NSTD.04 - Choose Narrative Voice and Focalization while Keeping Agency Claims Grounded",
+      "relation": "uses",
+      "target": "B.3"
+    },
+    {
+      "source": "NSTD/18_04_Choose Narrative Voice and Focalization while Keeping Agency Claims Grounded/00_NSTD.04 - Choose Narrative Voice and Focalization while Keeping Agency Claims Grounded",
+      "relation": "uses",
+      "target": "C.16"
+    },
+    {
+      "source": "NSTD/18_04_Choose Narrative Voice and Focalization while Keeping Agency Claims Grounded/00_NSTD.04 - Choose Narrative Voice and Focalization while Keeping Agency Claims Grounded",
+      "relation": "uses",
+      "target": "D.1"
+    },
+    {
+      "source": "NSTD/18_04_Choose Narrative Voice and Focalization while Keeping Agency Claims Grounded/00_NSTD.04 - Choose Narrative Voice and Focalization while Keeping Agency Claims Grounded",
+      "relation": "uses",
+      "target": "D.5"
+    },
+    {
+      "source": "NSTD/18_04_Choose Narrative Voice and Focalization while Keeping Agency Claims Grounded/00_NSTD.04 - Choose Narrative Voice and Focalization while Keeping Agency Claims Grounded",
+      "relation": "uses",
+      "target": "G.11"
+    },
+    {
+      "source": "NSTD/19_05_Choose Narrative Engagement Devices for the Intended Experience or Use/00_NSTD.05 - Choose Narrative Engagement Devices for the Intended Experience or Use",
+      "relation": "uses",
+      "target": "A.10"
+    },
+    {
+      "source": "NSTD/19_05_Choose Narrative Engagement Devices for the Intended Experience or Use/00_NSTD.05 - Choose Narrative Engagement Devices for the Intended Experience or Use",
+      "relation": "uses",
+      "target": "A.6.3.CSC"
+    },
+    {
+      "source": "NSTD/19_05_Choose Narrative Engagement Devices for the Intended Experience or Use/00_NSTD.05 - Choose Narrative Engagement Devices for the Intended Experience or Use",
+      "relation": "uses",
+      "target": "A.6.3.NAR"
+    },
+    {
+      "source": "NSTD/19_05_Choose Narrative Engagement Devices for the Intended Experience or Use/00_NSTD.05 - Choose Narrative Engagement Devices for the Intended Experience or Use",
+      "relation": "uses",
+      "target": "A.6.P"
+    },
+    {
+      "source": "NSTD/19_05_Choose Narrative Engagement Devices for the Intended Experience or Use/00_NSTD.05 - Choose Narrative Engagement Devices for the Intended Experience or Use",
+      "relation": "uses",
+      "target": "B.3"
+    },
+    {
+      "source": "NSTD/19_05_Choose Narrative Engagement Devices for the Intended Experience or Use/00_NSTD.05 - Choose Narrative Engagement Devices for the Intended Experience or Use",
+      "relation": "uses",
+      "target": "C.16.Q"
+    },
+    {
+      "source": "NSTD/19_05_Choose Narrative Engagement Devices for the Intended Experience or Use/00_NSTD.05 - Choose Narrative Engagement Devices for the Intended Experience or Use",
+      "relation": "uses",
+      "target": "C.2.LS"
+    },
+    {
+      "source": "NSTD/19_05_Choose Narrative Engagement Devices for the Intended Experience or Use/00_NSTD.05 - Choose Narrative Engagement Devices for the Intended Experience or Use",
+      "relation": "uses",
+      "target": "D.1"
+    },
+    {
+      "source": "NSTD/19_05_Choose Narrative Engagement Devices for the Intended Experience or Use/00_NSTD.05 - Choose Narrative Engagement Devices for the Intended Experience or Use",
+      "relation": "uses",
+      "target": "D.5"
+    },
+    {
+      "source": "NSTD/19_05_Choose Narrative Engagement Devices for the Intended Experience or Use/00_NSTD.05 - Choose Narrative Engagement Devices for the Intended Experience or Use",
+      "relation": "uses",
+      "target": "E.10"
+    },
+    {
+      "source": "NSTD/19_05_Choose Narrative Engagement Devices for the Intended Experience or Use/00_NSTD.05 - Choose Narrative Engagement Devices for the Intended Experience or Use",
+      "relation": "uses",
+      "target": "E.17"
+    },
+    {
+      "source": "NSTD/19_05_Choose Narrative Engagement Devices for the Intended Experience or Use/00_NSTD.05 - Choose Narrative Engagement Devices for the Intended Experience or Use",
+      "relation": "uses",
+      "target": "E.17.EFP"
+    },
+    {
+      "source": "NSTD/19_05_Choose Narrative Engagement Devices for the Intended Experience or Use/00_NSTD.05 - Choose Narrative Engagement Devices for the Intended Experience or Use",
+      "relation": "uses",
+      "target": "G.11"
+    },
+    {
+      "source": "NSTD/20_06_Declared-Use Narrative Rendering Quality Evaluation/00_NSTD.06 - Declared-Use Narrative Rendering Quality Evaluation",
+      "relation": "uses",
+      "target": "A.10"
+    },
+    {
+      "source": "NSTD/20_06_Declared-Use Narrative Rendering Quality Evaluation/00_NSTD.06 - Declared-Use Narrative Rendering Quality Evaluation",
+      "relation": "uses",
+      "target": "A.16.1"
+    },
+    {
+      "source": "NSTD/20_06_Declared-Use Narrative Rendering Quality Evaluation/00_NSTD.06 - Declared-Use Narrative Rendering Quality Evaluation",
+      "relation": "uses",
+      "target": "A.16.2"
+    },
+    {
+      "source": "NSTD/20_06_Declared-Use Narrative Rendering Quality Evaluation/00_NSTD.06 - Declared-Use Narrative Rendering Quality Evaluation",
+      "relation": "uses",
+      "target": "A.17"
+    },
+    {
+      "source": "NSTD/20_06_Declared-Use Narrative Rendering Quality Evaluation/00_NSTD.06 - Declared-Use Narrative Rendering Quality Evaluation",
+      "relation": "uses",
+      "target": "A.18"
+    },
+    {
+      "source": "NSTD/20_06_Declared-Use Narrative Rendering Quality Evaluation/00_NSTD.06 - Declared-Use Narrative Rendering Quality Evaluation",
+      "relation": "uses",
+      "target": "A.19.ECS"
+    },
+    {
+      "source": "NSTD/20_06_Declared-Use Narrative Rendering Quality Evaluation/00_NSTD.06 - Declared-Use Narrative Rendering Quality Evaluation",
+      "relation": "uses",
+      "target": "A.6.3.CSC"
+    },
+    {
+      "source": "NSTD/20_06_Declared-Use Narrative Rendering Quality Evaluation/00_NSTD.06 - Declared-Use Narrative Rendering Quality Evaluation",
+      "relation": "uses",
+      "target": "A.6.P"
+    },
+    {
+      "source": "NSTD/20_06_Declared-Use Narrative Rendering Quality Evaluation/00_NSTD.06 - Declared-Use Narrative Rendering Quality Evaluation",
+      "relation": "uses",
+      "target": "B.3"
+    },
+    {
+      "source": "NSTD/20_06_Declared-Use Narrative Rendering Quality Evaluation/00_NSTD.06 - Declared-Use Narrative Rendering Quality Evaluation",
+      "relation": "uses",
+      "target": "B.4"
+    },
+    {
+      "source": "NSTD/20_06_Declared-Use Narrative Rendering Quality Evaluation/00_NSTD.06 - Declared-Use Narrative Rendering Quality Evaluation",
+      "relation": "uses",
+      "target": "C.16"
+    },
+    {
+      "source": "NSTD/20_06_Declared-Use Narrative Rendering Quality Evaluation/00_NSTD.06 - Declared-Use Narrative Rendering Quality Evaluation",
+      "relation": "uses",
+      "target": "C.16.Q"
+    },
+    {
+      "source": "NSTD/20_06_Declared-Use Narrative Rendering Quality Evaluation/00_NSTD.06 - Declared-Use Narrative Rendering Quality Evaluation",
+      "relation": "uses",
+      "target": "C.2.8"
+    },
+    {
+      "source": "NSTD/20_06_Declared-Use Narrative Rendering Quality Evaluation/00_NSTD.06 - Declared-Use Narrative Rendering Quality Evaluation",
+      "relation": "uses",
+      "target": "C.2.LS"
+    },
+    {
+      "source": "NSTD/20_06_Declared-Use Narrative Rendering Quality Evaluation/00_NSTD.06 - Declared-Use Narrative Rendering Quality Evaluation",
+      "relation": "uses",
+      "target": "C.33"
+    },
+    {
+      "source": "NSTD/20_06_Declared-Use Narrative Rendering Quality Evaluation/00_NSTD.06 - Declared-Use Narrative Rendering Quality Evaluation",
+      "relation": "uses",
+      "target": "C.35"
+    },
+    {
+      "source": "NSTD/20_06_Declared-Use Narrative Rendering Quality Evaluation/00_NSTD.06 - Declared-Use Narrative Rendering Quality Evaluation",
+      "relation": "uses",
+      "target": "E.10"
+    },
+    {
+      "source": "NSTD/20_06_Declared-Use Narrative Rendering Quality Evaluation/00_NSTD.06 - Declared-Use Narrative Rendering Quality Evaluation",
+      "relation": "uses",
+      "target": "E.17"
+    },
+    {
+      "source": "NSTD/20_06_Declared-Use Narrative Rendering Quality Evaluation/00_NSTD.06 - Declared-Use Narrative Rendering Quality Evaluation",
+      "relation": "uses",
+      "target": "E.17.EFP"
+    },
+    {
+      "source": "NSTD/20_06_Declared-Use Narrative Rendering Quality Evaluation/00_NSTD.06 - Declared-Use Narrative Rendering Quality Evaluation",
+      "relation": "uses",
+      "target": "E.22"
+    },
+    {
+      "source": "NSTD/20_06_Declared-Use Narrative Rendering Quality Evaluation/00_NSTD.06 - Declared-Use Narrative Rendering Quality Evaluation",
+      "relation": "uses",
+      "target": "E.23"
+    },
+    {
+      "source": "NSTD/20_06_Declared-Use Narrative Rendering Quality Evaluation/00_NSTD.06 - Declared-Use Narrative Rendering Quality Evaluation",
+      "relation": "uses",
+      "target": "G.11"
+    },
+    {
+      "source": "NSTD/21_07_Automated Narrativization and Story Planning/00_NSTD.07 - Automated Narrativization and Story Planning",
+      "relation": "uses",
+      "target": "A.10"
+    },
+    {
+      "source": "NSTD/21_07_Automated Narrativization and Story Planning/00_NSTD.07 - Automated Narrativization and Story Planning",
+      "relation": "uses",
+      "target": "A.19.ECS"
+    },
+    {
+      "source": "NSTD/21_07_Automated Narrativization and Story Planning/00_NSTD.07 - Automated Narrativization and Story Planning",
+      "relation": "uses",
+      "target": "A.6.3.NAR"
+    },
+    {
+      "source": "NSTD/21_07_Automated Narrativization and Story Planning/00_NSTD.07 - Automated Narrativization and Story Planning",
+      "relation": "uses",
+      "target": "B.3"
+    },
+    {
+      "source": "NSTD/21_07_Automated Narrativization and Story Planning/00_NSTD.07 - Automated Narrativization and Story Planning",
+      "relation": "uses",
+      "target": "C.16"
+    },
+    {
+      "source": "NSTD/21_07_Automated Narrativization and Story Planning/00_NSTD.07 - Automated Narrativization and Story Planning",
+      "relation": "uses",
+      "target": "C.2.8"
+    },
+    {
+      "source": "NSTD/21_07_Automated Narrativization and Story Planning/00_NSTD.07 - Automated Narrativization and Story Planning",
+      "relation": "uses",
+      "target": "C.33"
+    },
+    {
+      "source": "NSTD/21_07_Automated Narrativization and Story Planning/00_NSTD.07 - Automated Narrativization and Story Planning",
+      "relation": "uses",
+      "target": "C.34"
+    },
+    {
+      "source": "NSTD/21_07_Automated Narrativization and Story Planning/00_NSTD.07 - Automated Narrativization and Story Planning",
+      "relation": "uses",
+      "target": "C.35"
+    },
+    {
+      "source": "NSTD/21_07_Automated Narrativization and Story Planning/00_NSTD.07 - Automated Narrativization and Story Planning",
+      "relation": "uses",
+      "target": "D.1"
+    },
+    {
+      "source": "NSTD/21_07_Automated Narrativization and Story Planning/00_NSTD.07 - Automated Narrativization and Story Planning",
+      "relation": "uses",
+      "target": "D.5"
+    },
+    {
+      "source": "NSTD/21_07_Automated Narrativization and Story Planning/00_NSTD.07 - Automated Narrativization and Story Planning",
+      "relation": "uses",
+      "target": "E.22"
+    },
+    {
+      "source": "NSTD/21_07_Automated Narrativization and Story Planning/00_NSTD.07 - Automated Narrativization and Story Planning",
+      "relation": "uses",
+      "target": "E.23"
+    },
+    {
+      "source": "NSTD/21_07_Automated Narrativization and Story Planning/00_NSTD.07 - Automated Narrativization and Story Planning",
+      "relation": "uses",
+      "target": "G.11"
+    },
+    {
+      "source": "NSTD/21_07_Automated Narrativization and Story Planning/00_NSTD.07 - Automated Narrativization and Story Planning",
+      "relation": "uses",
+      "target": "G.2"
+    },
+    {
+      "source": "NSTD/22_08_Design a Narrative Learning Route for Reconstruction and Use/00_NSTD.08 - Design a Narrative Learning Route for Reconstruction and Use",
+      "relation": "uses",
+      "target": "A.6.3.NAR"
+    },
+    {
+      "source": "NSTD/22_08_Design a Narrative Learning Route for Reconstruction and Use/00_NSTD.08 - Design a Narrative Learning Route for Reconstruction and Use",
+      "relation": "uses",
+      "target": "B.4"
+    },
+    {
+      "source": "NSTD/22_08_Design a Narrative Learning Route for Reconstruction and Use/00_NSTD.08 - Design a Narrative Learning Route for Reconstruction and Use",
+      "relation": "uses",
+      "target": "E.11"
+    },
+    {
+      "source": "NSTD/22_08_Design a Narrative Learning Route for Reconstruction and Use/00_NSTD.08 - Design a Narrative Learning Route for Reconstruction and Use",
+      "relation": "uses",
+      "target": "E.17"
+    },
+    {
+      "source": "NSTD/22_08_Design a Narrative Learning Route for Reconstruction and Use/00_NSTD.08 - Design a Narrative Learning Route for Reconstruction and Use",
+      "relation": "uses",
+      "target": "E.17.AUD"
+    },
+    {
+      "source": "NSTD/22_08_Design a Narrative Learning Route for Reconstruction and Use/00_NSTD.08 - Design a Narrative Learning Route for Reconstruction and Use",
+      "relation": "uses",
+      "target": "E.21"
+    },
+    {
+      "source": "NSTD/22_08_Design a Narrative Learning Route for Reconstruction and Use/00_NSTD.08 - Design a Narrative Learning Route for Reconstruction and Use",
+      "relation": "uses",
+      "target": "E.22"
+    },
+    {
+      "source": "NSTD/22_08_Design a Narrative Learning Route for Reconstruction and Use/00_NSTD.08 - Design a Narrative Learning Route for Reconstruction and Use",
+      "relation": "uses",
+      "target": "E.23"
+    },
+    {
+      "source": "NSTD/22_08_Design a Narrative Learning Route for Reconstruction and Use/00_NSTD.08 - Design a Narrative Learning Route for Reconstruction and Use",
+      "relation": "uses",
+      "target": "E.6"
+    },
+    {
+      "source": "NSTD/22_08_Design a Narrative Learning Route for Reconstruction and Use/00_NSTD.08 - Design a Narrative Learning Route for Reconstruction and Use",
+      "relation": "uses",
+      "target": "G.11"
+    }
+  ],
   "source": "Narrativization-and-Narrative-Studies-Principles-Framework.md",
   "out_dir": "NPF-Knowledge-Graph",
-  "source_revision": "d77339d7056433de3ee55ad863860ee4b3006f6f",
-  "source_sha256": "80f2d5ec3524b7947a3c36928bf774f61a9c68d4efc9ec5fc0d23206f01534e4",
-  "generated_on": "2026-08-26",
+  "source_revision": "fb3b6a4ad1d51d732a365f75f7d68337c7a751e2",
+  "source_sha256": "c5c274316d31db178d105526ee32e912c4ccd02a6c03279a42f83244612737ba",
+  "generated_on": "2026-10-25",
   "framework": "NPF"
 }

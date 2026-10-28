@@ -14,6 +14,7 @@ from service.scripts.validate_repository.validate_repository_workers.fpf_markdow
 ASSET_NAMES = (
     "cases.json", "subject-prompt.md", "evaluator-prompt.md",
     "subject-output.schema.json", "evaluation-output.schema.json",
+    "sota-evidence-fixture.md",
 )
 
 
@@ -69,7 +70,8 @@ def load_profile_cases(root: Path) -> list[dict[str, object]]:
             "id": f"profile-{profile_id.replace('.', '-')}",
             "area": profile["area"], "output_contract": "analysis",
             "invocation": (
-                f"$fpf {nodes[node_id]['command']} {source['task']} Do not save a report."
+                f"$fpf {nodes[node_id]['command']} {source['task']} "
+                "Execute without a plan. Do not save a report."
             ),
             "criteria": [
                 {"id": "profile-selection", "requirement": f"Selects task profile {profile_id} without changing the explicit {node_id} analytical intent."},

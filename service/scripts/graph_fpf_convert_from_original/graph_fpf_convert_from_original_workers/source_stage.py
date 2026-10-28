@@ -12,6 +12,7 @@ from service.scripts.filesystem_policy import (
     temporary_workspace,
 )
 from .source_package import package_root, validate_source_package_against_repository
+from .source_layout import resolve_framework_source
 
 
 STAGE_RELATIVE = Path(".runtime") / "original-fpf-sources"
@@ -87,7 +88,7 @@ def staged_source(root: Path, filename: str) -> Path:
     stage = stage_root(root)
     if stage.is_symlink() or not stage.is_dir():
         raise ValueError("source stage is missing; run --stage-sources first")
-    source = stage / filename
+    source = resolve_framework_source(stage, filename)
     if not source.is_file():
         raise ValueError(f"staged source is missing: {filename}")
     return source

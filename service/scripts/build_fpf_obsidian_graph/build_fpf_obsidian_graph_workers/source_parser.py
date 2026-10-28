@@ -5,19 +5,16 @@ from pathlib import Path
 
 from .models import FPF_PROFILE, GraphProfile, Heading, Page
 from .name_rules import clean_title
-from .patterns import CODE_FENCE_RE, HEADING_RE, ID_START_RE
+from .patterns import HEADING_RE, ID_START_RE
+from .reference_links import unfenced_lines
 from .relations import enrich
 
 
 def parse_headings(source: Path) -> tuple[list[str], list[Heading]]:
     lines = source.read_text(encoding="utf-8", errors="replace").splitlines()
     headings: list[Heading] = []
-    in_code = False
-    for n, line in enumerate(lines, 1):
-        if CODE_FENCE_RE.match(line):
-            in_code = not in_code
-            continue
-        if in_code:
+    for n, (line, editable) in enumerate(unfenced_lines(lines), 1):
+        if not editable:
             continue
         m = HEADING_RE.match(line)
         if not m:
@@ -45,6 +42,8 @@ def h1_page_type(title: str, profile: GraphProfile = FPF_PROFILE) -> str:
 
 def h2_page_type(page: Page, profile: GraphProfile = FPF_PROFILE) -> str:
     if page.framework_id:
+        if ":" in page.framework_id:
+            return f"{profile.key}-section"
         root = page.framework_id.split(".", 1)[0]
         if root in profile.pattern_roots:
             return f"{profile.key}-pattern"
@@ -90,7 +89,7 @@ def build_pages(
                 h,
                 h.line,
                 end,
-                lines[h.line:end],
+                lines[h.line:next_line(h, headings, {1, 2}, len(lines))],
                 title=title,
                 page_type=h1_page_type(title, profile),
             )

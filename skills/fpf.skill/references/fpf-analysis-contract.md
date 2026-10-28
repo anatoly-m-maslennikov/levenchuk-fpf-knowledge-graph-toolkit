@@ -29,10 +29,10 @@ Return the complete artifact in chat. When `save_report = "on"`, consult `report
 
 Before resolving FPF sources or starting native work, when the task cites a prior FPF report, finding, repair, closure check, or review campaign, load `references/fpf-review-campaign.md` and preserve its campaign envelope, existing fingerprints, evaluation profile, review budget, and stop rule. This workflow reference is not an FPF methodology source. Return any updated campaign handoff in `## Task, scope, and boundaries`; do not reset the campaign merely because another analytical node or composition is running.
 
-## Optional delegated work
+## Managed doer boundary
 
-Delegation must not change the required result. Resource or retrieval limits alone do not justify cancellation, replacement, or duplicate work. Pending work may remain pending while only non-conflicting work continues. Stop it only for user cancellation or override, or a confirmed safety or protected-scope violation. If delegation is unavailable, execute directly.
+This contract runs only inside the manager-created doer. The doer may delegate bounded retrieval work when useful, but that never replaces the required independent warden and never changes the required result. Resource or retrieval limits alone do not justify cancellation, replacement, or duplicate work. Pending work may remain pending while only non-conflicting work continues. Stop it only for user cancellation or override, or a confirmed safety or protected-scope violation.
 
 ## Final delivery
 
-After native analysis and after loading any enabled persistence protocol, load `references/fpf-analysis-output.md` before file creation and follow it as the final authority for response shape. Do not return before applying that finalizer.
+After native analysis and after loading any enabled persistence protocol, load `references/fpf-analysis-output.md` before creating the current two-file artifact set and follow it as the final authority for response shape. Do not return `STEP_READY` or `CANDIDATE_READY` before applying that finalizer.

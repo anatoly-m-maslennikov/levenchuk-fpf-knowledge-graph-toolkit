@@ -46,7 +46,7 @@ def validate_generated_graph(
     report = read_report(graph, report_name, errors)
     values = expected_values(source, graph, profile, hub_count, page_count, len(expected))
     validate_report_values(report, values, errors)
-    classified = classify_unresolved(report, source, errors, warnings)
+    classified = classify_unresolved(report, source, errors, warnings, profile)
     markdown = {path for path in files if path.endswith(".md")}
     page_errors, identifiers = check_pages(
         graph, markdown, source, profile,

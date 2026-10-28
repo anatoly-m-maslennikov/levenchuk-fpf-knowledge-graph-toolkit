@@ -1,6 +1,6 @@
 # FPF command composition
 
-Load this resource only when the Markdown command graph admits an explicit composition. It governs ordered execution, shared state, consolidation, and persistence for the selected analytical nodes. It does not authorize target mutation, project decisions, or execution past a missing authority gate.
+Load this resource when the Markdown command graph admits an explicit composition or when exact `do` approves a validated ordered FPF Plan. It governs ordered execution, shared state, consolidation, and persistence for the selected analytical nodes. It does not authorize target mutation, project decisions, or execution past a missing authority gate.
 
 ## Invocation contract
 
@@ -11,6 +11,8 @@ The explicit syntax is:
 Spaces around `+` are mandatory. Every segment must start with an exact analytical command or alias. Task text is permitted only after the last command and becomes the shared task for the entire composition. `help` and `plan` cannot be composed. Execute only the ordered nodes explicitly matched through the Markdown graph; never infer another node from keywords.
 
 Admit only adjacent pairs declared under `Legal composition handoffs` in the Markdown graph. An admitted edge proves only that a handoff is structurally legal. For every pair, bind the current node's result to the edge's `Producer output`, pass only its declared `Consumer input`, verify `Required evidence`, and evaluate the `Gate predicate`. If any field cannot be satisfied, stop with the row's exact `STOP_*` state and state which field failed; never replace it with a generic “insufficient context” diagnosis.
+
+For an approved Plan, `references/fpf-plan-execution.md` supplies approval and continuation semantics. The numbered Plan supplies the ordered commands and shared task; this composition contract supplies the typed handoffs and one-envelope behavior. The Plan does not make an undeclared graph edge legal.
 
 ## One composition envelope
 
@@ -31,7 +33,7 @@ When the sequence contains `design-challenge`, `quality-improve`, or `alignment-
 
 Run nodes from left to right. Load only the current node prompt and the references it actually requires. Give it the shared task, current envelope, and preceding native handoff.
 
-Each executed node must complete its native analysis and evidence record, but treat that result as an intermediate composition record. Do not return or persist it as a separate report. Merge its evidence, findings, proposed corrections, decisions, changes, verification, open questions, source trace, and stop condition into the shared envelope.
+Each executed node must complete its native analysis and evidence record as one temporary `step-NNN/` artifact set. The same warden validates that set before its result can enter the next node. Do not return or durably persist it as a separate report. Merge only validated step-set evidence, findings, proposed corrections, decisions, changes, verification, open questions, source trace, and stop condition into the shared envelope.
 
 Before starting the next node, verify that its declared target state and prerequisites now exist. Stop the composition when:
 
@@ -92,7 +94,7 @@ Stop when the frontier and profile are unchanged and no permitted transition rem
 
 ## Persist once
 
-Resolve output and report settings once for the whole composition. Intermediate node instructions to return and persist complete artifacts apply to their internal records; this composition contract replaces separate delivery with the one final consolidated artifact.
+Resolve output and report settings once for the whole composition. Intermediate step sets are complete temporary artifacts but never separate durable reports; this composition contract keeps one final consolidated delivery artifact.
 
 When saving is on, load `references/fpf-report-persistence.md` once after consolidation and use report node ID `composition`. Save exactly the same Markdown returned in chat. CAPRMEDIO mode creates one Analysis Report Atom for the complete composition scope, not one Atom per node.
 

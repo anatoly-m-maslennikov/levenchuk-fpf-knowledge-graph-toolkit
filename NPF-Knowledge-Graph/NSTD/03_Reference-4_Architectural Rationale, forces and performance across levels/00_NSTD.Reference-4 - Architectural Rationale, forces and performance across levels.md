@@ -1,0 +1,32 @@
+---
+type: "npf-section"
+context:
+  - "NPF"
+page_type: "npf-section"
+mode: "canonical-generated"
+npf_id: "NSTD.Reference:4"
+title: "Architectural Rationale, forces and performance across levels"
+part: "[[00_Hubs/NPF - Narrativization and Narrative Studies Principles Framework Architectural Reference]]"
+parents:
+  - "[[00_Hubs/NPF - Narrativization and Narrative Studies Principles Framework Architectural Reference]]"
+source_file: "Narrativization-and-Narrative-Studies-Principles-Framework.md"
+source_revision: "fb3b6a4ad1d51d732a365f75f7d68337c7a751e2"
+source_sha256: "c5c274316d31db178d105526ee32e912c4ccd02a6c03279a42f83244612737ba"
+generated_on: "2026-10-25"
+source_lines:
+  - 157
+  - 168
+status: "generated"
+generated: true
+---
+
+
+The language separates contributions that can need different repairs while keeping their results connected. Changing order cannot supply a missing cause. Changing viewpoint can reveal an overlooked relation but can also obscure another. Increasing suspense can improve attention while delaying a prerequisite the reader needs. The shared comparison is therefore between the intended use, selected relations, their expression and the reader's recovery.
+
+Two alternatives are often sufficient: a direct factual answer with no narrative development, or a familiar genre convention that already serves the reader. Use the larger repertoire when a connected account introduces ordering, inference, viewpoint or learning difficulties. A fixed drafting pipeline would make these dependencies easy to list but would obstruct useful returns from a trial narrative to source selection. The patterns allow both direct entry and iteration.
+
+The methods also participate in a vertical of ongoing work. While a teacher explains a counterexample, selecting its contrast, forming its sentences and observing the learner's response are constituents of teaching at that moment. The whole task may require a distinction to be usable before the next exercise; that requirement can change the sentence, diagram or timing now. If the learner cannot yet recognize the mathematical objects, polishing the story cannot supply that capability. Add the needed explanation, reference or practice, or change the task. Likewise, a technical narrator must have the relevant subject knowledge or obtain that contribution from a specialist.
+
+`B.1.5.EW` helps recover such simultaneous constituent and encompassing work; `B.1.5.RS` helps examine a replacement. The DPF describes part of the needed repertoire. Subject knowledge, language capability, available time, reader access and actual coordination may determine whether the combination can be performed.
+
+There is no fixed number of useful refinement levels. A teaching application, genre-specific profile or local generation workflow can combine these same methods with narrower ones. A profile's scope, a Method composition and a chapter's position are different relations; the pattern numbering fixes addresses rather than an execution sequence.

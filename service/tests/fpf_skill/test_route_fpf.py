@@ -29,7 +29,7 @@ class MarkdownFpfGraphTests(unittest.TestCase):
         prompt_ids = {
             path.stem.removeprefix("fpf-")
             for path in (SKILL_ROOT / "prompts").glob("fpf-*.md")
-            if path.name != "fpf-runtime.md"
+            if path.name not in {"fpf-manager.md", "fpf-runtime.md", "fpf-warden.md"}
         }
         self.assertEqual(prompt_ids | {"help"}, set(self.nodes))
         self.assertFalse(self.nodes["help"]["persist_report"])
@@ -61,11 +61,12 @@ class MarkdownFpfGraphTests(unittest.TestCase):
     def test_routing_precedence_covers_composition_and_safe_fallbacks(self) -> None:
         text = (SKILL_ROOT / "references/fpf-command-graph.md").read_text(encoding="utf-8")
         for requirement in (
-            "Recognize `plan <command> + ...` before executable composition",
-            "Treat spaced ` + ` as composition only when every segment",
+            "`plan-first` is the default for every new request",
+            "A valid requested stack is normalized to canonical commands and returned as a Plan",
+            "direct-without-plan",
+            "never silently changes to a Plan at `step-001/`",
             "Prefer the longest complete command or alias",
             "never match substrings",
-            "When intent is ambiguous, select `plan`",
         ):
             self.assertIn(requirement, text)
 
@@ -76,10 +77,25 @@ class MarkdownFpfGraphTests(unittest.TestCase):
         self.assertEqual(analytical, covered)
         edges = {(edge["from"], edge["to"]) for edge in self.graph["edges"]}
         for scenario in scenarios:
-            if scenario["expected_mode"] in {"sequence", "composition", "plan"}:
+            if scenario["expected_mode"] in {"sequence", "composition", "composition-direct"}:
                 sequence = scenario["expected_sequence"]
                 self.assertGreaterEqual(len(sequence), 2)
                 self.assertTrue(all(pair in edges for pair in zip(sequence, sequence[1:])))
+            elif scenario["expected_mode"] == "plan":
+                sequence = scenario["expected_sequence"]
+                self.assertGreaterEqual(len(sequence), 1)
+                self.assertTrue(all(pair in edges for pair in zip(sequence, sequence[1:])))
+
+    def test_explicit_command_stack_is_a_plan_by_default(self) -> None:
+        scenarios = {item["id"]: item for item in load_routing_scenarios(ROOT)}
+        scenario = scenarios["default-plan-command-stack"]
+        self.assertEqual("plan", scenario["expected_mode"])
+        self.assertEqual("plans", scenario["route_action"])
+        self.assertEqual(
+            ["sota-harvest", "design-challenge", "quality-improve"],
+            scenario["expected_sequence"],
+        )
+        self.assertNotIn("without a plan", scenario["question"].casefold())
 
     def test_profiles_and_evaluation_cases_are_complete(self) -> None:
         profiles = self.graph["task_profiles"]

@@ -15,6 +15,6 @@ $fpf help
 - `$fpf help software`
 - `$fpf help skills`
 
-Use `$fpf plan <question>` when you want a non-executing call plan. Analytical commands can be composed explicitly with ` + `; put the shared task after the final command. Help and Plan never save reports. Analytical commands return their complete artifact and follow the active standalone or CAPRMEDIO report settings.
+Every new request returns a non-executing Plan by default. A command or ` + ` stack constrains that Plan; put the shared task after the final command. Reply exact `do` to execute the validated Plan. Direct execution is available only when you explicitly say to proceed without a Plan. Help and Plan never save reports. Executed analytical commands return their complete artifact and follow the active standalone or CAPRMEDIO report settings.
 
 English and Russian tasks and aliases are supported. Canonical identifiers, FPF IDs, paths, code, quotations, URLs, and citation targets remain unchanged.
